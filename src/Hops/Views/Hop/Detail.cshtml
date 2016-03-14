@@ -1,55 +1,51 @@
 ﻿@using Hops.Models;
 @model DetailModel
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Hops</title>
-    <link href="~/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <script src="~/bootstrap/dist/js/bootstrap.min.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="jumbotron">
-            <h1>@Model.Hop.Name</h1>
-            <p>@Model.Hop.Trade</p>
-            <p>Aroma profile: @Model.Hop.Aroma</p>
-            <p>Typical beer styles: @Model.Hop.Styles</p>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-        </div>
+@{
+    ViewBag.Title = $"{Model.Hop.Name} - Hops";
+}
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
-            <div class="panel-body">
-                <p>@Model.Hop.Info</p>
-            </div>
-        </div>
+<div class="jumbotron">
+    <h1>@Model.Hop.Name</h1>
+    <p>@Model.Hop.Trade</p>
+    <p>Aroma profile: @Model.Hop.Aroma</p>
+    <p>Typical beer styles: @Model.Hop.Styles</p>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Brewing values</div>
+</div>
 
-            <div class="panel-body">
-                <p>Brewing Usage: @((BrewingUsage)Model.Hop.BrewingUsage)</p>
-            </div>
-
-            <table class="table table-striped">
-                <tr><td>Alpha Acid</td><td>@Model.Hop.AlphaMin - @Model.Hop.AlphaMax%</td></tr>
-                <tr><td>Beta Acid</td><td>@Model.Hop.BetaMin - @Model.Hop.BetaMax%</td></tr>
-                <tr><td>Co-humulone</td><td>@Model.Hop.CoHumuloneMin - @Model.Hop.CoHumuloneMax%</td></tr>
-                <tr><td>Total Oil</td><td>@Model.Hop.TotalOilMin - @Model.Hop.TotalOilMax mL/100g</td></tr>
-            </table>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">Possible substitutions</div>
-            <div class="panel-body list-group">
-                    @foreach (var substitute in Model.Substitutions)
-                    {
-                        <a href="@Url.Link("Detail", new { Id = substitute.Id })" class="list-group-item">@substitute.Name</a>
-                    }
-            </div>
-        </div>
+<div class="panel panel-default">
+    <div class="panel-heading">Information</div>
+    <div class="panel-body">
+        <p>@Model.Hop.Info</p>
+        <p>Pedigree: @Model.Hop.Pedigree</p>
     </div>
-</body>
-</html>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Brewing values</div>
+
+    <div class="panel-body">
+        <p>Brewing Usage: @((BrewingUsage)Model.Hop.BrewingUsage)</p>
+    </div>
+
+    <table class="table table-striped">
+        <tr><td>Alpha Acid</td><td>@Model.Hop.AlphaMin - @Model.Hop.AlphaMax%</td></tr>
+        <tr><td>Beta Acid</td><td>@Model.Hop.BetaMin - @Model.Hop.BetaMax%</td></tr>
+        <tr><td>Co-humulone</td><td>@Model.Hop.CoHumuloneMin - @Model.Hop.CoHumuloneMax%</td></tr>
+        <tr><td>Total Oil</td><td>@Model.Hop.TotalOilMin - @Model.Hop.TotalOilMax mL/100g</td></tr>
+    </table>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Possible substitutions</div>
+    <div class="panel-body list-group">
+        @foreach (var substitute in Model.Substitutions)
+        {
+            <a href="@Url.Link("Detail", new { Id = substitute.Id })" class="list-group-item">@substitute.Name</a>
+        }
+    </div>
+</div>

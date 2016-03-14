@@ -15,6 +15,7 @@ namespace Hops.Controllers
         }
 
         [HttpGet]
+        [Route("/")]
         public IActionResult List()
         {
             return View(hopRepository.GetAll());

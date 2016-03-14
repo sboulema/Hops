@@ -18,7 +18,6 @@ namespace Hops
             services.AddEntityFramework()
                 .AddSqlite()
                 .AddDbContext<HopContext>(options => options.UseSqlite(connection));
-                //.AddDbContext<SubstitutionContext>(options => options.UseSqlite(connection));
 
             services.AddMvc();
             services.AddScoped<IHopRepository, HopRepository>();

@@ -1,0 +1,19 @@
+﻿@using Hops.Models;
+@model List<Hop>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hops</title>
+</head>
+<body>
+    <div>
+        <ul>
+            @foreach (var hop in Model)
+            {
+                <li><a href="@Url.Link("Detail", new { Id = hop.Id })">@hop.Name</a></li>
+            }          
+        </ul>      
+    </div>
+</body>
+</html>

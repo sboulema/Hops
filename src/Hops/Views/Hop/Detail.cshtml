@@ -1,0 +1,25 @@
+﻿@using Hops.Models;
+@model DetailModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hops</title>
+</head>
+<body>
+    <div>
+        @Model.Hop.Name
+    </div>
+    <div>
+        @Model.Hop.AlphaMin - @Model.Hop.AlphaMax
+    </div>
+    <div>
+        <ul>
+            @foreach (var substitute in Model.Substitutions)
+            {
+                <li><a href="@Url.Link("Detail", substitute.Id)">@substitute.Name</a></li>
+            }          
+        </ul>      
+    </div>
+</body>
+</html>

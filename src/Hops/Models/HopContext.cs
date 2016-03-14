@@ -11,7 +11,7 @@ namespace Hops.Models
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Hop>().HasKey(m => m.Id);
-            builder.Entity<Substitution>().HasKey(m => m.Id);
+            builder.Entity<Substitution>().HasKey(m => new { m.HopId, m.SubId });
             base.OnModelCreating(builder);
         }
     }

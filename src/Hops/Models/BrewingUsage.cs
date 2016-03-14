@@ -1,9 +1,9 @@
-﻿using Microsoft.Data.Entity;
-
-namespace Hops.Models
+﻿namespace Hops.Models
 {
-    public class BrewingUsage
+    public enum BrewingUsage
     {
-        int Aroma = 1;
+        Unknown = 0,
+        Aroma = 1,
+        Bittering = 2
     }
 }

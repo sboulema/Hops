@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Hops.Models;
 using Microsoft.Data.Entity;
 using Hops.Repositories;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
 
 namespace Hops
 {
@@ -13,11 +15,11 @@ namespace Hops
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = "Data Source=D:\\Repos\\Hops\\hops.sqlite";
+            var path = PlatformServices.Default.Application.ApplicationBasePath;
 
             services.AddEntityFramework()
                 .AddSqlite()
-                .AddDbContext<HopContext>(options => options.UseSqlite(connection));
+                .AddDbContext<HopContext>(options => options.UseSqlite("Filename=" + Path.Combine(path, "hops.sqlite")));
 
             services.AddMvc();
             services.AddScoped<IHopRepository, HopRepository>();

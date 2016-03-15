@@ -18,7 +18,14 @@ namespace Hops.Controllers
         [Route("/")]
         public IActionResult List()
         {
-            return View(hopRepository.GetAll());
+            return View(hopRepository.GetPage(1));
+        }
+
+        [HttpGet]
+        [Route("/{page}", Name = "Page")]
+        public IActionResult List(int page)
+        {
+            return View(hopRepository.GetPage(page));
         }
 
         [HttpGet("{id}", Name = "Detail")]

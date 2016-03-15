@@ -5,7 +5,8 @@ namespace Hops.Repositories
 {
     public interface IHopRepository
     {
-        List<Hop> GetAll();
+        ListModel GetAll();
+        ListModel GetPage(int page);
         Hop Get(long id);
         List<Hop> GetSubstitutions(long id);
     }

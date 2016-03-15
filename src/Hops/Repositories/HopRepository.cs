@@ -18,10 +18,25 @@ namespace Hops.Repositories
             urlHelper = contextAccessor.HttpContext.RequestServices.GetRequiredService<IUrlHelper>();
         }
 
-        public List<Hop> GetAll()
+        public ListModel GetAll()
         {
-            var hops = context.Hops.ToList();
-            return hops;
+            var hops = context.Hops;
+
+            var results = new ListModel();
+            results.List = hops.ToList();
+            results.NumberOfPages = (hops.Count() / 15) + 1;
+            return results;
+        }
+
+        public ListModel GetPage(int page)
+        {
+            var hops = context.Hops;
+
+            var results = new ListModel();
+            results.List = hops.OrderBy(h => h.Id).Skip((page - 1) * 15).Take(15).ToList();
+            results.NumberOfPages = (hops.Count() / 15) + 1;
+            results.CurrentPageIndex = page;
+            return results;
         }
 
         public Hop Get(long id)

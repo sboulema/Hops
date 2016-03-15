@@ -1,5 +1,4 @@
 ﻿using Hops.Models;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Hops.Repositories
@@ -13,9 +12,10 @@ namespace Hops.Repositories
             this.context = context;
         }
 
-        public List<Hop> Search(string searchTerm)
+        public ListModel Search(string searchTerm)
         {
-            var results = context.Hops.Where(h => h.Name.Contains(searchTerm)).ToList();
+            var results = new ListModel();
+            results.List = context.Hops.Where(h => h.Name.Contains(searchTerm)).ToList();
             return results;
         }
     }

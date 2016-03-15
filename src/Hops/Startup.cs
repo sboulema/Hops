@@ -22,7 +22,9 @@ namespace Hops
                 .AddDbContext<HopContext>(options => options.UseSqlite("Filename=" + Path.Combine(path, "hops.sqlite")));
 
             services.AddMvc();
+
             services.AddScoped<IHopRepository, HopRepository>();
+            services.AddScoped<ISearchRepository, SearchRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

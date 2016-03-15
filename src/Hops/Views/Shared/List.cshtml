@@ -20,7 +20,10 @@
         <tbody>
             @foreach (var hop in Model)
             {
-                <tr><td><a href="@Url.Link("Detail", new { Id = hop.Id })">@hop.Name</a></td><td>@((BrewingUsage)hop.BrewingUsage)</td></tr>
+                <tr>
+                    <td><a href="@Url.Link("Detail", new { Id = hop.Id })">@hop.Name</a></td>
+                    <td>@((BrewingUsage)hop.BrewingUsage)</td>
+                </tr>
             }
         </tbody>
     </table>

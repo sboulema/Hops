@@ -36,7 +36,7 @@
                 @if (Model.CurrentPageIndex > 1)
                 {
                     <li>
-                        <a href="#" aria-label="Previous">
+                        <a href="~/@(Model.CurrentPageIndex - 1)" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
@@ -46,18 +46,18 @@
                 {
                     if (i == Model.CurrentPageIndex)
                     {
-                        <li class="active"><a href="@Url.Action("Page", new { page = i })">@i</a></li>
+                        <li class="active"><a href="~/@i">@i</a></li>
                     }
                     else
                     {
-                        <li><a href="@Url.Action("Page", new { page = i })">@i</a></li>
+                        <li><a href="~/@i">@i</a></li>
                     }
                 }
 
                 @if (Model.CurrentPageIndex != Model.NumberOfPages)
                 {
                     <li>
-                        <a href="#" aria-label="Next">
+                        <a href="~/@(Model.CurrentPageIndex + 1)" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>

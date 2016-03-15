@@ -18,16 +18,6 @@ namespace Hops.Repositories
             urlHelper = contextAccessor.HttpContext.RequestServices.GetRequiredService<IUrlHelper>();
         }
 
-        public ListModel GetAll()
-        {
-            var hops = context.Hops;
-
-            var results = new ListModel();
-            results.List = hops.ToList();
-            results.NumberOfPages = (hops.Count() / 15) + 1;
-            return results;
-        }
-
         public ListModel GetPage(int page)
         {
             var hops = context.Hops;

@@ -45,7 +45,7 @@
     <div class="panel-body list-group">
         @foreach (var substitute in Model.Substitutions)
         {
-            <a href="@Url.Link("Detail", new { Id = substitute.Id })" class="list-group-item">@substitute.Name</a>
+            <a href="@Url.Action("Detail", new { Id = substitute.Id })" class="list-group-item">@substitute.Name</a>
         }
     </div>
 </div>

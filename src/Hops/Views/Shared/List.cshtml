@@ -46,11 +46,11 @@
                 {
                     if (i == Model.CurrentPageIndex)
                     {
-                        <li class="active"><a href="@Url.Link("Page", new { page = i })">@i</a></li>
+                        <li class="active"><a href="@Url.Action("Page", new { page = i })">@i</a></li>
                     }
                     else
                     {
-                        <li><a href="@Url.Link("Page", new { page = i })">@i</a></li>
+                        <li><a href="@Url.Action("Page", new { page = i })">@i</a></li>
                     }
                 }
 

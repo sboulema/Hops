@@ -6,4 +6,4 @@ WORKDIR /app
 RUN ["dnu", "restore"]
 
 EXPOSE 5000
-ENTRYPOINT ["dnx", "-p", "project.json", "web"]
+ENTRYPOINT ["dnx", "-p", "src/Hops/project.json", "web"]

@@ -1,4 +1,7 @@
-﻿namespace Hops.Models
+﻿using System;
+using System.Text.RegularExpressions;
+
+namespace Hops.Models
 {
     public enum BrewingUsage
     {
@@ -6,5 +9,14 @@
         Aroma = 1,
         Bittering = 2,
         DualPurpose = 3
+    }
+
+    public static class BrewingUsageExtension
+    {
+        public static string Wordify(this Enum input)
+        {
+            Regex r = new Regex("(?<=[a-z])(?<x>[A-Z])|(?<=.)(?<x>[A-Z])(?=[a-z])");
+            return r.Replace(input.ToString(), " ${x}");
+        }
     }
 }

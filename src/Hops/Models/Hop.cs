@@ -18,5 +18,10 @@
         public string Trade { get; set; }
         public string Styles { get; set; }
         public string Info { get; set; }
+
+        public string BrewingUsageString()
+        {
+            return ((BrewingUsage)BrewingUsage).Wordify();
+        }
     }
 }

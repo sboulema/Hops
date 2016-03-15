@@ -21,7 +21,7 @@
             @foreach (var hop in Model.List)
             {
                 <tr>
-                    <td><a href="@Url.Link("Detail", new { Id = hop.Id })">@hop.Name</a></td>
+                    <td><a href="@Url.Action("Detail", new { Id = hop.Id })">@hop.Name</a></td>
                     <td>@hop.BrewingUsageString()</td>
                 </tr>
             }
@@ -33,11 +33,14 @@
     <div class="col-lg-6 col-lg-offset-3 text-center">
         <nav>
             <ul class="pagination">
-                <li>
-                    <a href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
+                @if (Model.CurrentPageIndex > 1)
+                {
+                    <li>
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
 
                 @for (int i = 1; i <= Model.NumberOfPages; i++)
                 {
@@ -51,11 +54,14 @@
                     }
                 }
 
-                <li>
-                    <a href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
+                @if (Model.CurrentPageIndex != Model.NumberOfPages)
+                {
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
             </ul>
         </nav>
     </div>

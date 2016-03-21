@@ -1,6 +1,8 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
 
@@ -11,7 +13,7 @@
     <script src="~/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <link href="~/sortable/sortable-theme-bootstrap.css" rel="stylesheet" />
-    <script src="~/sortable/sortable.min.js"></script>    
+    <script src="~/sortable/sortable.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -44,16 +46,16 @@
     </div>
 
     <script>
-    function search() {
-        window.location = "search/" + document.getElementById('search').value
-    }
-
-    function handle(e) {
-        if (e.keyCode === 13) {
-            search();
+        function search() {
+            window.location = "/search/" + document.getElementById('search').value
         }
-        return false;
-    }
+
+        function handle(e) {
+            if (e.keyCode === 13) {
+                search();
+            }
+            return false;
+        }
     </script>
 </body>
 </html>

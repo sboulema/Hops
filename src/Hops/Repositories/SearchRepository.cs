@@ -1,4 +1,5 @@
 ﻿using Hops.Models;
+using System;
 using System.Linq;
 
 namespace Hops.Repositories
@@ -15,8 +16,23 @@ namespace Hops.Repositories
         public ListModel Search(string searchTerm)
         {
             var results = new ListModel();
-            results.List = context.Hops.Where(h => h.Name.Contains(searchTerm)).ToList();
+
+            results.List = context.Hops.GroupJoin(context.Alias, 
+                hop => hop.Id, 
+                alias => alias.HopId, 
+                (hop, aliases) => new { hop, aliases }
+            )
+            .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) || 
+                r.aliases.Any(a => Contains(a.Name, searchTerm, StringComparison.OrdinalIgnoreCase)))
+            .Select(r => r.hop)
+            .ToList();
+
             return results;
+        }
+
+        private bool Contains(string source, string toCheck, StringComparison comp)
+        {
+            return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
         }
     }
 }

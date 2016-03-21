@@ -21,7 +21,7 @@
             @foreach (var hop in Model.List)
             {
                 <tr>
-                    <td><a href="@Url.Action("Detail", new { Id = hop.Id })">@hop.Name</a></td>
+                    <td><a href="/Hop/@hop.Id">@hop.Name</a></td>
                     <td>@hop.BrewingUsageString()</td>
                 </tr>
             }

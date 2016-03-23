@@ -23,7 +23,7 @@ namespace Hops.Repositories
             var hops = context.Hops;
 
             var results = new ListModel();
-            results.List = hops.OrderBy(h => h.Id).Skip((page - 1) * 15).Take(15).ToList();
+            results.List = hops.OrderBy(h => h.Name).Skip((page - 1) * 15).Take(15).ToList();
             results.NumberOfPages = (hops.Count() / 15) + 1;
             results.CurrentPageIndex = page;
             return results;

@@ -14,6 +14,9 @@
 
     <link href="~/sortable/sortable-theme-bootstrap.css" rel="stylesheet" />
     <script src="~/sortable/sortable.min.js"></script>
+
+    <link href="~/typeahead/typeaheadjs.css" rel="stylesheet" />
+    <script src="~/typeahead/typeahead.bundle.js"></script>
 </head>
 <body>
     <div class="container">
@@ -34,7 +37,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <div class="navbar-form navbar-right">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="search" onkeypress="handle(event)" placeholder="Search">
+                            <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event)" placeholder="Search">
                         </div>
                         <button class="btn btn-default" onclick="search()">Submit</button>
                     </div>
@@ -56,6 +59,22 @@
             }
             return false;
         }
+
+        var hops = new Bloodhound({
+            datumTokenizer: Bloodhound.tokenizers.whitespace,
+            queryTokenizer: Bloodhound.tokenizers.whitespace,
+            remote: {
+                url: '/search/autocomplete/%QUERY',
+                wildcard: '%QUERY'
+            }
+        });
+
+        $('.form-group .typeahead').typeahead(null, {
+            name: 'hopSearch',
+            source: hops,
+            limit: 30,
+            highlight: true
+        });
     </script>
 </body>
 </html>

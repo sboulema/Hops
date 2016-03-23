@@ -47,5 +47,11 @@ namespace Hops.Repositories
 
             return hops;
         }
+
+        public List<string> GetAliases(long id)
+        {
+            var aliases = context.Alias.Where(a => a.HopId == id).Select(a => a.Name).ToList();
+            return aliases;
+        }
     }
 }

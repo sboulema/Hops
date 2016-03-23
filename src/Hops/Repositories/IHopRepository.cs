@@ -8,5 +8,6 @@ namespace Hops.Repositories
         ListModel GetPage(int page);
         Hop Get(long id);
         List<Hop> GetSubstitutions(long id);
+        List<string> GetAliases(long id);
     }
 }

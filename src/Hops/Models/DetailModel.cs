@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 
 namespace Hops.Models
 {
@@ -7,5 +6,6 @@ namespace Hops.Models
     {
         public Hop Hop;
         public List<Hop> Substitutions;
+        public List<string> Aliases;
     }
 }

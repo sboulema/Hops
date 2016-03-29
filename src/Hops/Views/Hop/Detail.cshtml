@@ -21,7 +21,10 @@
     <div class="panel-heading">Information</div>
     <div class="panel-body">
         <p>@Model.Hop.Info</p>
-        <p>Also known as: @string.Join(", ", Model.Aliases)</p>
+        @if(Model.Aliases.Any())
+        {
+            <p> Also known as: @string.Join(", ", Model.Aliases) </p>
+        }      
         <p>Pedigree: @Model.Hop.Pedigree</p>
     </div>
 </div>

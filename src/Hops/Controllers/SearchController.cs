@@ -25,12 +25,7 @@ namespace Hops.Controllers
 
             if (results.List.Count == 1)
             {
-                var model = new DetailModel
-                {
-                    Hop = results.List.First(),
-                    Substitutions = hopRepository.GetSubstitutions(results.List.First().Id)
-                };
-                return View("/Views/Hop/Detail", model);
+                return Redirect($"/Hop/{results.List.First().Id}");
             }
 
             return View("List", results);

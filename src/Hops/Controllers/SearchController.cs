@@ -1,5 +1,4 @@
-﻿using Hops.Models;
-using Hops.Repositories;
+﻿using Hops.Repositories;
 using Microsoft.AspNet.Mvc;
 using System;
 using System.Collections.Generic;

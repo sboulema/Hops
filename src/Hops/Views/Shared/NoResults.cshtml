@@ -1,0 +1,12 @@
+﻿@using Hops.Models;
+@model Hop
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Hops";
+}
+
+<div class="alert alert-info" role="alert">No hops to be found :(<br/><br/>Maybe try this randomly selected one: <a href="/Hop/@Model.Id" class="alert-link">@Model.Name</a></div>

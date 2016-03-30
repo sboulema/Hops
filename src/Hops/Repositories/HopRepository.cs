@@ -59,5 +59,10 @@ namespace Hops.Repositories
             var aliases = context.Alias.Where(a => a.HopId == id).Select(a => a.Name).ToList();
             return aliases;
         }
+        
+        public int GetNumberOfHops()
+        {
+            return context.Hops.Count();
+        }
     }
 }

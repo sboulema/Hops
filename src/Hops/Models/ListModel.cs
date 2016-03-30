@@ -7,5 +7,6 @@ namespace Hops.Models
         public List<HopModel> List { get; set; }
         public int NumberOfPages { get; set; }
         public int CurrentPageIndex { get; set; }
+        public string SearchTerm { get; set; }
     }
 }

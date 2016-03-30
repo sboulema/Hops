@@ -1,6 +1,7 @@
 ﻿using Hops.Models;
 using Hops.Repositories;
 using Microsoft.AspNet.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,10 +19,15 @@ namespace Hops.Controllers
             this.hopRepository = hopRepository;
         }
 
-        [HttpGet("{searchTerm}")]
-        public IActionResult Get(string searchTerm)
+        [HttpGet("{searchTerm}/{page:int?}")]
+        public IActionResult Get(string searchTerm, int page = 1)
         {
-            var results = searchRepository.Search(searchTerm);
+            var results = searchRepository.Search(searchTerm, page);
+
+            if (results.List.Count == 0)
+            {
+                return View("NoResults", hopRepository.Get(new Random().Next(1, hopRepository.GetNumberOfHops() + 1)));
+            }
 
             if (results.List.Count == 1)
             {

@@ -5,7 +5,7 @@ namespace Hops.Repositories
 {
     public interface ISearchRepository
     {
-        ListModel Search(string searchTerm);
+        ListModel Search(string searchTerm, int page);
         List<string> Autocomplete(string searchTerm);
     }
 }

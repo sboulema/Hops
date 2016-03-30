@@ -16,19 +16,23 @@ namespace Hops.Repositories
             this.hopRepository = hopRepository;
         }
 
-        public ListModel Search(string searchTerm)
+        public ListModel Search(string searchTerm, int page)
         {
-            var results = new ListModel();
-
-            results.List = context.Hops.GroupJoin(context.Alias, 
-                hop => hop.Id, 
-                alias => alias.HopId, 
+            var totalResultList = context.Hops.GroupJoin(context.Alias,
+                hop => hop.Id,
+                alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
             )
-            .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) || 
+            .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 r.aliases.Any(a => Contains(a.Name, searchTerm, StringComparison.OrdinalIgnoreCase)))
             .Select(r => new HopModel { Hop = r.hop, Substitutions = hopRepository.GetSubstitutions(r.hop.Id) })
             .ToList();
+
+            var results = new ListModel();         
+            results.NumberOfPages = (totalResultList.Count() / 15) + 1;
+            results.CurrentPageIndex = page;
+            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
+            results.SearchTerm = searchTerm;
 
             return results;
         }

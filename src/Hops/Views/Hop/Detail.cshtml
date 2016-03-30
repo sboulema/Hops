@@ -1,5 +1,5 @@
 ﻿@using Hops.Models;
-@model DetailModel
+@model HopModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -72,6 +72,10 @@
         </div>
     </div>
 }
+
+<div class="well">
+    <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Hop.Name">Suggest an edit</a>
+</div>
 
 <script>
 $(document).ready(function(){

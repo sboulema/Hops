@@ -23,9 +23,15 @@ namespace Hops.Repositories
             var hops = context.Hops;
 
             var results = new ListModel();
-            results.List = hops.OrderBy(h => h.Name).Skip((page - 1) * 15).Take(15).ToList();
             results.NumberOfPages = (hops.Count() / 15) + 1;
             results.CurrentPageIndex = page;
+            results.List = new List<HopModel>();
+
+            foreach (var hop in hops.OrderBy(h => h.Name).Skip((page - 1) * 15).Take(15).ToList())
+            {
+                results.List.Add(new HopModel { Hop = hop, Substitutions = GetSubstitutions(hop.Id) });
+            }
+
             return results;
         }
 
@@ -45,7 +51,7 @@ namespace Hops.Repositories
                 hops.Add(Get(substitute.SubId));
             }
 
-            return hops;
+            return hops.OrderBy(h => h.Name).ToList();
         }
 
         public List<string> GetAliases(long id)

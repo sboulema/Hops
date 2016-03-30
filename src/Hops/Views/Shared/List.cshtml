@@ -15,14 +15,18 @@
             <tr>
                 <th>Name</th>
                 <th>Brewing usage</th>
+                <th>Possible substitutions</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var hop in Model.List)
+            @foreach (var hopModel in Model.List)
             {
                 <tr>
-                    <td><a href="/Hop/@hop.Id">@hop.Name</a></td>
-                    <td>@hop.BrewingUsageString()</td>
+                    <td><a href="/Hop/@hopModel.Hop.Id">@hopModel.Hop.Name</a></td>
+                    <td>@hopModel.Hop.BrewingUsageString()</td>
+                    <td>
+                        @Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/Hop/{s.Id}\">{s.Name}</a>")))
+                    </td>
                 </tr>
             }
         </tbody>

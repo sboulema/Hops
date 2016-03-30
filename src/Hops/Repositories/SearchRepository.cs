@@ -8,10 +8,12 @@ namespace Hops.Repositories
     public class SearchRepository : ISearchRepository
     {
         private readonly HopContext context;
+        private readonly IHopRepository hopRepository;
 
-        public SearchRepository(HopContext context)
+        public SearchRepository(HopContext context, IHopRepository hopRepository)
         {
             this.context = context;
+            this.hopRepository = hopRepository;
         }
 
         public ListModel Search(string searchTerm)
@@ -25,7 +27,7 @@ namespace Hops.Repositories
             )
             .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) || 
                 r.aliases.Any(a => Contains(a.Name, searchTerm, StringComparison.OrdinalIgnoreCase)))
-            .Select(r => r.hop)
+            .Select(r => new HopModel { Hop = r.hop, Substitutions = hopRepository.GetSubstitutions(r.hop.Id) })
             .ToList();
 
             return results;

@@ -34,7 +34,7 @@ namespace Hops.Controllers
             var substitutions = hopRepository.GetSubstitutions(id);
             var aliases = hopRepository.GetAliases(id);
 
-            return View(new DetailModel { Hop = hop, Substitutions = substitutions, Aliases = aliases });
+            return View(new HopModel { Hop = hop, Substitutions = substitutions, Aliases = aliases });
         }
     }
 }

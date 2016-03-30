@@ -25,7 +25,7 @@ namespace Hops.Controllers
 
             if (results.List.Count == 1)
             {
-                return Redirect($"/Hop/{results.List.First().Id}");
+                return Redirect($"/Hop/{results.List.First().Hop.Id}");
             }
 
             return View("List", results);

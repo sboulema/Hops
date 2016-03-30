@@ -2,7 +2,7 @@
 
 namespace Hops.Models
 {
-    public class DetailModel
+    public class HopModel
     {
         public Hop Hop;
         public List<Hop> Substitutions;

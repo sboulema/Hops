@@ -17,7 +17,7 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="vco2">Desired CO2 volumes:</label>
-                    <input type="text" class="form-control" id="vco2">
+                    <input type="number" step="0.1" class="form-control" id="vco2">
                 </div>
                 <div class="form-group">
                     <label for="pi">Priming ingredient:</label>
@@ -29,6 +29,31 @@
                     </select>
                 </div>
                 <button id="button" class="btn btn-default" onclick="calculate()">Calculate</button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Information</div>
+
+            <div class="panel-body">
+                <p>This calculator is setup for 1 gallon of beer at 70&deg;F.</p>
+
+                Formula:
+                <pre>
+var temp = 70;
+var volume = 3.78541253426;
+var rco2, vco2, gco2;
+vco2 = [Desired CO2 volumes];
+rco2 = 3.0378 - 5.0062e-2 * temp + 2.6555e-4 * temp * temp;
+gco2 = vco2 - rco2;
+w = PrimingRate([Priming ingredient]) * v * gco2;
+
+function PrimingRate(u) {
+    if (u == "glucose") return 4.02;
+    if (u == "sucrose") return 3.82;
+    if (u == "honey") return 4.52;
+    if (u == "dme") return 510;
+}</pre>
             </div>
         </div>
     </div>
@@ -147,9 +172,9 @@
             return;
         }
 
-        w = PrimingRate(document.getElementById('pi').value) * v * gco2;
+        w = Math.round(PrimingRate(document.getElementById('pi').value) * v * gco2 * 100) / 100;
 
-        $("#button").after("<p><div class='alert alert-success' role='alert'><strong>Sugar needed: </strong>" + w + " gram</div></p>");
+        $("#button").after("<p><div class='alert alert-success' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Sugar needed: </strong>" + w + " gram</div></p>");
     }
 
     function PrimingRate(u) {

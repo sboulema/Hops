@@ -23,5 +23,34 @@
         {
             return ((BrewingUsage)BrewingUsage).Wordify();
         }
+
+        public string AlphaAcid()
+        {
+            return FormatValues(AlphaMin, AlphaMax);
+        }
+
+        public string BetaAcid()
+        {
+            return FormatValues(BetaMin, BetaMax);
+        }
+
+        public string CoHumulone()
+        {
+            return FormatValues(CoHumuloneMin, CoHumuloneMax);
+        }
+
+        public string TotalOil()
+        {
+            return FormatValues(TotalOilMin, TotalOilMax);
+        }
+
+        private string FormatValues(double min, double max)
+        {
+            if (min == max)
+            {
+                return $"~{min}";
+            }
+            return $"{min} - {max}";
+        }
     }
 }

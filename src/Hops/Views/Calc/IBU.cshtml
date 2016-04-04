@@ -1,0 +1,126 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "IBU Calculator - Hops";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">IBU Calculator</div>
+
+    <div class="panel-body">
+        <div class="form-group">
+            <label for="og">Target Original Gravity (OG):</label>
+            <input type="number" step="1" class="form-control" id="og">
+        </div>
+
+        <div class="form-group">
+            <table class="table table-bordered table-hover" id="tab_logic">
+                <thead>
+                    <tr>
+                        <th class="text-center">Hop</th>
+                        <th class="text-center">Alpha Acid (%)</th>
+                        <th class="text-center">Weight (g)</th>
+                        <th class="text-center">Time Boiled (m)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id='hop0'>
+                        <td>1</td>
+                        <td><input type="number" step="0.1" name='alpha0' class="form-control" /></td>
+                        <td><input type="number" step="0.1" name='weight0' class="form-control" /></td>
+                        <td><input type="number" name='time0' class="form-control" /></td>
+                    </tr>
+                    <tr id='hop1'></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <button id="add_row" class="btn btn-default">Add Hop</button><button id='delete_row' class="pull-right btn btn-default">Delete Hop</button>
+        </div>
+
+        <div class="form-group">
+            <button id="button" class="btn btn-default" onclick="calcBitter()">Calculate</button>
+        </div> 
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Information</div>
+
+    <div class="panel-body">
+        <p>This calculator is setup for 1 gallon of beer brewed using extract.</p>
+
+        Formula:
+        <pre>
+var gravity = [OG] - 1;
+var volume = 1.45;
+var alpha = new Array(numberOfHops);
+var mass = new Array(numberOfHops);
+var time = new Array(numberOfHops);
+var util = new Array(numberOfHops);
+var mgperl = new Array(numberOfHops);
+var bu = 0;
+
+for (i = 0; i < numberOfHops; i++)
+{
+    alpha[i] = [alpha" + i + "] / 100;
+    mass[i] = [weight" + i + "] / 28.3495231;
+    time[i] = [time" + i + "];
+    mgperl[i] = alpha[i] * mass[i] * 7490 / volume;
+    util[i] = 1.65 * Math.pow(0.000125, gravity) * (1 - Math.exp(-0.04 * time[i])) / 4.15;
+    bu += (mgperl[i] * util[i]);
+}</pre>
+    </div>
+</div>
+
+<script>
+    var numberOfHops = 1;
+
+    function calcBitter() {
+        var gravity;
+        var volume;
+        alpha = new Array(numberOfHops);
+        mass = new Array(numberOfHops);
+        time = new Array(numberOfHops);
+        util = new Array(numberOfHops);
+        mgperl = new Array(numberOfHops);
+        bu = 0;
+
+        volume = 1.45;
+        gravity = parseFloat($("#og").val()) - 1;
+
+        for (i = 0; i < numberOfHops; i++)
+        {
+            alpha[i] = parseFloat($("[name='alpha" + i + "']").val()) / 100;
+            mass[i] = parseFloat($("[name='weight" + i + "']").val()) / 28.3495231;
+            time[i] = parseFloat($("[name='time" + i + "']").val());
+
+            mgperl[i] = alpha[i] * mass[i] * 7490 / volume;
+            util[i] = 1.65 * Math.pow(0.000125, gravity) * (1 - Math.exp(-0.04 * time[i])) / 4.15;
+
+            bu += (mgperl[i] * util[i]);
+        }
+        $("#button").after("<p><div class='alert alert-success' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>IBU: </strong>" + Math.round(bu) + "</div></p>");
+    }
+
+    $(document).ready(function () {
+        $("#add_row").click(function () {
+            $('#hop' + numberOfHops).html("<td>" + (numberOfHops + 1) + "</td><td><input type='number' step='0.1' name='alpha" + numberOfHops + "' class='form-control' /></td><td><input type='number' step='0.1' name='weight" + numberOfHops + "' class='form-control' /></td><td><input type='number' name='time" + numberOfHops + "' class='form-control' /></td>");
+
+            $('#tab_logic').append('<tr id="hop' + (numberOfHops + 1) + '"></tr>');
+            numberOfHops++;
+        });
+        $("#delete_row").click(function () {
+            if (numberOfHops > 1) {
+                $("#hop" + (numberOfHops - 1)).html('');
+                numberOfHops--;
+            }
+        });
+    });
+</script>

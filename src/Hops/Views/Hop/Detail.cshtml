@@ -33,29 +33,29 @@
     <div class="panel-heading">Brewing values</div>
 
     <div class="panel-body">
-        <p>Brewing Usage: @Model.Hop.BrewingUsageString()</p>
+        Brewing Usage: @Model.Hop.BrewingUsageString()
     </div>
 
     <table class="table table-striped">
-        <tr><td>Alpha Acid <span class="glyphicon glyphicon-info-sign" 
+        <tr><td style="padding-left:15px;">Alpha Acid <span class="glyphicon glyphicon-info-sign" 
                                  data-toggle="tooltip" 
                                  title="Alpha acids are a major component of the soft resins. When isomerized, these materials provide the main bitter compaunds associated with beer." />
-            </td><td>@Model.Hop.AlphaMin - @Model.Hop.AlphaMax%</td>
+            </td><td>@Model.Hop.AlphaAcid()%</td>
         </tr>
-        <tr><td>Beta Acid <span class="glyphicon glyphicon-info-sign"
+        <tr><td style="padding-left:15px;">Beta Acid <span class="glyphicon glyphicon-info-sign"
                                 data-toggle="tooltip"
                                 title="Beta acids, another soft resin component, are not bitter in their natural, or isomeric, form. Some of the oxidation products do provide bitterness." />
-            </td><td>@Model.Hop.BetaMin - @Model.Hop.BetaMax%</td>
+            </td><td>@Model.Hop.BetaAcid()%</td>
         </tr>
-        <tr><td>Co-humulone <span class="glyphicon glyphicon-info-sign"
+        <tr><td style="padding-left:15px;">Co-humulone <span class="glyphicon glyphicon-info-sign"
                                   data-toggle="tooltip"
                                   title="It is widely held that higher levels of co-humulone produce a harsh, unpleasant bitterness and have a negative impact on head retention." />
-            </td><td>@Model.Hop.CoHumuloneMin - @Model.Hop.CoHumuloneMax%</td>
+            </td><td>@Model.Hop.CoHumulone()%</td>
         </tr>
-        <tr><td>Total Oil <span class="glyphicon glyphicon-info-sign"
+        <tr><td style="padding-left:15px;">Total Oil <span class="glyphicon glyphicon-info-sign"
                                 data-toggle="tooltip"
                                 title="The quantity and composition of the essential oils are responsible for the amount and quality of hop flavor and aroma in beer." />
-            </td><td>@Model.Hop.TotalOilMin - @Model.Hop.TotalOilMax mL/100g</td>
+            </td><td>@Model.Hop.TotalOil() mL/100g</td>
         </tr>
     </table>
 </div>
@@ -64,7 +64,7 @@
 {
     <div class="panel panel-default">
         <div class="panel-heading">Possible substitutions</div>
-        <div class="panel-body list-group">
+        <div class="list-group">
             @foreach (var substitute in Model.Substitutions)
             {
                 <a href="@Url.Action("Detail", new { Id = substitute.Id })" class="list-group-item">@substitute.Name</a>

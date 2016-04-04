@@ -10,5 +10,11 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult IBU()
+        {
+            return View();
+        }
     }
 }

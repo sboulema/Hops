@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Hops.Models;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +38,15 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a id="inventory" href="#">Inventory</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Aromas <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                @for (int i = 1; i < Enum.GetValues(typeof(AromaProfileEnum)).Length; i++)
+                                {
+                                    <li><a href="~/search/aroma/@i">@((AromaProfileEnum)i)</a></li>
+                                }
+                            </ul>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -44,6 +54,7 @@
                                 <li><a href="~/calc/ibu">IBU Calculator</a></li>
                             </ul>
                         </li>
+                        <li><a id="inventory" href="#">Inventory</a></li>
                     </ul>
 
                     <div class="navbar-form navbar-right">

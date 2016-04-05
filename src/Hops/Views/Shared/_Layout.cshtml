@@ -85,6 +85,10 @@
             limit: 30,
             highlight: true
         });
+
+        $('#search').on('typeahead:selected', function (e, searchTerm) {
+            search();
+        });
     </script>
 </body>
 </html>

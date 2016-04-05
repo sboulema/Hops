@@ -10,11 +10,14 @@
 }
 
 <div class="jumbotron">
+    <button type="button" onclick="save();" class="btn btn-default pull-right">
+        <span id="save" class="glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star"></span>
+    </button>
+
     <h1>@Model.Hop.Name</h1>
     <p>@Model.Hop.Trade</p>
     <p>Aroma profile: @Model.Hop.Aroma</p>
     <p>Typical beer styles: @Model.Hop.Styles</p>
-
 </div>
 
 <div class="panel panel-default">
@@ -80,5 +83,42 @@
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
+    loadSaveState();
 });
+
+function save() {
+    var hopInv = [];
+
+    var store = localStorage.getItem("hopInv");
+    if (store !== null) {
+        hopInv = JSON.parse(store);
+    }
+
+    var foundAtIndex = $.inArray(@Model.Hop.Id, hopInv);
+
+    if (foundAtIndex > -1) {
+        hopInv.splice(foundAtIndex, 1);
+    } else {
+        hopInv.push(@Model.Hop.Id);
+    }
+
+    $("#save").toggleClass("glyphicon-star glyphicon-star-empty");
+
+    localStorage.setItem("hopInv", JSON.stringify(hopInv));
+}
+
+function loadSaveState() {
+    var hopInv = [];
+
+    var store = localStorage.getItem("hopInv");
+    if (store !== null) {
+        hopInv = JSON.parse(store);
+    }
+
+    var foundAtIndex = $.inArray(@Model.Hop.Id, hopInv);
+
+    if (foundAtIndex > -1) {
+        $("#save").toggleClass("glyphicon-star glyphicon-star-empty");
+    }
+}
 </script>

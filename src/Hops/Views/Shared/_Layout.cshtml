@@ -36,6 +36,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
+                        <li><a id="inventory" href="#">Inventory</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -88,6 +89,17 @@
 
         $('#search').on('typeahead:selected', function (e, searchTerm) {
             search();
+        });
+
+        $(document).ready(function () {
+            var hopInv = [];
+
+            var store = localStorage.getItem("hopInv");
+            if (store !== null) {
+                hopInv = JSON.parse(store);
+            }
+
+            $("#inventory").attr("href", "/search/inventory/" + hopInv.join())
         });
     </script>
 </body>

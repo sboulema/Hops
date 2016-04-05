@@ -16,13 +16,13 @@ namespace Hops.Controllers
 
         [HttpGet]
         [Route("/")]
-        public IActionResult List()
+        public IActionResult Index()
         {
             return View(hopRepository.GetPage(1));
         }
 
         [HttpGet("/{page}", Name = "Page")]
-        public IActionResult List(int page)
+        public IActionResult Index(int page)
         {
             return View(hopRepository.GetPage(page));
         }

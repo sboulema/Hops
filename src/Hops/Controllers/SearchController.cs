@@ -19,7 +19,7 @@ namespace Hops.Controllers
         }
 
         [HttpGet("{searchTerm}/{page:int?}")]
-        public IActionResult Get(string searchTerm, int page = 1)
+        public IActionResult Results(string searchTerm, int page = 1)
         {
             var results = searchRepository.Search(searchTerm, page);
 
@@ -33,13 +33,21 @@ namespace Hops.Controllers
                 return Redirect($"/Hop/{results.List.First().Hop.Id}");
             }
 
-            return View("List", results);
+            return View(results);
         }
 
         [HttpGet("autocomplete/{searchTerm}")]
         public List<string> AutoComplete(string searchTerm)
         {
             return searchRepository.Autocomplete(searchTerm);
+        }
+
+        [HttpGet("inventory/{searchTerm}")]
+        public IActionResult Inventory(string searchTerm, int page = 1)
+        {
+            var results = searchRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
+
+            return View(results);
         }
     }
 }

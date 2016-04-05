@@ -7,5 +7,6 @@ namespace Hops.Models
         public Hop Hop;
         public List<Hop> Substitutions;
         public List<string> Aliases;
+        public List<AromaProfileEnum> Aromas;
     }
 }

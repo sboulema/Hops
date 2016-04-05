@@ -9,6 +9,7 @@ namespace Hops.Repositories
         Hop Get(long id);
         List<Hop> GetSubstitutions(long id);
         List<string> GetAliases(long id);
+        List<AromaProfileEnum> GetAromas(long id);
         int GetNumberOfHops();
     }
 }

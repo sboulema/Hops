@@ -59,7 +59,13 @@ namespace Hops.Repositories
             var aliases = context.Alias.Where(a => a.HopId == id).Select(a => a.Name).ToList();
             return aliases;
         }
-        
+
+        public List<AromaProfileEnum> GetAromas(long id)
+        {
+            var aromas = context.Aroma.Where(a => a.HopId == id).Select(a => (AromaProfileEnum)a.Profile).ToList();
+            return aromas;
+        }
+
         public int GetNumberOfHops()
         {
             return context.Hops.Count();

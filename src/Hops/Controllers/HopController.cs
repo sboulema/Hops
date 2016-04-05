@@ -33,8 +33,9 @@ namespace Hops.Controllers
             var hop = hopRepository.Get(id);
             var substitutions = hopRepository.GetSubstitutions(id);
             var aliases = hopRepository.GetAliases(id);
+            var aromas = hopRepository.GetAromas(id);
 
-            return View(new HopModel { Hop = hop, Substitutions = substitutions, Aliases = aliases });
+            return View(new HopModel { Hop = hop, Substitutions = substitutions, Aliases = aliases, Aromas = aromas });
         }
     }
 }

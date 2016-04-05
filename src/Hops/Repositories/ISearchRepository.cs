@@ -7,6 +7,7 @@ namespace Hops.Repositories
     {
         ListModel Search(string searchTerm, int page);
         ListModel Search(List<long> hopIds, int page);
+        ListModel Search(int aromaProfile, int page);
         List<string> Autocomplete(string searchTerm);
     }
 }

@@ -56,6 +56,25 @@ namespace Hops.Repositories
             return results;
         }
 
+        public ListModel Search(int aromaProfile, int page)
+        {
+            var totalResultList = context.Hops.GroupJoin(context.Aroma,
+                hop => hop.Id,
+                aroma => aroma.HopId,
+                (hop, aromas) => new { hop, aromas }
+            )
+            .Where(r => r.aromas.Any(a => a.Profile == aromaProfile))
+            .Select(r => new HopModel { Hop = r.hop, Substitutions = hopRepository.GetSubstitutions(r.hop.Id) })
+            .ToList();
+
+            var results = new ListModel();
+            results.NumberOfPages = (totalResultList.Count() / 15) + 1;
+            results.CurrentPageIndex = page;
+            results.List = totalResultList.OrderBy(h => h.Hop.Name).Skip((page - 1) * 15).Take(15).ToList();
+
+            return results;
+        }
+
         public List<string> Autocomplete(string searchTerm)
         {
             var results = context.Hops.GroupJoin(context.Alias,

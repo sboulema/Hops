@@ -36,18 +36,26 @@ namespace Hops.Controllers
             return View(results);
         }
 
-        [HttpGet("autocomplete/{searchTerm}")]
-        public List<string> AutoComplete(string searchTerm)
-        {
-            return searchRepository.Autocomplete(searchTerm);
-        }
-
-        [HttpGet("inventory/{searchTerm}")]
+        [HttpGet("inventory/{searchTerm}/{page:int?}")]
         public IActionResult Inventory(string searchTerm, int page = 1)
         {
             var results = searchRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
 
             return View(results);
+        }
+
+        [HttpGet("aroma/{profile:int}/{page:int?}")]
+        public IActionResult Results(int profile, int page = 1)
+        {
+            var results = searchRepository.Search(profile, page);
+
+            return View(results);
+        }
+
+        [HttpGet("autocomplete/{searchTerm}")]
+        public List<string> AutoComplete(string searchTerm)
+        {
+            return searchRepository.Autocomplete(searchTerm);
         }
     }
 }

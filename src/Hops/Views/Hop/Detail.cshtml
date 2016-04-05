@@ -29,7 +29,7 @@
         <p>
             Pedigree: @Model.Hop.Pedigree<br/>
             Aroma: @Model.Hop.Aroma<br/>
-            Aroma profile: @string.Join(", ", Model.Aromas)<br/>
+            Aroma profile: @Html.Raw(string.Join(", ", Model.Aromas.Select(a => $"<a href=\"/Search/Aroma/{(int)a}\">{a}</a>")))<br/>
             Typical beer styles: @Model.Hop.Styles
         </p>
     </div>

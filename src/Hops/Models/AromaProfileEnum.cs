@@ -4,5 +4,6 @@
     {
         Unknown = 0,
         Citrus = 1,
+        Herbal = 2
     }
 }

@@ -42,7 +42,7 @@
                         <ul class="dropdown-menu">
                             @foreach (var aromaProfile in Enum.GetValues(typeof(AromaProfileEnum)).OfType<AromaProfileEnum>().ToList().Skip(1).OrderBy(a => a.ToString()))
                             {
-                                <li><a href="~/search/aroma/(int)@aromaProfile">@aromaProfile.Wordify()</a></li>
+                                <li><a href="~/search/aroma/@((int)aromaProfile)">@aromaProfile.Wordify()</a></li>
                             }
                         </ul>
                     </li>

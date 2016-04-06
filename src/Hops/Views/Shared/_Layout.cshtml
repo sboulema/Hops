@@ -19,6 +19,9 @@
 
     <link href="~/typeahead/typeaheadjs.css" rel="stylesheet" />
     <script src="~/typeahead/typeahead.bundle.js"></script>
+
+    <link href="~/fontello-embedded.css" rel="stylesheet" />
+    <link href="~/sticky-footer.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container">
@@ -41,9 +44,9 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Aromas <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                @for (int i = 1; i < Enum.GetValues(typeof(AromaProfileEnum)).Length; i++)
+                                @foreach (var aromaProfile in Enum.GetValues(typeof(AromaProfileEnum)).OfType<AromaProfileEnum>().ToList().Skip(1).OrderBy(a => a.ToString()))
                                 {
-                                    <li><a href="~/search/aroma/@i">@((AromaProfileEnum)i)</a></li>
+                                    <li><a href="~/search/aroma/(int)@aromaProfile">@aromaProfile.Wordify()</a></li>
                                 }
                             </ul>
                         </li>
@@ -69,6 +72,16 @@
 
         @RenderBody()
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Made by <a href="http://www.curleezme.nl">Curleez &amp; ME</a> - 
+                <a href="mailto:hops@curleezme.nl">Contact</a> - 
+                <a href="https://github.com/sboulema/Hops"><span class="icon-github-circled"></span></a> <a href="https://hub.docker.com/r/sboulema/hops/"><span class="icon-docker-white"></span></a>   
+            </p>
+        </div>
+    </footer>
 
     <script>
         function search() {
@@ -102,7 +115,7 @@
             search();
         });
 
-        $(document).ready(function () {
+        function updateInventoryLink() {
             var hopInv = [];
 
             var store = localStorage.getItem("hopInv");
@@ -111,6 +124,10 @@
             }
 
             $("#inventory").attr("href", "/search/inventory/" + hopInv.join())
+        }
+
+        $(document).ready(function () {
+            updateInventoryLink();
         });
     </script>
 </body>

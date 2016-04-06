@@ -13,7 +13,7 @@ namespace Hops.Models
 
     public static class BrewingUsageExtension
     {
-        public static string Wordify(this Enum input)
+        public static string Wordify(this BrewingUsage input)
         {
             Regex r = new Regex("(?<=[a-z])(?<x>[A-Z])|(?<=.)(?<x>[A-Z])(?=[a-z])");
             return r.Replace(input.ToString(), " ${x}");

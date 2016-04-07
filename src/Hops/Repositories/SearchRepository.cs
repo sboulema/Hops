@@ -71,6 +71,7 @@ namespace Hops.Repositories
             results.NumberOfPages = (totalResultList.Count() / 15) + 1;
             results.CurrentPageIndex = page;
             results.List = totalResultList.OrderBy(h => h.Hop.Name).Skip((page - 1) * 15).Take(15).ToList();
+            results.SearchTerm = ((AromaProfileEnum)aromaProfile).Wordify();
 
             return results;
         }

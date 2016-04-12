@@ -27,3 +27,8 @@ body > .container {
   background-image: none;
   box-shadow: none;
 }
+
+.jumbotron {
+    padding-left: 15px;
+    padding-right: 15px;
+}

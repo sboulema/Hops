@@ -1,10 +1,14 @@
-﻿@{
+﻿@model Int32
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{
     ViewBag.Title = "Inventory - Hops";
 }
+
+<base href="/search/inventory/" />
 
 <h3>Hops inventory:</h3>
 
@@ -23,7 +27,8 @@
 
 <script>
     function deleteAll() {
-        localStorage.clear();  
+        localStorage.clear();
+        location.reload();
     }
 
     function exportInv() {
@@ -40,7 +45,7 @@
 
     $(function() {
         document.getElementById('my-file-selector').addEventListener('change', readSingleFile, false);
-        loadInventory();
+        loadInventory(@Model);
     });
 
     function readSingleFile(evt) {
@@ -60,7 +65,7 @@
         }
     }
 
-    function loadInventory() {
+    function loadInventory(page) {
         var hopInv = [];
         var store = localStorage.getItem("hopInv");
         if (store !== null) {
@@ -68,7 +73,7 @@
         }
 
         if (hopInv.length > 0) {
-            $.get("/search/inventory/" + hopInv.join(), function (data) {
+            $.get("/search/partial/inventory/" + hopInv.join() + "/" + page, function (data) {
                 $(".inv").html(data);
             });
         }

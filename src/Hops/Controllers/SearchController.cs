@@ -36,18 +36,18 @@ namespace Hops.Controllers
             return View(results);
         }
 
-        [HttpGet("inventory/{searchTerm}/{page:int?}")]
-        public IActionResult Inventory(string searchTerm, int page = 1)
+        [HttpGet("partial/inventory/{searchTerm}/{page:int?}")]
+        public IActionResult PartialInventory(string searchTerm, int page = 1)
         {
             var results = searchRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
 
             return View("List", results);
         }
 
-        [HttpGet("inventory")]
-        public IActionResult Inventory()
+        [HttpGet("inventory/{page:int?}")]
+        public IActionResult Inventory(string searchTerm, int page = 1)
         {
-            return View();
+            return View(page);
         }
 
         [HttpGet("aroma/{profile:int}/{page:int?}")]

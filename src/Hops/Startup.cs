@@ -23,8 +23,8 @@ namespace Hops
 
             services.AddMvc();
 
-            services.AddScoped<IHopRepository, HopRepository>();
-            services.AddScoped<ISearchRepository, SearchRepository>();
+            services.AddSingleton<IHopRepository, HopRepository>();
+            services.AddSingleton<ISearchRepository, SearchRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

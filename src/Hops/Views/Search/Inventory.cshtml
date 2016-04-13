@@ -9,12 +9,63 @@
     ViewBag.Title = "Inventory - Hops";
 }
 
-@Html.Partial("List", Model)
+<h3>Hops inventory:</h3>
 
-<button type="button" class="btn btn-danger" onclick="deleteAll();">Delete ALL</button>
+@if (Model != null)
+{
+    @Html.Partial("List", Model)
+}
+else
+{
+    <div class="alert alert-info" role="alert">No hops to be found :(</div>
+}
+
+<label class="btn btn-default" for="my-file-selector">
+    <input id="my-file-selector" type="file" style="display:none;">
+    <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
+</label>
+
+<button type="button" class="btn btn-default" onclick="exportInv();">
+    <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
+</button>
+
+<button type="button" class="btn btn-danger pull-right" onclick="deleteAll();">Delete ALL</button>
 
 <script>
     function deleteAll() {
         localStorage.clear();  
+    }
+
+    function exportInv() {
+        var inv = localStorage.getItem("hopInv");
+        downloadURI('data:text/plain;charset=utf-8,' + encodeURIComponent(inv), "HopsInventory.txt");
+    }
+
+    function downloadURI(uri, name) {
+        var link = document.createElement("a");
+        link.download = name;
+        link.href = uri;
+        link.click();
+    }
+
+    $(function() {
+        document.getElementById('my-file-selector').addEventListener('change', readSingleFile, false);
+    });
+
+    function readSingleFile(evt) {
+        //Retrieve the first (and only!) File from the FileList object
+        var f = evt.target.files[0];
+
+        if (f) {
+            var r = new FileReader();
+            r.onload = function (e) {
+                var contents = e.target.result;
+                localStorage.setItem("hopInv", contents);
+                location.reload();
+            }
+            r.readAsText(f);
+        } else {
+            alert("Failed to load file");
+        }
     }
 </script>

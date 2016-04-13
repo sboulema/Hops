@@ -44,6 +44,12 @@ namespace Hops.Controllers
             return View(results);
         }
 
+        [HttpGet("inventory")]
+        public IActionResult Inventory()
+        {
+            return View(null);
+        }
+
         [HttpGet("aroma/{profile:int}/{page:int?}")]
         public IActionResult Results(int profile, int page = 1)
         {

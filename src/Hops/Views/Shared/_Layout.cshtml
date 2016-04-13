@@ -53,7 +53,7 @@
                             <li><a href="~/calc/ibu">IBU Calculator</a></li>
                         </ul>
                     </li>
-                    <li><a id="inventory" href="#">Inventory</a></li>
+                    <li><a id="inventory" href="/search/inventory">Inventory</a></li>
                 </ul>
 
                 <div class="navbar-form navbar-right">
@@ -116,21 +116,6 @@
 
         $('#search').on('typeahead:selected', function (e, searchTerm) {
             search();
-        });
-
-        function updateInventoryLink() {
-            var hopInv = [];
-
-            var store = localStorage.getItem("hopInv");
-            if (store !== null) {
-                hopInv = JSON.parse(store);
-            }
-
-            $("#inventory").attr("href", "/search/inventory/" + hopInv.join())
-        }
-
-        $(document).ready(function () {
-            updateInventoryLink();
         });
     </script>
 </body>

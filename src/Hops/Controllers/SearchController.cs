@@ -41,13 +41,13 @@ namespace Hops.Controllers
         {
             var results = searchRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
 
-            return View(results);
+            return View("List", results);
         }
 
         [HttpGet("inventory")]
         public IActionResult Inventory()
         {
-            return View(null);
+            return View();
         }
 
         [HttpGet("aroma/{profile:int}/{page:int?}")]

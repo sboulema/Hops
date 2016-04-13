@@ -1,7 +1,4 @@
-﻿@using Hops.Models;
-@model ListModel
-
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,14 +8,7 @@
 
 <h3>Hops inventory:</h3>
 
-@if (Model != null)
-{
-    @Html.Partial("List", Model)
-}
-else
-{
-    <div class="alert alert-info" role="alert">No hops to be found :(</div>
-}
+<div class="inv"></div>
 
 <label class="btn btn-default" for="my-file-selector">
     <input id="my-file-selector" type="file" style="display:none;">
@@ -50,6 +40,7 @@ else
 
     $(function() {
         document.getElementById('my-file-selector').addEventListener('change', readSingleFile, false);
+        loadInventory();
     });
 
     function readSingleFile(evt) {
@@ -66,6 +57,24 @@ else
             r.readAsText(f);
         } else {
             alert("Failed to load file");
+        }
+    }
+
+    function loadInventory() {
+        var hopInv = [];
+        var store = localStorage.getItem("hopInv");
+        if (store !== null) {
+            hopInv = JSON.parse(store);
+        }
+
+        if (hopInv.length > 0) {
+            $.get("/search/inventory/" + hopInv.join(), function (data) {
+                $(".inv").html(data);
+            });
+        }
+        else
+        {
+            $(".inv").html("<div class='alert alert-info' role='alert'>No hops to be found :(</div>");          
         }
     }
 </script>

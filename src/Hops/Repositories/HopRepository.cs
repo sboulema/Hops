@@ -1,7 +1,4 @@
 ﻿using Hops.Models;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,12 +7,10 @@ namespace Hops.Repositories
     public class HopRepository : IHopRepository
     {
         private readonly HopContext context;
-        private readonly IUrlHelper urlHelper;
 
-        public HopRepository(HopContext context, IHttpContextAccessor contextAccessor)
+        public HopRepository(HopContext context)
         {
             this.context = context;
-            urlHelper = contextAccessor.HttpContext.RequestServices.GetRequiredService<IUrlHelper>();
         }
 
         public ListModel GetPage(int page)

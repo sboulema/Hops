@@ -10,7 +10,7 @@
 }
 
 <div class="jumbotron">
-    <span style="cursor: pointer;" class="hop-inv glyphicon glyphicon-star-empty pull-right btn btn-default" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
+    <span style="cursor: pointer;" class="hop-inv glyphicon glyphicon-star-empty pull-right btn btn-default hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
 
     <h1>@Model.Hop.Name</h1>
     <p>@Model.Hop.Trade</p>
@@ -84,7 +84,7 @@
     </div>
 }
 
-<div class="well">
+<div class="well hidden-print">
     <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Hop.Name">Suggest an edit</a>
 </div>
 

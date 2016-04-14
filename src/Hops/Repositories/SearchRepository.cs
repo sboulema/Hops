@@ -25,7 +25,13 @@ namespace Hops.Repositories
             )
             .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 r.aliases.Any(a => Contains(a.Name, searchTerm, StringComparison.OrdinalIgnoreCase)))
-            .Select(r => new HopModel { Hop = r.hop, Substitutions = hopRepository.GetSubstitutions(r.hop.Id) })
+            .Select(r => new HopModel
+            {
+                Hop = r.hop,
+                Substitutions = hopRepository.GetSubstitutions(r.hop.Id),
+                Aliases = hopRepository.GetAliases(r.hop.Id),
+                Aromas = hopRepository.GetAromas(r.hop.Id)
+            })
             .ToList();
 
             var results = new ListModel();         
@@ -45,7 +51,12 @@ namespace Hops.Repositories
                 (hop, aliases) => new { hop, aliases }
             )
             .Where(r => hopIds.IndexOf(r.hop.Id) != -1)
-            .Select(r => new HopModel { Hop = r.hop, Substitutions = hopRepository.GetSubstitutions(r.hop.Id) })
+            .Select(r => new HopModel {
+                Hop = r.hop,
+                Substitutions = hopRepository.GetSubstitutions(r.hop.Id),
+                Aliases = hopRepository.GetAliases(r.hop.Id),
+                Aromas = hopRepository.GetAromas(r.hop.Id)
+            })
             .ToList();
 
             var results = new ListModel();
@@ -64,7 +75,13 @@ namespace Hops.Repositories
                 (hop, aromas) => new { hop, aromas }
             )
             .Where(r => r.aromas.Any(a => a.Profile == aromaProfile))
-            .Select(r => new HopModel { Hop = r.hop, Substitutions = hopRepository.GetSubstitutions(r.hop.Id) })
+            .Select(r => new HopModel
+            {
+                Hop = r.hop,
+                Substitutions = hopRepository.GetSubstitutions(r.hop.Id),
+                Aliases = hopRepository.GetAliases(r.hop.Id),
+                Aromas = hopRepository.GetAromas(r.hop.Id)
+            })
             .ToList();
 
             var results = new ListModel();

@@ -6,23 +6,34 @@
 }
 
 <div class="panel panel-default">
-    <table class="table sortable-theme-bootstrap" data-sortable>
+    <table class="table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Brewing usage</th>
-                <th>Possible substitutions</th>
-                <th></th>
+                <th class="hidden-print">Possible substitutions</th>
+                <th class="hidden-print"></th>
             </tr>
         </thead>
         <tbody>
             @foreach (var hopModel in Model.List)
             {
                 <tr>                  
-                    <td><a href="/Hop/@hopModel.Hop.Id">@hopModel.Hop.Name</a></td>
+                    <td>
+                        <a href="/Hop/@hopModel.Hop.Id">@hopModel.Hop.Name</a>
+                        <p class="visible-print-inline">
+                            <br/>@hopModel.Hop.Trade<br /><br/>
+                            <strong>Aroma:</strong> @hopModel.Hop.Aroma<br />
+                            @if (hopModel.Aromas.Any())
+                            {
+                                <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", hopModel.Aromas.Select(a => $"<a href=\"/Search/Aroma/{(int)a}\">{a.Wordify()}</a>")))<br />
+                            }
+                            <strong>Typical beer styles:</strong> @hopModel.Hop.Styles
+                        </p>
+                    </td>
                     <td>@hopModel.Hop.BrewingUsageString()</td>
-                    <td>@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/Hop/{s.Id}\">{s.Name}</a>")))</td>
-                    <td><span style="cursor: pointer;" class="hop-inv glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-hop-id="@hopModel.Hop.Id" onclick="save(this);"></span></td>
+                    <td class="hidden-print">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/Hop/{s.Id}\">{s.Name}</a>")))</td>
+                    <td class="hidden-print"><span style="cursor: pointer;" class="hop-inv glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-hop-id="@hopModel.Hop.Id" onclick="save(this);"></span></td>
                 </tr>
             }
         </tbody>
@@ -31,7 +42,7 @@
 
 @if (Model.NumberOfPages > 1)
 {
-    <div class="row">
+    <div class="row hidden-print">
         <div class="col-lg-6 col-lg-offset-3 text-center">
             <nav>
                 <ul class="pagination">

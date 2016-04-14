@@ -14,16 +14,20 @@
 
 <div class="inv"></div>
 
-<label class="btn btn-default" for="my-file-selector">
+<label class="btn btn-default hidden-print" for="my-file-selector">
     <input id="my-file-selector" type="file" style="display:none;">
     <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
 </label>
 
-<button type="button" class="btn btn-default" onclick="exportInventory();">
+<button type="button" class="btn btn-default hidden-print" onclick="exportInventory();">
     <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
 </button>
 
-<button type="button" class="btn btn-danger pull-right" onclick="deleteInventory();">Delete ALL</button>
+<button type="button" class="btn btn-default hidden-print" onclick="window.print();">
+    <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print
+</button>
+
+<button type="button" class="btn btn-danger pull-right hidden-print" onclick="deleteInventory();">Delete ALL</button>
 
 <br/><br/>
 
@@ -31,7 +35,7 @@
     <label for="invCode">Your personal inventory code</label>
     <div class="input-group">
         <input id="invCode" type="text" class="form-control" placeholder="Inventory code...">
-        <span class="input-group-btn">
+        <span class="input-group-btn hidden-print">
             <button class="btn btn-default" type="button" onclick="syncInventory();">
                 <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Sync
             </button>

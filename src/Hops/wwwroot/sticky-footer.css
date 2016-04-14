@@ -32,3 +32,8 @@ body > .container {
     padding-left: 15px;
     padding-right: 15px;
 }
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}

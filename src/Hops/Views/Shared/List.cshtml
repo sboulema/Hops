@@ -66,42 +66,7 @@
 }
 
 <script>
-    $(document).ready(function () {
-        var hopInv = [];
-
-        var store = localStorage.getItem("hopInv");
-        if (store !== null) {
-            hopInv = JSON.parse(store);
-        }
-
-        $(".hop-inv").each(function (index) {
-            var foundAtIndex = $.inArray($(this).data("hop-id"), hopInv);
-
-            if (foundAtIndex > -1) {
-                $(this).removeClass("glyphicon-star-empty");
-                $(this).addClass("glyphicon-star");
-            }
-        });
+    $(function () {
+        loadFromInventory();
     });
-
-    function save(element) {
-        var hopInv = [];
-
-        var store = localStorage.getItem("hopInv");
-        if (store !== null) {
-            hopInv = JSON.parse(store);
-        }
-
-        var foundAtIndex = $.inArray($(element).data("hop-id"), hopInv);
-
-        if (foundAtIndex > -1) {
-            hopInv.splice(foundAtIndex, 1);
-        } else {
-            hopInv.push($(element).data("hop-id"));
-        }
-
-        $(element).toggleClass("glyphicon-star glyphicon-star-empty");
-
-        localStorage.setItem("hopInv", JSON.stringify(hopInv));
-    }
 </script>

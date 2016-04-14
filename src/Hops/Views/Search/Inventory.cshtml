@@ -19,67 +19,30 @@
     <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
 </label>
 
-<button type="button" class="btn btn-default" onclick="exportInv();">
+<button type="button" class="btn btn-default" onclick="exportInventory();">
     <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
 </button>
 
-<button type="button" class="btn btn-danger pull-right" onclick="deleteAll();">Delete ALL</button>
+<button type="button" class="btn btn-danger pull-right" onclick="deleteInventory();">Delete ALL</button>
+
+<br/><br/>
+
+<div class="well">
+    <label for="invCode">Your personal inventory code</label>
+    <div class="input-group">
+        <input id="invCode" type="text" class="form-control" placeholder="Inventory code...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button" onclick="syncInventory();">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Sync
+            </button>
+        </span>
+    </div>
+</div>
 
 <script>
-    function deleteAll() {
-        localStorage.clear();
-        location.reload();
-    }
-
-    function exportInv() {
-        var inv = localStorage.getItem("hopInv");
-        downloadURI('data:text/plain;charset=utf-8,' + encodeURIComponent(inv), "HopsInventory.txt");
-    }
-
-    function downloadURI(uri, name) {
-        var link = document.createElement("a");
-        link.download = name;
-        link.href = uri;
-        link.click();
-    }
-
-    $(function() {
-        document.getElementById('my-file-selector').addEventListener('change', readSingleFile, false);
+    $(function () {
+        loadInventoryCode();
+        document.getElementById('my-file-selector').addEventListener('change', importInventory, false);
         loadInventory(@Model);
     });
-
-    function readSingleFile(evt) {
-        //Retrieve the first (and only!) File from the FileList object
-        var f = evt.target.files[0];
-
-        if (f) {
-            var r = new FileReader();
-            r.onload = function (e) {
-                var contents = e.target.result;
-                localStorage.setItem("hopInv", contents);
-                location.reload();
-            }
-            r.readAsText(f);
-        } else {
-            alert("Failed to load file");
-        }
-    }
-
-    function loadInventory(page) {
-        var hopInv = [];
-        var store = localStorage.getItem("hopInv");
-        if (store !== null) {
-            hopInv = JSON.parse(store);
-        }
-
-        if (hopInv.length > 0) {
-            $.get("/search/partial/inventory/" + hopInv.join() + "/" + page, function (data) {
-                $(".inv").html(data);
-            });
-        }
-        else
-        {
-            $(".inv").html("<div class='alert alert-info' role='alert'>No hops to be found :(</div>");          
-        }
-    }
 </script>

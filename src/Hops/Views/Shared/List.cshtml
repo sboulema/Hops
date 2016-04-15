@@ -10,7 +10,7 @@
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Brewing usage</th>
+                <th>Usage</th>
                 <th class="hidden-print">Possible substitutions</th>
                 <th class="hidden-print"></th>
             </tr>
@@ -18,11 +18,11 @@
         <tbody>
             @foreach (var hopModel in Model.List)
             {
-                <tr>                  
+                <tr>
                     <td>
                         <a href="/Hop/@hopModel.Hop.Id">@hopModel.Hop.Name</a>
                         <p class="visible-print-inline">
-                            <br/>@hopModel.Hop.Trade<br /><br/>
+                            <br />@hopModel.Hop.Trade<br /><br />
                             <strong>Aroma:</strong> @hopModel.Hop.Aroma<br />
                             @if (hopModel.Aromas.Any())
                             {
@@ -46,30 +46,30 @@
         <div class="col-lg-6 col-lg-offset-3 text-center">
             <nav>
                 <ul class="pagination">
-                @if (Model.CurrentPageIndex > 1)
+                    @if (Model.CurrentPageIndex > 1)
                 {
-                    <li>
-                        <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")@(Model.CurrentPageIndex - 1)" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                }
+                        <li>
+                            <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")@(Model.CurrentPageIndex - 1)" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
 
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                    @for (int i = 1; i <= Model.NumberOfPages; i++)
                 {
-                    <li @(Model.CurrentPageIndex == i ? "class=active" : string.Empty)>
-                        <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")@i">@i</a>
-                    </li>
-                }
+                        <li @(Model.CurrentPageIndex == i ? "class=active" : string.Empty)>
+                            <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")@i">@i</a>
+                        </li>
+                    }
 
-                @if (Model.CurrentPageIndex != Model.NumberOfPages)
+                    @if (Model.CurrentPageIndex != Model.NumberOfPages)
                 {
-                    <li>
-                        <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")@(Model.CurrentPageIndex + 1)" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                }
+                        <li>
+                            <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")@(Model.CurrentPageIndex + 1)" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
                 </ul>
             </nav>
         </div>

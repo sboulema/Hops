@@ -5,39 +5,72 @@ using System.Linq;
 
 namespace Hops.Repositories
 {
-    public class SearchRepository : ISearchRepository
+    public class SqliteRepository : ISqliteRepository
     {
-        private readonly HopContext context;
-        private readonly IHopRepository hopRepository;
+        private List<Hop> Hops;
+        private List<Alias> Aliases;
+        private List<Aroma> Aromas;
+        private List<Substitution> Substitutions;
 
-        public SearchRepository(HopContext context, IHopRepository hopRepository)
+        public SqliteRepository(HopContext context)
         {
-            this.context = context;
-            this.hopRepository = hopRepository;
+            Hops = context.Hops.ToList();
+            Aliases = context.Alias.ToList();
+            Aromas = context.Aroma.ToList();
+            Substitutions = context.Substitutions.ToList();
+        }
+
+        private Hop GetHop(long id)
+        {
+            return Hops.First(t => t.Id == id);
+        }
+
+        public Hop GetRandomHop()
+        {
+            return GetHop(new Random().Next(1, Hops.Count + 1));
+        }
+
+        public HopModel GetHopModel(long id)
+        {
+            return new HopModel
+            {
+                Hop = GetHop(id),
+                Substitutions = GetSubstitutions(id),
+                Aliases = Aliases.Where(a => a.HopId == id).Select(a => a.Name).ToList(),
+                Aromas = Aromas.Where(a => a.HopId == id).Select(a => (AromaProfileEnum)a.Profile).ToList()
+            };
+        }
+
+        private List<Hop> GetSubstitutions(long id)
+        {
+            var substitutions = Substitutions.Where(s => s.HopId == id).ToList();
+
+            var hops = new List<Hop>();
+            foreach (var substitute in substitutions)
+            {
+                hops.Add(GetHop(substitute.SubId));
+            }
+
+            return hops.OrderBy(h => h.Name).ToList();
         }
 
         public ListModel Search(string searchTerm, int page)
         {
-            var totalResultList = context.Hops.GroupJoin(context.Alias,
+            var totalResultList = Hops.GroupJoin(Aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
             )
             .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 r.aliases.Any(a => Contains(a.Name, searchTerm, StringComparison.OrdinalIgnoreCase)))
-            .Select(r => new HopModel
-            {
-                Hop = r.hop,
-                Substitutions = hopRepository.GetSubstitutions(r.hop.Id),
-                Aliases = hopRepository.GetAliases(r.hop.Id),
-                Aromas = hopRepository.GetAromas(r.hop.Id)
-            })
+            .Select(r => GetHopModel(r.hop.Id))
+            .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel();         
+            var results = new ListModel();
             results.NumberOfPages = (totalResultList.Count() / 15) + 1;
             results.CurrentPageIndex = page;
-            results.List = totalResultList.OrderBy(h => h.Hop.Name).Skip((page - 1) * 15).Take(15).ToList();
+            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
             results.SearchTerm = searchTerm;
 
             return results;
@@ -45,49 +78,40 @@ namespace Hops.Repositories
 
         public ListModel Search(List<long> hopIds, int page)
         {
-            var totalResultList = context.Hops.GroupJoin(context.Alias,
+            var totalResultList = Hops.GroupJoin(Aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
             )
             .Where(r => hopIds.IndexOf(r.hop.Id) != -1)
-            .Select(r => new HopModel {
-                Hop = r.hop,
-                Substitutions = hopRepository.GetSubstitutions(r.hop.Id),
-                Aliases = hopRepository.GetAliases(r.hop.Id),
-                Aromas = hopRepository.GetAromas(r.hop.Id)
-            })
+            .Select(r => GetHopModel(r.hop.Id))
+            .OrderBy(h => h.Hop.Name)
             .ToList();
 
             var results = new ListModel();
             results.NumberOfPages = (totalResultList.Count() / 15) + 1;
             results.CurrentPageIndex = page;
-            results.List = totalResultList.OrderBy(h => h.Hop.Name).Skip((page - 1) * 15).Take(15).ToList();
+            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
 
             return results;
         }
 
         public ListModel Search(int aromaProfile, int page)
         {
-            var totalResultList = context.Hops.GroupJoin(context.Aroma,
+            var totalResultList = Hops.GroupJoin(Aromas,
                 hop => hop.Id,
                 aroma => aroma.HopId,
                 (hop, aromas) => new { hop, aromas }
             )
             .Where(r => r.aromas.Any(a => a.Profile == aromaProfile))
-            .Select(r => new HopModel
-            {
-                Hop = r.hop,
-                Substitutions = hopRepository.GetSubstitutions(r.hop.Id),
-                Aliases = hopRepository.GetAliases(r.hop.Id),
-                Aromas = hopRepository.GetAromas(r.hop.Id)
-            })
+            .Select(r => GetHopModel(r.hop.Id))
+            .OrderBy(h => h.Hop.Name)
             .ToList();
 
             var results = new ListModel();
             results.NumberOfPages = (totalResultList.Count() / 15) + 1;
             results.CurrentPageIndex = page;
-            results.List = totalResultList.OrderBy(h => h.Hop.Name).Skip((page - 1) * 15).Take(15).ToList();
+            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
             results.SearchTerm = ((AromaProfileEnum)aromaProfile).Wordify();
 
             return results;
@@ -95,7 +119,7 @@ namespace Hops.Repositories
 
         public List<string> Autocomplete(string searchTerm)
         {
-            var results = context.Hops.GroupJoin(context.Alias,
+            var results = Hops.GroupJoin(Aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
@@ -111,9 +135,9 @@ namespace Hops.Repositories
                 foreach (var alias in item.aliases)
                 {
                     autocompleteList.Add(alias.Name);
-                }               
+                }
             }
-            return autocompleteList;          
+            return autocompleteList;
         }
 
         private bool Contains(string source, string toCheck, StringComparison comp)

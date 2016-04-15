@@ -15,7 +15,7 @@
 <div class="inv"></div>
 
 <label class="btn btn-default hidden-print" for="my-file-selector">
-    <input id="my-file-selector" type="file" style="display:none;">
+    <input id="my-file-selector" type="file" style="display:none;" onchange="importInventory(this);">
     <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
 </label>
 
@@ -46,7 +46,7 @@
 <script>
     $(function () {
         loadInventoryCode();
-        document.getElementById('my-file-selector').addEventListener('change', importInventory, false);
+        //document.getElementById('my-file-selector').addEventListener('change', importInventory, false);
         loadInventory(@Model);
     });
 </script>

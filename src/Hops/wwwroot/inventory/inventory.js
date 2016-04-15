@@ -62,21 +62,27 @@ function loadFromInventory() {
 }
 
 function loadInventory(page) {
-    $.get(localStorage.getItem("hopInvCode"), function (hopInv, textStatus, jqXHR) {
-        if (hopInv.length > 0) {
-            $.get("/search/partial/inventory/" + hopInv.join() + "/" + page, function (data) {
-                $(".inv").html(data);
-            });
-        }
-        else {
-            $(".inv").html("<div class='alert alert-info' role='alert'>No hops to be found :(</div>");
-        }
-    });
+    var hopInvCode = localStorage.getItem("hopInvCode");
+
+    if (hopInvCode !== null) {
+        $.get(hopInvCode, function (hopInv, textStatus, jqXHR) {
+            if (hopInv.length > 0) {
+                $.get("/search/partial/inventory/" + hopInv.join() + "/" + page, function (data) {
+                    $(".inv").html(data);
+                });
+            }
+            else {
+                $(".inv").html("<div class='alert alert-info' role='alert'>No hops to be found :(</div>");
+            }
+        });
+    }
 }
 
 function loadInventoryCode() {
     var hopInvCode = localStorage.getItem("hopInvCode");
-    $("#invCode").val(hopInvCode.split("/").pop());
+    if (hopInvCode !== null) {
+        $("#invCode").val(hopInvCode.split("/").pop());
+    }  
 }
 
 function deleteInventory() {
@@ -97,11 +103,10 @@ function downloadURI(uri, name) {
     link.click();
 }
 
-function importInventory(evt) {
-    //Retrieve the first (and only!) File from the FileList object
-    var f = evt.target.files[0];
+function importInventory(element) {
+    var file = element.files[0];
 
-    if (f) {
+    if (file) {
         var r = new FileReader();
         r.onload = function (e) {
             var contents = e.target.result;
@@ -114,12 +119,11 @@ function importInventory(evt) {
                 dataType: "json",
                 success: function (data, textStatus, jqXHR) {
                     localStorage.setItem("hopInvCode", data.uri);
+                    location.reload();
                 }
-            });
-
-            location.reload();
+            });        
         }
-        r.readAsText(f);
+        r.readAsText(file);
     } else {
         alert("Failed to load file");
     }

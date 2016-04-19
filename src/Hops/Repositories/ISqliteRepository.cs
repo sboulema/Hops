@@ -7,9 +7,10 @@ namespace Hops.Repositories
     {
         Hop GetRandomHop();
         HopModel GetHopModel(long id);
-        ListModel Search(string searchTerm, int page);
-        ListModel Search(List<long> hopIds, int page);
-        ListModel Search(int aromaProfile, int page);
+        ListModel<HopModel> Search(string searchTerm, int page);
+        ListModel<HopModel> Search(List<long> hopIds, int page);
+        ListModel<HopModel> Search(int aromaProfile, int page);
         List<string> Autocomplete(string searchTerm);
+        List<Malt> GetMalts();
     }
 }

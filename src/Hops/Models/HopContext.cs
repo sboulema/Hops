@@ -8,6 +8,7 @@ namespace Hops.Models
         public DbSet<Substitution> Substitutions { get; set; }
         public DbSet<Alias> Alias { get; set; }
         public DbSet<Aroma> Aroma { get; set; }
+        public DbSet<Malt> Malt { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -15,6 +16,7 @@ namespace Hops.Models
             builder.Entity<Substitution>().HasKey(m => new { m.HopId, m.SubId });
             builder.Entity<Alias>().HasKey(m => new { m.HopId, m.Name });
             builder.Entity<Aroma>().HasKey(m => new { m.HopId, m.Profile });
+            builder.Entity<Malt>().HasKey(m => new { m.Id });
             base.OnModelCreating(builder);
         }
     }

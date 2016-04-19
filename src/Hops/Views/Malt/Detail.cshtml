@@ -1,0 +1,54 @@
+﻿@using Hops.Models;
+@model Malt
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = $"{Model.Name} - Malts";
+}
+
+<div class="jumbotron">
+    <span style="cursor: pointer;" class="malt-inv glyphicon glyphicon-star-empty pull-right btn btn-default hidden-print" aria-hidden="true" aria-label="star" data-malt-id="@Model.Id" onclick="save(this);"></span>
+
+    <h1>@Model.Name</h1>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Information</div>
+    <div class="panel-body">
+        <p>@Model.Description</p>     
+        <p>
+            <strong>Maltster:</strong> @(((MaltsterEnum)Model.Maltster).Wordify())<br/>
+        </p>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">Brewing values</div>
+
+    <table class="table table-striped">
+        <tr><td style="padding-left:15px;">Colour <span class="glyphicon glyphicon-info-sign" 
+                                 data-toggle="tooltip" 
+                                 title="Alpha acids are a major component of the soft resins. When isomerized, these materials provide the main bitter compaunds associated with beer." />
+            </td><td>@Model.EBCMin - @Model.EBCMax EBC</td>
+        </tr>
+        <tr><td style="padding-left:15px;">Grist <span class="glyphicon glyphicon-info-sign"
+                                data-toggle="tooltip"
+                                title="Beta acids, another soft resin component, are not bitter in their natural, or isomeric, form. Some of the oxidation products do provide bitterness." />
+            </td><td>@Model.Grist%</td>
+        </tr>
+    </table>
+</div>
+
+<div class="well hidden-print">
+    <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Name">Suggest an edit</a>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+    loadFromInventory();
+});
+</script>

@@ -2,11 +2,9 @@
 
 namespace Hops.Models
 {
-    public class ListModel
+    public class ListModel<T>
     {
-        public List<HopModel> List { get; set; }
-        public int NumberOfPages { get; set; }
-        public int CurrentPageIndex { get; set; }
-        public string SearchTerm { get; set; }
+        public List<T> List { get; set; }
+        public PaginationModel Pagination { get; set; }
     }
 }

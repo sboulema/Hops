@@ -24,6 +24,7 @@ namespace Hops
             services.AddMvc();
 
             services.AddSingleton<ISqliteRepository, SqliteRepository>();
+            services.AddSingleton<IMaltRepository, MaltRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

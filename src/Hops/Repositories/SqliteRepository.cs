@@ -11,6 +11,7 @@ namespace Hops.Repositories
         private List<Alias> Aliases;
         private List<Aroma> Aromas;
         private List<Substitution> Substitutions;
+        private List<Malt> Malts;
 
         public SqliteRepository(HopContext context)
         {
@@ -18,6 +19,7 @@ namespace Hops.Repositories
             Aliases = context.Alias.ToList();
             Aromas = context.Aroma.ToList();
             Substitutions = context.Substitutions.ToList();
+            Malts = context.Malt.ToList();
         }
 
         private Hop GetHop(long id)
@@ -54,7 +56,7 @@ namespace Hops.Repositories
             return hops.OrderBy(h => h.Name).ToList();
         }
 
-        public ListModel Search(string searchTerm, int page)
+        public ListModel<HopModel> Search(string searchTerm, int page)
         {
             var totalResultList = Hops.GroupJoin(Aliases,
                 hop => hop.Id,
@@ -67,16 +69,19 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel();
-            results.NumberOfPages = (totalResultList.Count() / 15) + 1;
-            results.CurrentPageIndex = page;
+            var results = new ListModel<HopModel>();
+            results.Pagination = new PaginationModel
+            {
+                NumberOfPages = (totalResultList.Count() / 15) + 1,
+                CurrentPageIndex = page,
+                SearchTerm = searchTerm
+            };
             results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-            results.SearchTerm = searchTerm;
 
             return results;
         }
 
-        public ListModel Search(List<long> hopIds, int page)
+        public ListModel<HopModel> Search(List<long> hopIds, int page)
         {
             var totalResultList = Hops.GroupJoin(Aliases,
                 hop => hop.Id,
@@ -88,15 +93,18 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel();
-            results.NumberOfPages = (totalResultList.Count() / 15) + 1;
-            results.CurrentPageIndex = page;
+            var results = new ListModel<HopModel>();
+            results.Pagination = new PaginationModel
+            {
+                NumberOfPages = (totalResultList.Count() / 15) + 1,
+                CurrentPageIndex = page,
+            };
             results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
 
             return results;
         }
 
-        public ListModel Search(int aromaProfile, int page)
+        public ListModel<HopModel> Search(int aromaProfile, int page)
         {
             var totalResultList = Hops.GroupJoin(Aromas,
                 hop => hop.Id,
@@ -108,11 +116,14 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel();
-            results.NumberOfPages = (totalResultList.Count() / 15) + 1;
-            results.CurrentPageIndex = page;
+            var results = new ListModel<HopModel>();
+            results.Pagination = new PaginationModel
+            {
+                NumberOfPages = (totalResultList.Count() / 15) + 1,
+                CurrentPageIndex = page,
+                SearchTerm = ((AromaProfileEnum)aromaProfile).Wordify()
+            };
             results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-            results.SearchTerm = ((AromaProfileEnum)aromaProfile).Wordify();
 
             return results;
         }
@@ -138,6 +149,11 @@ namespace Hops.Repositories
                 }
             }
             return autocompleteList;
+        }
+
+        public List<Malt> GetMalts()
+        {
+            return Malts;
         }
 
         private bool Contains(string source, string toCheck, StringComparison comp)

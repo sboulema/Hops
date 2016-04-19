@@ -1,5 +1,5 @@
 ﻿@using Hops.Models;
-@model ListModel
+@model ListModel<HopModel>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +9,9 @@
     ViewBag.Title = "Hops";
 }
 
-<h3>Welcome to Hops! <small>...and he made it out of hops</small></h3>
+<base href="/hop/" />
+
+<h3>Welcome to Curleez &amp; ME! <small>...and he made it out of hops</small></h3>
 <br/>
 
 @Html.Partial("List", Model)

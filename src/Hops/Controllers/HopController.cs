@@ -1,5 +1,6 @@
 ﻿using Hops.Repositories;
 using Microsoft.AspNet.Mvc;
+using System.Linq;
 
 namespace Hops.Controllers
 {
@@ -20,7 +21,13 @@ namespace Hops.Controllers
             return View(sqliteRepository.Search(string.Empty, 1));
         }
 
-        [HttpGet("/{page}", Name = "Page")]
+        [HttpGet]
+        public IActionResult IndexHop()
+        {
+            return View("Index", sqliteRepository.Search(string.Empty, 1));
+        }
+
+        [HttpGet("page/{page}", Name = "Page")]
         public IActionResult Index(int page)
         {
             return View(sqliteRepository.Search(string.Empty, page));
@@ -31,5 +38,14 @@ namespace Hops.Controllers
         {
             return View(sqliteRepository.GetHopModel(id));
         }
+
+        [HttpGet("[action]/{searchTerm}/{page:int?}")]
+        public IActionResult Inventory(string searchTerm, int page = 1)
+        {
+            var results = sqliteRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
+
+            return View("List", results);
+        }
+
     }
 }

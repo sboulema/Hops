@@ -1,0 +1,38 @@
+﻿@using Hops.Models;
+@model PaginationModel
+
+@if (Model.NumberOfPages > 1)
+{
+    <div class="row hidden-print">
+        <div class="col-lg-6 col-lg-offset-3 text-center">
+            <nav>
+                <ul class="pagination">
+                @if (Model.CurrentPageIndex > 1)
+                {
+                    <li>
+                        <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")page/@(Model.CurrentPageIndex - 1)" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.NumberOfPages; i++)
+                {
+                    <li @(Model.CurrentPageIndex == i ? "class=active" : string.Empty)>
+                        <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")page/@i">@i</a>
+                    </li>
+                }
+
+                @if (Model.CurrentPageIndex != Model.NumberOfPages)
+                {
+                    <li>
+                        <a href="@(string.IsNullOrEmpty(Model.SearchTerm) ? string.Empty : "~/Search/" + Model.SearchTerm + "/")page/@(Model.CurrentPageIndex + 1)" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                }
+                </ul>
+            </nav>
+        </div>
+    </div>
+}

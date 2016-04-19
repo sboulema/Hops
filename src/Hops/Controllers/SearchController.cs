@@ -33,14 +33,6 @@ namespace Hops.Controllers
             return View(results);
         }
 
-        [HttpGet("partial/inventory/{searchTerm}/{page:int?}")]
-        public IActionResult PartialInventory(string searchTerm, int page = 1)
-        {
-            var results = sqliteRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
-
-            return View("List", results);
-        }
-
         [HttpGet("inventory/{page:int?}")]
         public IActionResult Inventory(string searchTerm, int page = 1)
         {

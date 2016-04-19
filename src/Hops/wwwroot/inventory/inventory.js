@@ -1,14 +1,23 @@
 ﻿function save(element) {
-    var hopInv = [];
+    var Inventory = {
+        Hops: [],
+        Malts: []
+    };
 
     var hopInvCode = localStorage.getItem("hopInvCode");
 
     if (hopInvCode === null) {
-        hopInv.push($(element).data("hop-id"));
+        if ($(element).data("hop-id") !== undefined) {
+            Inventory.Hops.push($(element).data("hop-id"));
+        }
+        if ($(element).data("malt-id") !== undefined) {
+            Inventory.Malts.push($(element).data("malt-id"));
+        }
+        
         $.ajax({
             url: "https://api.myjson.com/bins",
             type: "POST",
-            data: JSON.stringify(hopInv),
+            data: JSON.stringify(Inventory),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
@@ -21,23 +30,34 @@
             url: hopInvCode,
             type: "GET",
             success: function (data) {
-                hopInv = data;
+                Inventory = data;
             },
             async: false
         });
 
-        var foundAtIndex = $.inArray($(element).data("hop-id"), hopInv);
+        if ($(element).data("hop-id") !== undefined) {
+            var foundAtIndex = $.inArray($(element).data("hop-id"), Inventory.Hops);
 
-        if (foundAtIndex > -1) {
-            hopInv.splice(foundAtIndex, 1);
-        } else {
-            hopInv.push($(element).data("hop-id"));
+            if (foundAtIndex > -1) {
+                Inventory.Hops.splice(foundAtIndex, 1);
+            } else {
+                Inventory.Hops.push($(element).data("hop-id"));
+            }
+        }
+        if ($(element).data("malt-id") !== undefined) {
+            var foundAtIndex = $.inArray($(element).data("malt-id"), Inventory.Malts);
+
+            if (foundAtIndex > -1) {
+                Inventory.Malts.splice(foundAtIndex, 1);
+            } else {
+                Inventory.Malts.push($(element).data("malt-id"));
+            }
         }
 
         $.ajax({
             url: hopInvCode,
             type: "PUT",
-            data: JSON.stringify(hopInv),
+            data: JSON.stringify(Inventory),
             contentType: " application/json; charset=utf-8",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
@@ -50,9 +70,16 @@
 }
 
 function loadFromInventory() {
-    $.get(localStorage.getItem("hopInvCode"), function (hopInv, textStatus, jqXHR) {
+    $.get(localStorage.getItem("hopInvCode"), function (Inventory, textStatus, jqXHR) {
         $(".hop-inv").each(function (index) {
-            var foundAtIndex = $.inArray($(this).data("hop-id"), hopInv);
+            var foundAtIndex = $.inArray($(this).data("hop-id"), Inventory.Hops);
+
+            if (foundAtIndex > -1) {
+                $(this).toggleClass("glyphicon-star glyphicon-star-empty");
+            }
+        });
+        $(".malt-inv").each(function (index) {
+            var foundAtIndex = $.inArray($(this).data("malt-id"), Inventory.Malts);
 
             if (foundAtIndex > -1) {
                 $(this).toggleClass("glyphicon-star glyphicon-star-empty");
@@ -65,14 +92,22 @@ function loadInventory(page) {
     var hopInvCode = localStorage.getItem("hopInvCode");
 
     if (hopInvCode !== null) {
-        $.get(hopInvCode, function (hopInv, textStatus, jqXHR) {
-            if (hopInv.length > 0) {
-                $.get("/search/partial/inventory/" + hopInv.join() + "/" + page, function (data) {
-                    $(".inv").html(data);
+        $.get(hopInvCode, function (Inventory, textStatus, jqXHR) {
+            if (Inventory.Hops.length > 0) {
+                $.get("/hop/inventory/" + Inventory.Hops.join() + "/" + page, function (data) {
+                    $(".hop-inv").html(data);
                 });
             }
             else {
                 $(".inv").html("<div class='alert alert-info' role='alert'>No hops to be found :(</div>");
+            }
+            if (Inventory.Malts.length > 0) {
+                $.get("/malt/inventory/" + Inventory.Malts.join() + "/" + page, function (data) {
+                    $(".malt-inv").html(data);
+                });
+            }
+            else {
+                $(".inv").html("<div class='alert alert-info' role='alert'>No malts to be found :(</div>");
             }
         });
     }

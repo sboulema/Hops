@@ -5,14 +5,18 @@
 }
 
 @{
-    ViewBag.Title = "Inventory - Hops";
+    ViewBag.Title = "Inventory";
 }
 
 <base href="/search/inventory/" />
 
 <h3>Hops inventory:</h3>
 
-<div class="inv"></div>
+<div class="hop-inv"></div>
+
+<h3>Malts inventory:</h3>
+
+<div class="malt-inv"></div>
 
 <label class="btn btn-default hidden-print" for="my-file-selector">
     <input id="my-file-selector" type="file" style="display:none;" onchange="importInventory(this);">

@@ -1,7 +1,8 @@
 ﻿function save(element) {
     var Inventory = {
         Hops: [],
-        Malts: []
+        Malts: [],
+        Yeasts: []
     };
 
     var hopInvCode = localStorage.getItem("hopInvCode");
@@ -12,6 +13,9 @@
         }
         if ($(element).data("malt-id") !== undefined) {
             Inventory.Malts.push($(element).data("malt-id"));
+        }
+        if ($(element).data("yeast-id") !== undefined) {
+            Inventory.Yeasts.push($(element).data("yeast-id"));
         }
         
         $.ajax({
@@ -53,6 +57,15 @@
                 Inventory.Malts.push($(element).data("malt-id"));
             }
         }
+        if ($(element).data("yeast-id") !== undefined) {
+            var foundAtIndex = $.inArray($(element).data("yeast-id"), Inventory.Yeasts);
+
+            if (foundAtIndex > -1) {
+                Inventory.Yeasts.splice(foundAtIndex, 1);
+            } else {
+                Inventory.Yeasts.push($(element).data("yeast-id"));
+            }
+        }
 
         $.ajax({
             url: hopInvCode,
@@ -61,7 +74,7 @@
             contentType: " application/json; charset=utf-8",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
-                // Hop saved to inventory
+                // items saved to inventory
             }
         });
     }
@@ -80,6 +93,13 @@ function loadFromInventory() {
         });
         $(".malt-inv").each(function (index) {
             var foundAtIndex = $.inArray($(this).data("malt-id"), Inventory.Malts);
+
+            if (foundAtIndex > -1) {
+                $(this).toggleClass("glyphicon-star glyphicon-star-empty");
+            }
+        });
+        $(".yeast-inv").each(function (index) {
+            var foundAtIndex = $.inArray($(this).data("yeast-id"), Inventory.Yeasts);
 
             if (foundAtIndex > -1) {
                 $(this).toggleClass("glyphicon-star glyphicon-star-empty");
@@ -108,6 +128,14 @@ function loadInventory(page) {
             }
             else {
                 $(".inv").html("<div class='alert alert-info' role='alert'>No malts to be found :(</div>");
+            }
+            if (Inventory.Yeasts.length > 0) {
+                $.get("/yeast/inventory/" + Inventory.Yeasts.join() + "/" + page, function (data) {
+                    $(".yeast-inv").html(data);
+                });
+            }
+            else {
+                $(".inv").html("<div class='alert alert-info' role='alert'>No yeasts to be found :(</div>");
             }
         });
     }

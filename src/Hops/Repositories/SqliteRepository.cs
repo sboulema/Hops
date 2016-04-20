@@ -12,6 +12,7 @@ namespace Hops.Repositories
         private List<Aroma> Aromas;
         private List<Substitution> Substitutions;
         private List<Malt> Malts;
+        private List<Yeast> Yeasts;
 
         public SqliteRepository(HopContext context)
         {
@@ -20,6 +21,7 @@ namespace Hops.Repositories
             Aromas = context.Aroma.ToList();
             Substitutions = context.Substitutions.ToList();
             Malts = context.Malt.ToList();
+            Yeasts = context.Yeast.ToList();
         }
 
         private Hop GetHop(long id)
@@ -154,6 +156,11 @@ namespace Hops.Repositories
         public List<Malt> GetMalts()
         {
             return Malts;
+        }
+
+        public List<Yeast> GetYeasts()
+        {
+            return Yeasts;
         }
 
         private bool Contains(string source, string toCheck, StringComparison comp)

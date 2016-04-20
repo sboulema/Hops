@@ -25,6 +25,7 @@ namespace Hops
 
             services.AddSingleton<ISqliteRepository, SqliteRepository>();
             services.AddSingleton<IMaltRepository, MaltRepository>();
+            services.AddSingleton<IYeastRepository, YeastRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

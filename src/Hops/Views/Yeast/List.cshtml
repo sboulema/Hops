@@ -1,0 +1,38 @@
+﻿@using Hops.Models;
+@model ListModel<Yeast>
+
+@{
+    ViewBag.Title = "Yeasts";
+}
+
+<div class="panel panel-default">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Lab</th>
+                <th>Temperature</th>
+                <th class="hidden-print"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var yeast in Model.List)
+            {
+                <tr>
+                    <td><a href="/yeast/@yeast.Id">@yeast.Name</a></td>
+                    <td>@(((YeastLabEnum)yeast.Lab).Wordify())</td>
+                    <td>@yeast.Temp() &deg;C</td>
+                    <td class="hidden-print"><span style="cursor: pointer;" class="yeast-inv glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-yeast-id="@yeast.Id" onclick="save(this);"></span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@Html.Partial("Pagination", Model.Pagination)
+
+<script>
+    $(function () {
+        loadFromInventory();
+    });
+</script>

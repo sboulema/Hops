@@ -1,0 +1,17 @@
+﻿@using Hops.Models;
+@model ListModel<Yeast>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Yeasts";
+}
+
+<base href="/yeast/" />
+
+<h3>Yeasts:</h3>
+<br/>
+
+@Html.Partial("List", Model)

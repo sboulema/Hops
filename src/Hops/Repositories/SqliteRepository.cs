@@ -1,4 +1,5 @@
-﻿using Hops.Models;
+﻿using Hops.Mappers;
+using Hops.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,9 @@ namespace Hops.Repositories
         private List<Malt> Malts;
         private List<Yeast> Yeasts;
 
-        public SqliteRepository(HopContext context)
+        private IResultMapper resultMapper;
+
+        public SqliteRepository(HopContext context, IResultMapper resultMapper)
         {
             Hops = context.Hops.ToList();
             Aliases = context.Alias.ToList();
@@ -22,6 +25,8 @@ namespace Hops.Repositories
             Substitutions = context.Substitutions.ToList();
             Malts = context.Malt.ToList();
             Yeasts = context.Yeast.ToList();
+
+            this.resultMapper = resultMapper;
         }
 
         private Hop GetHop(long id)
@@ -71,16 +76,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel<HopModel>();
-            results.Pagination = new PaginationModel
-            {
-                NumberOfPages = (totalResultList.Count() / 15) + 1,
-                CurrentPageIndex = page,
-                SearchTerm = searchTerm
-            };
-            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-
-            return results;
+            return resultMapper.Map(totalResultList, searchTerm, page);
         }
 
         public ListModel<HopModel> Search(List<long> hopIds, int page)
@@ -95,15 +91,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel<HopModel>();
-            results.Pagination = new PaginationModel
-            {
-                NumberOfPages = (totalResultList.Count() / 15) + 1,
-                CurrentPageIndex = page,
-            };
-            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-
-            return results;
+            return resultMapper.Map(totalResultList, page);
         }
 
         public ListModel<HopModel> Search(int aromaProfile, int page)
@@ -118,16 +106,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            var results = new ListModel<HopModel>();
-            results.Pagination = new PaginationModel
-            {
-                NumberOfPages = (totalResultList.Count() / 15) + 1,
-                CurrentPageIndex = page,
-                SearchTerm = ((AromaProfileEnum)aromaProfile).Wordify()
-            };
-            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-
-            return results;
+            return resultMapper.Map(totalResultList, ((AromaProfileEnum)aromaProfile).Wordify(), page);
         }
 
         public List<string> Autocomplete(string searchTerm)

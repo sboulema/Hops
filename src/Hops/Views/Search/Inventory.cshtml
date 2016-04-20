@@ -10,17 +10,25 @@
 
 <base href="/search/inventory/" />
 
-<h3>Hops inventory:</h3>
+<h3>Inventory</h3>
 
-<div class="hop-inv"></div>
+<ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+    <li class="active"><a href="#hop" data-toggle="tab">Hops</a></li>
+    <li><a href="#malt" data-toggle="tab">Malts</a></li>
+    <li><a href="#yeast" data-toggle="tab">Yeast</a></li>
+</ul>
 
-<h3>Malts inventory:</h3>
-
-<div class="malt-inv"></div>
-
-<h3>Yeasts inventory:</h3>
-
-<div class="yeast-inv"></div>
+<div id="my-tab-content" class="tab-content">
+    <div class="tab-pane active" id="hop">
+        <div class="hop-inv"></div>
+    </div>
+    <div class="tab-pane" id="malt">
+        <div class="malt-inv"></div>
+    </div>
+    <div class="tab-pane" id="yeast">
+        <div class="yeast-inv"></div>
+    </div>
+</div>
 
 <label class="btn btn-default hidden-print" for="my-file-selector">
     <input id="my-file-selector" type="file" style="display:none;" onchange="importInventory(this);">

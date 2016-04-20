@@ -1,4 +1,5 @@
-﻿using Hops.Models;
+﻿using Hops.Mappers;
+using Hops.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,12 @@ namespace Hops.Repositories
     public class YeastRepository : IYeastRepository
     {
         private List<Yeast> Yeasts;
+        private IResultMapper resultMapper;
 
-        public YeastRepository(ISqliteRepository sqliteRepository)
+        public YeastRepository(ISqliteRepository sqliteRepository, IResultMapper resultMapper)
         {
             Yeasts = sqliteRepository.GetYeasts();
+            this.resultMapper = resultMapper;
         }
 
         public Yeast Get(long id)
@@ -31,15 +34,7 @@ namespace Hops.Repositories
             .OrderBy(m => m.Name)
             .ToList();
 
-            var results = new ListModel<Yeast>();
-            results.Pagination = new PaginationModel {
-                NumberOfPages = (totalResultList.Count() / 15) + 1,
-                CurrentPageIndex = page,
-                SearchTerm = searchTerm
-            };
-            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-
-            return results;
+            return resultMapper.Map(totalResultList, searchTerm, page);
         }
 
         public ListModel<Yeast> Search(List<long> ids, int page)
@@ -49,15 +44,7 @@ namespace Hops.Repositories
             .OrderBy(m => m.Name)
             .ToList();
 
-            var results = new ListModel<Yeast>();
-            results.Pagination = new PaginationModel
-            {
-                NumberOfPages = (totalResultList.Count() / 15) + 1,
-                CurrentPageIndex = page
-            };
-            results.List = totalResultList.Skip((page - 1) * 15).Take(15).ToList();
-
-            return results;
+            return resultMapper.Map(totalResultList, page);
         }
 
         public List<string> Autocomplete(string searchTerm)

@@ -6,6 +6,7 @@ using Microsoft.Data.Entity;
 using Hops.Repositories;
 using Microsoft.Extensions.PlatformAbstractions;
 using System.IO;
+using Hops.Mappers;
 
 namespace Hops
 {
@@ -26,6 +27,8 @@ namespace Hops
             services.AddSingleton<ISqliteRepository, SqliteRepository>();
             services.AddSingleton<IMaltRepository, MaltRepository>();
             services.AddSingleton<IYeastRepository, YeastRepository>();
+
+            services.AddSingleton<IResultMapper, ResultMapper>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

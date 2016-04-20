@@ -37,3 +37,6 @@ body > .container {
     content: none !important;
   }
 }
+.nav-tabs {
+  border-bottom: 0;
+}

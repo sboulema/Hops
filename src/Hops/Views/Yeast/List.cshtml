@@ -22,7 +22,7 @@
                     <td><a href="/yeast/@yeast.Id">@yeast.Name</a></td>
                     <td>@(((YeastLabEnum)yeast.Lab).Wordify())</td>
                     <td>@yeast.Temp() &deg;C</td>
-                    <td class="hidden-print"><span style="cursor: pointer;" class="yeast-inv glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-yeast-id="@yeast.Id" onclick="save(this);"></span></td>
+                    <td class="hidden-print"><span style="cursor: pointer;" class="yeast-inv pull-right glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-yeast-id="@yeast.Id" onclick="save(this);"></span></td>
                 </tr>
             }
         </tbody>

@@ -1,17 +1,17 @@
 ﻿@using Hops.Models;
-@model ListModel
+@model ListModel<HopModel>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @{
-    ViewBag.Title = "Inventory - Hops";
+    ViewBag.Title = "Search results - Hops";
 }
 
-@if (!string.IsNullOrEmpty(Model.SearchTerm))
+@if (!string.IsNullOrEmpty(Model.Pagination.SearchTerm))
 {
-    <h3>Search results for "@Model.SearchTerm":</h3>
+    <h3>Search results for "@Model.Pagination.SearchTerm":</h3>
 }
 
-@Html.Partial("List", Model)
+@Html.Partial("~/Views/Hop/List", Model)

@@ -8,6 +8,20 @@
         public double EBCMin { get; set; }
         public double EBCMax { get; set; }
         public int Maltster { get; set; }
-        public int? Grist { get; set; }
+        public int? Ratio { get; set; }
+
+        public string EBC()
+        {
+            return FormatValues(EBCMin, EBCMax);
+        }
+
+        private string FormatValues(double min, double max)
+        {
+            if (min == max)
+            {
+                return $"{min}";
+            }
+            return $"{min} - {max}";
+        }
     }
 }

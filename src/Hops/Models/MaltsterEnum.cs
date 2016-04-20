@@ -7,7 +7,9 @@ namespace Hops.Models
         Unknown = 0,
         Dingemans = 1,
         CastleMalting = 2,
-        BestBrew = 3
+        BetterBrew = 3,
+        ThomasFawcett = 4,
+        Weyermann = 5
     }
 
     public static class MaltsterEnumExtension

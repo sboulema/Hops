@@ -31,13 +31,13 @@
     <table class="table table-striped">
         <tr><td style="padding-left:15px;">Colour <span class="glyphicon glyphicon-info-sign" 
                                  data-toggle="tooltip" 
-                                 title="Alpha acids are a major component of the soft resins. When isomerized, these materials provide the main bitter compaunds associated with beer." />
-            </td><td>@Model.EBCMin - @Model.EBCMax EBC</td>
+                                 title="'European Brewing Convention'. In practice the EBC color is approximately 1.97 times the SRM color." />
+            </td><td>@Model.EBC() EBC</td>
         </tr>
-        <tr><td style="padding-left:15px;">Grist <span class="glyphicon glyphicon-info-sign"
+        <tr><td style="padding-left:15px;">Ratio <span class="glyphicon glyphicon-info-sign"
                                 data-toggle="tooltip"
-                                title="Beta acids, another soft resin component, are not bitter in their natural, or isomeric, form. Some of the oxidation products do provide bitterness." />
-            </td><td>@Model.Grist%</td>
+                                title="The max percentage this malt can be used up to of the grain bill" />
+            </td><td>@Model.Ratio%</td>
         </tr>
     </table>
 </div>

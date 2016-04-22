@@ -40,3 +40,6 @@ body > .container {
 .nav-tabs {
   border-bottom: 0;
 }
+td {
+    vertical-align: middle !important;
+}

@@ -91,7 +91,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, page);
+            return resultMapper.Map(totalResultList, "Inventory", page);
         }
 
         public ListModel<HopModel> Search(int aromaProfile, int page)

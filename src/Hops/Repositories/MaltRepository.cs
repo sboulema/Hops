@@ -44,7 +44,7 @@ namespace Hops.Repositories
             .OrderBy(m => m.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, page);
+            return resultMapper.Map(totalResultList, "Inventory", page);
         }
 
         public List<string> Autocomplete(string searchTerm)

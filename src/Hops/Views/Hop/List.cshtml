@@ -12,6 +12,10 @@
                 <th>Name</th>
                 <th>Usage</th>
                 <th class="hidden-print">Possible substitutions</th>
+                @if(Model.Pagination.SearchTerm.Equals("Inventory"))
+                {
+                    <th class="col-xs-2">Amount</th>
+                }
                 <th class="hidden-print"></th>
             </tr>
         </thead>
@@ -33,6 +37,15 @@
                     </td>
                     <td>@hopModel.Hop.BrewingUsageString()</td>
                     <td class="hidden-print">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/Hop/{s.Id}\">{s.Name}</a>")))</td>
+                    @if (Model.Pagination.SearchTerm.Equals("Inventory"))
+                    {
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <input type="number" step="1" min="0" class="form-control hop-inv-amount" data-hop-id="@hopModel.Hop.Id" onchange="saveAmountInventory(this);">
+                                <span class="input-group-addon">g</span>
+                            </div>
+                        </td>
+                    }
                     <td class="hidden-print"><span style="cursor: pointer;" class="hop-inv pull-right glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-hop-id="@hopModel.Hop.Id" onclick="save(this);"></span></td>
                 </tr>
             }

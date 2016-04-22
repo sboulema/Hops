@@ -12,6 +12,10 @@
                 <th>Name</th>
                 <th>Lab</th>
                 <th>Temperature</th>
+                @if (Model.Pagination.SearchTerm.Equals("Inventory"))
+                {
+                    <th class="col-xs-2">Amount</th>
+                }
                 <th class="hidden-print"></th>
             </tr>
         </thead>
@@ -22,6 +26,15 @@
                     <td><a href="/yeast/@yeast.Id">@yeast.Name</a></td>
                     <td>@(((YeastLabEnum)yeast.Lab).Wordify())</td>
                     <td>@yeast.Temp() &deg;C</td>
+                    @if (Model.Pagination.SearchTerm.Equals("Inventory"))
+                    {
+                        <td>
+                            <div class="input-group input-group-sm">
+                                <input type="number" step="1" min="0" class="form-control yeast-inv-amount" data-yeast-id="@yeast.Id" onchange="saveAmountInventory(this);">
+                                <span class="input-group-addon">g</span>
+                            </div>
+                        </td>
+                    }
                     <td class="hidden-print"><span style="cursor: pointer;" class="yeast-inv pull-right glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-yeast-id="@yeast.Id" onclick="save(this);"></span></td>
                 </tr>
             }

@@ -32,7 +32,15 @@
         <tr><td style="padding-left:15px;">Temperature <span class="glyphicon glyphicon-info-sign"
                                 data-toggle="tooltip"
                                 title="For best results ferment at these temperatures" />
-            </td><td>@Model.Temp()</td>
+            </td><td>@Html.Raw(Model.Temp())</td>
+        </tr>
+        <tr>
+            <td style="padding-left:15px;">
+                Attenuation <span class="glyphicon glyphicon-info-sign"
+                                  data-toggle="tooltip"
+                                  title="The percentage that measures the conversion of sugars into alcohol and carbon dioxide by the fermentation process" />
+            </td>
+            <td>@Model.Attenuation()</td>
         </tr>
     </table>
 </div>

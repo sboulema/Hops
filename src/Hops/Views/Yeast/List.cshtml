@@ -25,7 +25,7 @@
                 <tr>
                     <td><a href="/yeast/@yeast.Id">@yeast.Name</a></td>
                     <td>@(((YeastLabEnum)yeast.Lab).Wordify())</td>
-                    <td>@yeast.Temp() &deg;C</td>
+                    <td>@Html.Raw(yeast.Temp())</td>
                     @if (Model.Pagination.SearchTerm.Equals("Inventory"))
                     {
                         <td>

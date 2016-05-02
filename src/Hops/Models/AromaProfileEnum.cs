@@ -20,7 +20,8 @@ namespace Hops.Models
         Grassy = 13,
         Onion = 14,
         Garlic = 15,
-        StoneFruit = 16
+        StoneFruit = 16,
+        Pepper = 17
     }
 
     public static class AromaProfileEnumExtension

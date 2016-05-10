@@ -34,6 +34,12 @@ namespace Hops.Repositories
             return Hops.First(t => t.Id == id);
         }
 
+        private long GetHopId(string slug)
+        {
+            var nameFromSlug = slug.Replace("-", " ");
+            return Hops.First(h => string.Equals(h.Name, nameFromSlug, StringComparison.CurrentCultureIgnoreCase)).Id;
+        }
+
         public Hop GetRandomHop()
         {
             return GetHop(new Random().Next(1, Hops.Count + 1));
@@ -48,6 +54,11 @@ namespace Hops.Repositories
                 Aliases = Aliases.Where(a => a.HopId == id).Select(a => a.Name).ToList(),
                 Aromas = Aromas.Where(a => a.HopId == id).Select(a => (AromaProfileEnum)a.Profile).ToList()
             };
+        }
+
+        public HopModel GetHopModel(string slug)
+        {
+            return GetHopModel(GetHopId(slug));
         }
 
         private List<Hop> GetSubstitutions(long id)

@@ -24,7 +24,7 @@
             {
                 <tr>
                     <td>
-                        <a href="/Hop/@hopModel.Hop.Id">@hopModel.Hop.Name</a>
+                        <a href="/hop/@hopModel.Hop.Slug()">@hopModel.Hop.Name</a>
                         <p class="visible-print-inline">
                             <br />@hopModel.Hop.Trade<br /><br />
                             <strong>Aroma:</strong> @hopModel.Hop.Aroma<br />
@@ -36,7 +36,7 @@
                         </p>
                     </td>
                     <td>@hopModel.Hop.BrewingUsageString()</td>
-                    <td class="hidden-print">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/Hop/{s.Id}\">{s.Name}</a>")))</td>
+                    <td class="hidden-print">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/hop/{s.Slug()}\">{s.Name}</a>")))</td>
                     @if (Model.Pagination.SearchTerm.Equals("Inventory"))
                     {
                         <td>

@@ -52,5 +52,10 @@
             }
             return $"{min} - {max}";
         }
+
+        public string Slug()
+        {
+            return Name.Replace(" ", "-").ToLower();
+        }
     }
 }

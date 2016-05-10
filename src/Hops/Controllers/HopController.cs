@@ -33,10 +33,16 @@ namespace Hops.Controllers
             return View(sqliteRepository.Search(string.Empty, page));
         }
 
-        [HttpGet("{id}", Name = "Detail")]
+        [HttpGet("{id:long}", Name = "Detail")]
         public IActionResult Detail(long id)
         {
             return View(sqliteRepository.GetHopModel(id));
+        }
+
+        [HttpGet("{slug}", Name = "DetailBySlug")]
+        public IActionResult DetailBySlug(string slug)
+        {
+            return View("Detail", sqliteRepository.GetHopModel(slug));
         }
 
         [HttpGet("[action]/{searchTerm}/{page:int?}")]

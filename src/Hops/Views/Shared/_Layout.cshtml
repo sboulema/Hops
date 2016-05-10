@@ -1,6 +1,4 @@
-﻿@using Hops.Models;
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,15 +41,6 @@
                     <li><a href="/malt">Malts</a></li>
                     <li><a href="/yeast">Yeasts</a></li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Aromas <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            @foreach (var aromaProfile in Enum.GetValues(typeof(AromaProfileEnum)).OfType<AromaProfileEnum>().ToList().Skip(1).OrderBy(a => a.ToString()))
-                            {
-                                <li><a href="~/search/aroma/@((int)aromaProfile)">@aromaProfile.Wordify()</a></li>
-                            }
-                        </ul>
-                    </li>
-                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="~/calc/priming">Bottle Priming Calculator</a></li>
@@ -59,20 +48,28 @@
                         </ul>
                     </li>
                     <li><a id="inventory" href="/search/inventory">Inventory</a></li>
+                    <li class="visible-xs-inline"><a href="/search/">Search</a></li>
                 </ul>
 
-                <div class="navbar-form navbar-right">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event)" placeholder="Search Hops...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
-                                    <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
+                @if (!ViewBag.Title.Equals("Search"))
+                {
+                    <div class="navbar-form navbar-right hidden-xs">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event)" placeholder="Search Hops...">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                    <button type="button" class="btn btn-default dropdown-toggle" style="background-image:none;box-shadow:none;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        <li><a href="/search/">Advanced search</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div><!--/.nav-collapse -->
         </div>
     </nav>

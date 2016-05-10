@@ -15,6 +15,12 @@ namespace Hops.Controllers
             this.sqliteRepository = sqliteRepository;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
         [HttpGet("{searchTerm}/{page:int?}")]
         public IActionResult Results(string searchTerm, int page = 1)
         {

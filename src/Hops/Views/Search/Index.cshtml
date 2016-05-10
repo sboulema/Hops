@@ -1,0 +1,40 @@
+﻿@using Hops.Models;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<base href="/search/" />
+
+<h3>Search:</h3>
+<br/>
+
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event)" placeholder="Search Hops...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
+                <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+            </button>
+        </span>
+    </div>
+</div>
+
+<br/>
+<h3>Hop aromas:</h3>
+
+<ul class="list-unstyled row" style="padding: 15px;">
+    @foreach (var aromaProfile in Enum.GetValues(typeof(AromaProfileEnum)).OfType<AromaProfileEnum>().ToList().Skip(1).OrderBy(a => a.ToString()))
+            {
+        <li class="list-group-item col-sm-6"><a href="~/search/aroma/@((int)aromaProfile)">@aromaProfile.Wordify()</a></li>
+    }
+</ul>
+
+
+
+
+

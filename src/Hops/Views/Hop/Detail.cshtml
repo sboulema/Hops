@@ -34,8 +34,11 @@
             @if (Model.Aromas.Any())
             {
                 <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", Model.Aromas.Select(a => $"<a href=\"/Search/Aroma/{(int)a}\">{a.Wordify()}</a>")))<br />
-            }         
-            <strong>Typical beer styles:</strong> @Model.Hop.Styles
+            }
+            @if (!string.IsNullOrEmpty(Model.Hop.Styles))
+            {
+                <strong>Typical beer styles:</strong> @Model.Hop.Styles
+            }
         </p>
     </div>
 </div>

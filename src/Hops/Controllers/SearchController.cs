@@ -33,7 +33,7 @@ namespace Hops.Controllers
 
             if (results.List.Count == 1)
             {
-                return Redirect($"/Hop/{results.List.First().Hop.Id}");
+                return Redirect($"/hop/{results.List.First().Hop.Slug()}");
             }
 
             return View(results);

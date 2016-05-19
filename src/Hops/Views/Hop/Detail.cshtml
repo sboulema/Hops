@@ -81,7 +81,10 @@
         <div class="list-group">
             @foreach (var substitute in Model.Substitutions)
             {
-                <a href="@Url.Action("DetailBySlug", new { Slug = substitute.Slug() })" class="list-group-item">@substitute.Name</a>
+                <a href="@Url.Action("DetailBySlug", new { Slug = substitute.Slug() })" class="list-group-item">
+                    @substitute.Name
+                    <span class="hop-inv pull-right glyphicon glyphicon-star-empty hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@substitute.Id"></span>
+                </a>
             }
         </div>
     </div>

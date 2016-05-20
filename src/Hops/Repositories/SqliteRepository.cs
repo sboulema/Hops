@@ -90,6 +90,26 @@ namespace Hops.Repositories
             return resultMapper.Map(totalResultList, searchTerm, page);
         }
 
+        public ListModel<HopModel> FreeTextSearch(string searchTerm, int page)
+        {
+            var totalResultList = Hops.GroupJoin(Aliases,
+                hop => hop.Id,
+                alias => alias.HopId,
+                (hop, aliases) => new { hop, aliases }
+            )
+            .Where(r => Contains(r.hop.Name, searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                r.aliases.Any(a => Contains(a.Name, searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                Contains(r.hop.Info, searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                Contains(r.hop.Pedigree, searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                Contains(r.hop.Styles, searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                Contains(r.hop.Trade, searchTerm, StringComparison.OrdinalIgnoreCase))
+            .Select(r => GetHopModel(r.hop.Id))
+            .OrderBy(h => h.Hop.Name)
+            .ToList();
+
+            return resultMapper.Map(totalResultList, searchTerm, page);
+        }
+
         public ListModel<HopModel> Search(List<long> hopIds, int page)
         {
             var totalResultList = Hops.GroupJoin(Aliases,

@@ -58,5 +58,13 @@ namespace Hops.Controllers
         {
             return sqliteRepository.Autocomplete(searchTerm);
         }
+
+        [HttpGet("freetext/{searchterm}/{page:int?}")]
+        public IActionResult FreeTextResults(string searchterm, int page = 1)
+        {
+            var results = sqliteRepository.FreeTextSearch(searchterm, page);
+
+            return View("Results", results);
+        }
     }
 }

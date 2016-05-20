@@ -11,6 +11,7 @@ namespace Hops.Repositories
         ListModel<HopModel> Search(string searchTerm, int page);
         ListModel<HopModel> Search(List<long> hopIds, int page);
         ListModel<HopModel> Search(int aromaProfile, int page);
+        ListModel<HopModel> FreeTextSearch(string searchTerm, int page);
         List<string> Autocomplete(string searchTerm);
         List<Malt> GetMalts();
         List<Yeast> GetYeasts();

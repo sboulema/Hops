@@ -15,9 +15,24 @@
 
 <div class="form-group">
     <div class="input-group">
-        <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event)" placeholder="Search Hops...">
+        <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
         <span class="input-group-btn">
             <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
+                <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
+            </button>
+        </span>
+    </div>
+</div>
+
+<br/>
+<h3>Free Text Search:</h3>
+<br />
+
+<div class="form-group">
+    <div class="input-group">
+        <input type="text" class="form-control" id="freetextsearch" onkeypress="handle(event, function () { freeTextSearch(); })" placeholder="Free Text Search Hops...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" onclick="freeTextSearch()" style="background-image:none;box-shadow:none;">
                 <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
             </button>
         </span>
@@ -33,8 +48,3 @@
         <li class="list-group-item col-sm-6"><a href="~/search/aroma/@((int)aromaProfile)">@aromaProfile.Wordify()</a></li>
     }
 </ul>
-
-
-
-
-

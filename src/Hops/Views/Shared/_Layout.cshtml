@@ -93,9 +93,13 @@
             window.location = "/search/" + document.getElementById('search').value
         }
 
-        function handle(e) {
+        function freeTextSearch() {
+            window.location = "/search/freetext/" + document.getElementById('freetextsearch').value
+        }
+
+        function handle(e, action) {
             if (e.keyCode === 13) {
-                search();
+                action();
             }
             return false;
         }

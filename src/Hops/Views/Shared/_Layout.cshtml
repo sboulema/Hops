@@ -22,6 +22,8 @@
     <link href="~/sticky-footer.css" rel="stylesheet" />
 
     <script src="~/inventory/inventory.js"></script>
+
+    @RenderSection("Scripts", false)
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -56,7 +58,7 @@
                     <div class="navbar-form navbar-right hidden-xs">
                         <div class="form-group">
                             <div class="input-group">
-                                <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event)" placeholder="Search Hops...">
+                                <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
                                         <span aria-hidden="true" class="glyphicon glyphicon-search"></span>

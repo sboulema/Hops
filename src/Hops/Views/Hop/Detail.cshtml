@@ -9,6 +9,10 @@
     ViewBag.Title = $"{Model.Hop.Name} - Hops";
 }
 
+@section Scripts {
+    <script src="~/mark/jquery.mark.min.js"></script>
+}
+
 <div class="jumbotron">
     <span style="cursor: pointer;" class="hop-inv glyphicon glyphicon-star-empty pull-right btn btn-default hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
 
@@ -98,5 +102,6 @@
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();
     loadFromInventory();
+    $(".container").mark(window.location.hash.slice(1));
 });
 </script>

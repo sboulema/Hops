@@ -107,7 +107,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, searchTerm, page);
+            return resultMapper.Map(totalResultList, searchTerm, searchTerm, page);
         }
 
         public ListModel<HopModel> Search(List<long> hopIds, int page)

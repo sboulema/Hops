@@ -24,7 +24,7 @@
             {
                 <tr>
                     <td>
-                        <a href="/hop/@hopModel.Hop.Slug()">@hopModel.Hop.Name</a>
+                        <a href="/hop/@hopModel.Hop.Slug()@(string.IsNullOrEmpty(Model.Pagination.HighLight) ? string.Empty : "#" + Model.Pagination.HighLight)">@hopModel.Hop.Name</a>
                         <p class="visible-print-inline">
                             <br />@hopModel.Hop.Trade<br /><br />
                             <strong>Aroma:</strong> @hopModel.Hop.Aroma<br />

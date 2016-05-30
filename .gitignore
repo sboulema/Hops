@@ -1,2 +1,6 @@
 /.vs
 /src/Hops/*.user
+/Hops.UWP/AppPackages
+/Hops.UWP/bin
+/Hops.UWP/bld
+/Hops.UWP/*.user

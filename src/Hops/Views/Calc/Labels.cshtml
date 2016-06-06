@@ -1,0 +1,55 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Label Printer - Hops";
+}
+
+<div class="panel panel-default hidden-print">
+    <div class="panel-heading">Label Printer</div>
+
+    <div class="panel-body">
+        <p>Please select your label image:</p>
+
+        <label class="btn btn-default hidden-print" for="my-file-selector">
+            <input id="my-file-selector" accept="image/*" type="file" style="display:none;" onchange="readURL(this);">
+            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Browse...
+        </label>
+
+        <script>
+        function readURL(input)
+        {
+            if (input.files && input.files[0])
+            {
+                var reader = new FileReader();
+                reader.onload = function (e)
+                {
+                    $('.labelPrint').attr('src', e.target.result);
+                    $('#preview').show();
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        </script>
+    </div>
+</div>
+
+<div id="preview" style="display:none" class="text-center">
+    <button type="button" class="btn btn-default hidden-print" onclick="window.print();">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print...
+    </button>
+    <h2 class="hidden-print">Preview:</h2>
+    @for (int i = 0; i < 4; i++)
+    {
+        <p>
+            @for (int j = 0; j < 3; j++)
+            {
+                <img style="border: 1px solid black" class="labelPrint" width="189" height="189" />
+            }
+        </p>
+    } 
+</div>

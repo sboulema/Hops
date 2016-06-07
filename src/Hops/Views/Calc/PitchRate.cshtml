@@ -1,0 +1,60 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Pitch Rate Calculator - Hops";
+}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Pitch Rate Calculator</div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="og">Original Gravity (OG):</label>
+                    <input type="number" step="1" class="form-control" id="og" onkeypress="handle(event, calculate)">
+                </div>
+                <button id="button" class="btn btn-default" onclick="calculate()">Calculate</button>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Information</div>
+
+            <div class="panel-body">
+                <p>This calculator is setup to calculate dry yeast (20 billion cells/gram) needed for 1 gallon of Ale beer.</p>
+
+                Formula:
+                <pre>
+var og = document.getElementById('og').value;
+var wortVolume = 3785; // 1 gallon in ml
+var cellsForYeastType = 750000;
+var measuredPlato = 259 - (259 / og);
+var numCells = parseFloat(cellsForYeastType * wortVolume * measuredPlato) * 0.000000001;
+var dryYeastNeeded = Math.round(numCells / 20);
+                </pre>
+            </div>
+        </div>
+
+<script>
+    function calculate() {
+        var og = document.getElementById('og').value;
+        var wortVolume = 3785; // 1 gallon in ml
+        var cellsForYeastType = 750000;
+        var measuredPlato = 259 - (259 / og);
+        var numCells = parseFloat(cellsForYeastType * wortVolume * measuredPlato) * 0.000000001;
+        var dryYeastNeeded = Math.round(numCells / 20);
+
+        $("#button").after("<p><div class='alert alert-success' role='alert'><button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button><strong>Dry yeast needed: </strong>" + dryYeastNeeded + " gram</div></p>");
+    }
+
+    function handle(e, action) {
+        if (e.keyCode === 13) {
+            action();
+        }
+        return false;
+    }
+</script>

@@ -22,5 +22,11 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult PitchRate()
+        {
+            return View();
+        }
     }
 }

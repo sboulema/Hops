@@ -15,7 +15,7 @@
             <div class="panel-body">
                 <div class="form-group">
                     <label for="og">Original Gravity (OG):</label>
-                    <input type="number" step="1" class="form-control" id="og" onkeypress="handle(event, calculate)">
+                    <input type="number" step="1" class="form-control" id="og" onkeypress="handle(event, calculate)" placeholder="1.000">
                 </div>
                 <button id="button" class="btn btn-default" onclick="calculate()">Calculate</button>
             </div>
@@ -42,6 +42,9 @@ var dryYeastNeeded = Math.round(numCells / 20);
 <script>
     function calculate() {
         var og = document.getElementById('og').value;
+        if (og > 2) {
+            og = og / 1000;
+        }
         var wortVolume = 3785; // 1 gallon in ml
         var cellsForYeastType = 750000;
         var measuredPlato = 259 - (259 / og);

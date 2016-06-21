@@ -20,25 +20,38 @@
             <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Browse...
         </label>
 
+        <h6><small>Label will be duplicated 12 times and resized to be atleast smaller than 5x10cm</small></h6>
+
         <script>
-        function readURL(input)
-        {
-            if (input.files && input.files[0])
-            {
-                var reader = new FileReader();
-                reader.onload = function (e)
-                {
-                    $('.labelPrint').attr('src', e.target.result);
-                    $('#preview').show();
-                };
-                reader.readAsDataURL(input.files[0]);
+            function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
+                var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
+                return { width: srcWidth * ratio, height: srcHeight * ratio };
             }
-        }
+
+            function readURL(input)
+            {
+                if (input.files && input.files[0])
+                {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var image = new Image();
+                        image.onload = function(){
+                            var sizes = calculateAspectRatioFit(image.width, image.height, 189, 378);
+                            $('.labelPrint').attr('src', e.target.result);
+                            $('.labelPrint').height(sizes.height);
+                            $('.labelPrint').width(sizes.width);
+                            $('#preview').show();
+                        };
+                        image.src = e.target.result;
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
+            }
         </script>
     </div>
 </div>
 
-<div id="preview" style="display:none" class="text-center">
+<div id="preview" style="display: none" class="text-center">
     <button type="button" class="btn btn-default hidden-print" onclick="window.print();">
         <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print...
     </button>
@@ -48,8 +61,8 @@
         <p>
             @for (int j = 0; j < 3; j++)
             {
-                <img style="border: 1px solid black" class="labelPrint" width="189" height="189" />
+                <img style="border: 1px solid black" class="labelPrint" />
             }
         </p>
-    } 
+    }
 </div>

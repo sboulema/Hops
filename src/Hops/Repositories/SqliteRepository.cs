@@ -102,7 +102,8 @@ namespace Hops.Repositories
                 Contains(r.hop.Info, searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 Contains(r.hop.Pedigree, searchTerm, StringComparison.OrdinalIgnoreCase) ||
                 Contains(r.hop.Styles, searchTerm, StringComparison.OrdinalIgnoreCase) ||
-                Contains(r.hop.Trade, searchTerm, StringComparison.OrdinalIgnoreCase))
+                Contains(r.hop.Trade, searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                Contains(r.hop.Aroma, searchTerm, StringComparison.OrdinalIgnoreCase))
             .Select(r => GetHopModel(r.hop.Id))
             .OrderBy(h => h.Hop.Name)
             .ToList();

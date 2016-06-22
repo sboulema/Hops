@@ -20,7 +20,7 @@
             <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Browse...
         </label>
 
-        <h6><small>Label will be duplicated 12 times and resized to be atleast smaller than 5x10cm</small></h6>
+        <h6><small>Label will be duplicated 12 times and resized to be atleast smaller than 5x8cm</small></h6>
 
         <script>
             function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
@@ -36,7 +36,7 @@
                     reader.onload = function (e) {
                         var image = new Image();
                         image.onload = function(){
-                            var sizes = calculateAspectRatioFit(image.width, image.height, 189, 378);
+                            var sizes = calculateAspectRatioFit(image.width, image.height, 189 + 10, 302 + 10); // 0,39 cm/inch * 96 dpi * 5 cm + 10 magic
                             $('.labelPrint').attr('src', e.target.result);
                             $('.labelPrint').height(sizes.height);
                             $('.labelPrint').width(sizes.width);

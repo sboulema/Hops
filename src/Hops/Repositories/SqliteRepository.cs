@@ -19,10 +19,10 @@ namespace Hops.Repositories
 
         public SqliteRepository(HopContext context, IResultMapper resultMapper)
         {
-            Hops = context.Hops.ToList();
+            Hops = context.Hop.ToList();
             Aliases = context.Alias.ToList();
             Aromas = context.Aroma.ToList();
-            Substitutions = context.Substitutions.ToList();
+            Substitutions = context.Substitution.ToList();
             Malts = context.Malt.ToList();
             Yeasts = context.Yeast.ToList();
 

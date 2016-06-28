@@ -1,5 +1,5 @@
 ﻿using Hops.Repositories;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
 namespace Hops.Controllers

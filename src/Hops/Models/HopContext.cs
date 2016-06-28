@@ -1,11 +1,21 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.PlatformAbstractions;
+using System.IO;
 
 namespace Hops.Models
 {
     public class HopContext : DbContext
     {
-        public DbSet<Hop> Hops { get; set; }
-        public DbSet<Substitution> Substitutions { get; set; }
+        private IHostingEnvironment env;
+
+        public HopContext(IHostingEnvironment env)
+        {
+            this.env = env;
+        }
+
+        public DbSet<Hop> Hop { get; set; }
+        public DbSet<Substitution> Substitution { get; set; }
         public DbSet<Alias> Alias { get; set; }
         public DbSet<Aroma> Aroma { get; set; }
         public DbSet<Malt> Malt { get; set; }
@@ -20,6 +30,11 @@ namespace Hops.Models
             builder.Entity<Malt>().HasKey(m => new { m.Id });
             builder.Entity<Yeast>().HasKey(m => new { m.Id });
             base.OnModelCreating(builder);
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite($"Filename={Path.Combine(env.ContentRootPath, "hops.sqlite")}");
         }
     }
 }

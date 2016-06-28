@@ -1,9 +1,9 @@
-FROM microsoft/aspnet:latest
+FROM microsoft/dotnet
+ 
+COPY src/Hops/ /dotnetapp
+WORKDIR /dotnetapp
 
-COPY . /app
-WORKDIR /app
-
-RUN ["dnu", "restore"]
-
-EXPOSE 5000
-ENTRYPOINT ["dnx", "-p", "src/Hops/project.json", "web"]
+RUN dotnet restore
+ 
+EXPOSE 5000/tcp
+ENTRYPOINT dotnet run --server.urls http://0.0.0.0:5000

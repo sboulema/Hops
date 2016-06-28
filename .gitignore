@@ -4,3 +4,6 @@
 /Hops.UWP/bin
 /Hops.UWP/bld
 /Hops.UWP/*.user
+/src/Hops/bin
+/src/Hops/obj
+/src/Hops/project.lock.json

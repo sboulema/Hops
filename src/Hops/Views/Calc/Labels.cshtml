@@ -15,34 +15,67 @@
     <div class="panel-body">
         <p>Please select your label image:</p>
 
-        <label class="btn btn-default hidden-print" for="my-file-selector">
-            <input id="my-file-selector" accept="image/*" type="file" style="display:none;" onchange="readURL(this);">
-            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Browse...
-        </label>
+        <div class="row">
+            <div class="form-group col-xs-3">
+                <label class="btn btn-default hidden-print" for="my-file-selector">
+                    <input id="my-file-selector" accept="image/*" type="file" style="display: none;" onchange="readURL(this);">
+                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Browse...
+                </label>
+            </div>
+        </div>
 
-        <h6><small>Label will be duplicated 12 times and resized to be atleast smaller than 5x8cm</small></h6>
+        <div class="row">
+            <div class="form-group col-xs-3">
+                <label for="sizeSel">Size:</label>
+                <select class="form-control" id="sizeSel" onchange="setLabels(labelImage, $('.labelPrint').attr('src'))">
+                    <option value="3">Small</option>
+                    <option value="4">Medium</option>
+                    <option value="5" selected="selected">Large</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-8">
+                <h6><small id="info">Label will be duplicated 12 times and resized to be atleast smaller than 5x8cm</small></h6>
+            </div>
+        </div>
 
         <script>
+            var labelImage;
+
             function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
                 var ratio = Math.min(maxWidth / srcWidth, maxHeight / srcHeight);
                 return { width: srcWidth * ratio, height: srcHeight * ratio };
             }
 
-            function readURL(input)
-            {
-                if (input.files && input.files[0])
-                {
+            function setLabels(labelImage, src) {
+                var maxWidth = parseInt($('#sizeSel').val());
+                var sizes = calculateAspectRatioFit(labelImage.width,
+                    labelImage.height,
+                    0.39 * 96 * maxWidth,
+                    302 + 5); // 0,39 cm/inch * 96 dpi * 5 cm + 5 magic
+
+                $('.labelPrint').attr('src', src);
+                $('.labelPrint').height(sizes.height);
+                $('.labelPrint').width(sizes.width);
+                $('#preview').show();
+
+                $('#info')
+                    .text("Label will be duplicated 12 times and resized to be atleast smaller than " +
+                        $('#sizeSel').val() +
+                        "x8cm");
+            }
+
+            function readURL(input) {
+                if (input.files && input.files[0]) {
                     var reader = new FileReader();
                     reader.onload = function (e) {
-                        var image = new Image();
-                        image.onload = function(){
-                            var sizes = calculateAspectRatioFit(image.width, image.height, 189 + 10, 302 + 10); // 0,39 cm/inch * 96 dpi * 5 cm + 10 magic
-                            $('.labelPrint').attr('src', e.target.result);
-                            $('.labelPrint').height(sizes.height);
-                            $('.labelPrint').width(sizes.width);
-                            $('#preview').show();
+                        labelImage = new Image();
+                        labelImage.onload = function () {
+                            setLabels(labelImage, e.target.result);
                         };
-                        image.src = e.target.result;
+                        labelImage.src = e.target.result;
                     };
                     reader.readAsDataURL(input.files[0]);
                 }
@@ -61,7 +94,7 @@
         <p>
             @for (int j = 0; j < 3; j++)
             {
-                <img style="border: 1px solid black" class="labelPrint" />
+                <img style="border: 1px solid black" class="labelPrint" alt="label" />
             }
         </p>
     }

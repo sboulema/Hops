@@ -11,7 +11,8 @@ namespace Hops.Models
         ThomasFawcett = 4,
         Weyermann = 5,
         Arsegan = 6,
-        Muntons = 7
+        Muntons = 7,
+        Swaen = 8
     }
 
     public static class MaltsterEnumExtension

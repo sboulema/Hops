@@ -1,4 +1,4 @@
-FROM microsoft/dotnet
+FROM microsoft/dotnet:1.0.1-core
  
 COPY src/Hops/ /dotnetapp
 WORKDIR /dotnetapp

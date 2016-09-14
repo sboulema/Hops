@@ -19,7 +19,10 @@
     "Microsoft.AspNetCore.Mvc": "1.0.1",
     "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
     "Microsoft.EntityFrameworkCore.Sqlite": "1.0.1",
-    "Microsoft.NETCore.App": "1.0.0" 
+    "Microsoft.NETCore.App": {
+      "version": "1.0.0",
+      "type": "platform"
+    }
   },
 
   "frameworks": {

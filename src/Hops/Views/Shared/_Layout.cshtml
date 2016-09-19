@@ -94,11 +94,11 @@
 
     <script>
         function search() {
-            window.location = "/search/" + document.getElementById('search').value
+            window.location = "/search/" + document.getElementById('search').value.replace(/\s/g, '-').toLowerCase();
         }
 
         function freeTextSearch() {
-            window.location = "/search/freetext/" + document.getElementById('freetextsearch').value
+            window.location = "/search/freetext/" + document.getElementById('freetextsearch').value;
         }
 
         function handle(e, action) {

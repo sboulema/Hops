@@ -1,4 +1,6 @@
-﻿namespace Hops.Models
+﻿using Hops.Mappers;
+
+namespace Hops.Models
 {
     public class Hop
     {
@@ -44,7 +46,7 @@
             return FormatValues(TotalOilMin, TotalOilMax);
         }
 
-        private string FormatValues(double min, double max)
+        private static string FormatValues(double min, double max)
         {
             if (min == max)
             {
@@ -55,7 +57,7 @@
 
         public string Slug()
         {
-            return Name.Replace(" ", "-").ToLower();
+            return SlugMapper.Map(Name);
         }
     }
 }

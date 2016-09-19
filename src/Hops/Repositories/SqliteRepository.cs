@@ -8,41 +8,40 @@ namespace Hops.Repositories
 {
     public class SqliteRepository : ISqliteRepository
     {
-        private List<Hop> Hops;
-        private List<Alias> Aliases;
-        private List<Aroma> Aromas;
-        private List<Substitution> Substitutions;
-        private List<Malt> Malts;
-        private List<Yeast> Yeasts;
+        private readonly List<Hop> _hops;
+        private readonly List<Alias> _aliases;
+        private readonly List<Aroma> _aromas;
+        private readonly List<Substitution> _substitutions;
+        private readonly List<Malt> _malts;
+        private readonly List<Yeast> _yeasts;
 
-        private IResultMapper resultMapper;
+        private readonly IResultMapper _resultMapper;
 
         public SqliteRepository(HopContext context, IResultMapper resultMapper)
         {
-            Hops = context.Hop.ToList();
-            Aliases = context.Alias.ToList();
-            Aromas = context.Aroma.ToList();
-            Substitutions = context.Substitution.ToList();
-            Malts = context.Malt.ToList();
-            Yeasts = context.Yeast.ToList();
+            _hops = context.Hop.ToList();
+            _aliases = context.Alias.ToList();
+            _aromas = context.Aroma.ToList();
+            _substitutions = context.Substitution.ToList();
+            _malts = context.Malt.ToList();
+            _yeasts = context.Yeast.ToList();
 
-            this.resultMapper = resultMapper;
+            _resultMapper = resultMapper;
         }
 
         private Hop GetHop(long id)
         {
-            return Hops.First(t => t.Id == id);
+            return _hops.First(t => t.Id == id);
         }
 
         private long GetHopId(string slug)
         {
-            var nameFromSlug = slug.Replace("-", " ");
-            return Hops.First(h => string.Equals(h.Name, nameFromSlug, StringComparison.CurrentCultureIgnoreCase)).Id;
+            return _hops.First(h => string.Equals(SlugMapper.Map(h.Name), slug, StringComparison.CurrentCultureIgnoreCase)).Id;
         }
 
         public Hop GetRandomHop()
         {
-            return GetHop(new Random().Next(1, Hops.Count + 1));
+            return GetHop(new Random().Next(1, _hops.Count + 1));
         }
 
         public HopModel GetHopModel(long id)
@@ -51,8 +50,8 @@ namespace Hops.Repositories
             {
                 Hop = GetHop(id),
                 Substitutions = GetSubstitutions(id),
-                Aliases = Aliases.Where(a => a.HopId == id).Select(a => a.Name).ToList(),
-                Aromas = Aromas.Where(a => a.HopId == id).Select(a => (AromaProfileEnum)a.Profile).ToList()
+                Aliases = _aliases.Where(a => a.HopId == id).Select(a => a.Name).ToList(),
+                Aromas = _aromas.Where(a => a.HopId == id).Select(a => (AromaProfileEnum)a.Profile).ToList()
             };
         }
 
@@ -63,7 +62,7 @@ namespace Hops.Repositories
 
         private List<Hop> GetSubstitutions(long id)
         {
-            var substitutions = Substitutions.Where(s => s.HopId == id).ToList();
+            var substitutions = _substitutions.Where(s => s.HopId == id).ToList();
 
             var hops = new List<Hop>();
             foreach (var substitute in substitutions)
@@ -76,7 +75,7 @@ namespace Hops.Repositories
 
         public ListModel<HopModel> Search(string searchTerm, int page)
         {
-            var totalResultList = Hops.GroupJoin(Aliases,
+            var totalResultList = _hops.GroupJoin(_aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
@@ -87,12 +86,12 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, searchTerm, page);
+            return _resultMapper.Map(totalResultList, searchTerm, page);
         }
 
         public ListModel<HopModel> FreeTextSearch(string searchTerm, int page)
         {
-            var totalResultList = Hops.GroupJoin(Aliases,
+            var totalResultList = _hops.GroupJoin(_aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
@@ -108,12 +107,12 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, searchTerm, searchTerm, page);
+            return _resultMapper.Map(totalResultList, searchTerm, searchTerm, page);
         }
 
         public ListModel<HopModel> Search(List<long> hopIds, int page)
         {
-            var totalResultList = Hops.GroupJoin(Aliases,
+            var totalResultList = _hops.GroupJoin(_aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
@@ -123,12 +122,12 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, "Inventory", page);
+            return _resultMapper.Map(totalResultList, "Inventory", page);
         }
 
         public ListModel<HopModel> Search(int aromaProfile, int page)
         {
-            var totalResultList = Hops.GroupJoin(Aromas,
+            var totalResultList = _hops.GroupJoin(_aromas,
                 hop => hop.Id,
                 aroma => aroma.HopId,
                 (hop, aromas) => new { hop, aromas }
@@ -138,12 +137,12 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return resultMapper.Map(totalResultList, ((AromaProfileEnum)aromaProfile).Wordify(), page);
+            return _resultMapper.Map(totalResultList, ((AromaProfileEnum)aromaProfile).Wordify(), page);
         }
 
         public List<string> Autocomplete(string searchTerm)
         {
-            var results = Hops.GroupJoin(Aliases,
+            var results = _hops.GroupJoin(_aliases,
                 hop => hop.Id,
                 alias => alias.HopId,
                 (hop, aliases) => new { hop, aliases }
@@ -166,12 +165,12 @@ namespace Hops.Repositories
 
         public List<Malt> GetMalts()
         {
-            return Malts;
+            return _malts;
         }
 
         public List<Yeast> GetYeasts()
         {
-            return Yeasts;
+            return _yeasts;
         }
 
         private bool Contains(string source, string toCheck, StringComparison comp)

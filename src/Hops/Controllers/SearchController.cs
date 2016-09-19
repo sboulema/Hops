@@ -8,11 +8,11 @@ namespace Hops.Controllers
     [Route("[controller]")]
     public class SearchController : Controller
     {
-        private ISqliteRepository sqliteRepository;
+        private readonly ISqliteRepository _sqliteRepository;
 
         public SearchController(ISqliteRepository sqliteRepository)
         {
-            this.sqliteRepository = sqliteRepository;
+            _sqliteRepository = sqliteRepository;
         }
 
         [HttpGet]
@@ -24,11 +24,11 @@ namespace Hops.Controllers
         [HttpGet("{searchTerm}/{page:int?}")]
         public IActionResult Results(string searchTerm, int page = 1)
         {
-            var results = sqliteRepository.Search(searchTerm, page);
+            var results = _sqliteRepository.Search(searchTerm, page);
 
             if (results.List.Count == 0)
             {
-                return View("NoResults", sqliteRepository.GetRandomHop());
+                return View("NoResults", _sqliteRepository.GetRandomHop());
             }
 
             if (results.List.Count == 1)
@@ -48,7 +48,7 @@ namespace Hops.Controllers
         [HttpGet("aroma/{profile:int}/{page:int?}")]
         public IActionResult Results(int profile, int page = 1)
         {
-            var results = sqliteRepository.Search(profile, page);
+            var results = _sqliteRepository.Search(profile, page);
 
             return View(results);
         }
@@ -56,13 +56,13 @@ namespace Hops.Controllers
         [HttpGet("autocomplete/{searchTerm}")]
         public List<string> AutoComplete(string searchTerm)
         {
-            return sqliteRepository.Autocomplete(searchTerm);
+            return _sqliteRepository.Autocomplete(searchTerm);
         }
 
         [HttpGet("freetext/{searchterm}/{page:int?}")]
         public IActionResult FreeTextResults(string searchterm, int page = 1)
         {
-            var results = sqliteRepository.FreeTextSearch(searchterm, page);
+            var results = _sqliteRepository.FreeTextSearch(searchterm, page);
 
             return View("Results", results);
         }

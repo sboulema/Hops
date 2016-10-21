@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using Hops.Mappers;
 
 namespace Hops.Controllers
 {
@@ -24,19 +25,17 @@ namespace Hops.Controllers
         [HttpGet("{searchTerm}/{page:int?}")]
         public IActionResult Results(string searchTerm, int page = 1)
         {
-            var results = _sqliteRepository.Search(searchTerm, page);
+            var results = _sqliteRepository.Search(SlugMapper.SlugToString(searchTerm), page);
 
-            if (results.List.Count == 0)
+            switch (results.List.Count)
             {
-                return View("NoResults", _sqliteRepository.GetRandomHop());
-            }
-
-            if (results.List.Count == 1)
-            {
-                return Redirect($"/hop/{results.List.First().Hop.Slug()}");
-            }
-
-            return View(results);
+                case 0:
+                    return View("NoResults", _sqliteRepository.GetRandomHop());
+                case 1:
+                    return Redirect($"/hop/{results.List.First().Hop.Slug()}");
+                default:
+                    return View(results);
+            }   
         }
 
         [HttpGet("inventory/{page:int?}")]

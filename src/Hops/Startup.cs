@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.EntityFrameworkCore;
-using System.IO;
 using Hops.Models;
 using Hops.Repositories;
 using Hops.Mappers;

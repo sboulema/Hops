@@ -52,5 +52,13 @@ namespace Hops.Controllers
 
             return View("List", results);
         }
+
+        [HttpGet("[action]/{page:int?}")]
+        public IActionResult Top(string searchTerm, int page = 1)
+        {
+            var results = _sqliteRepository.TopSubstitutors();
+
+            return View("Index", results);
+        }
     }
 }

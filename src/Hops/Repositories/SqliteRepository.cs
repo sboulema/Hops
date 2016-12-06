@@ -140,6 +140,23 @@ namespace Hops.Repositories
             return _resultMapper.Map(totalResultList, ((AromaProfileEnum)aromaProfile).Wordify(), page);
         }
 
+        public ListModel<HopModel> TopSubstitutors()
+        {
+            var list = _substitutions.GroupBy(s => s.SubId)
+                  .OrderByDescending(g => g.Count())
+                  .SelectMany(g => g)
+                  .DistinctBy(d => d.SubId)
+                  .Take(10);
+
+            var hops =  new List<HopModel>();
+            foreach (var substitute in list)
+            {
+                hops.Add(GetHopModel(substitute.SubId));
+            }
+
+            return _resultMapper.Map(hops, string.Empty, 1);
+        }
+
         public List<string> Autocomplete(string searchTerm)
         {
             var results = _hops.GroupJoin(_aliases,

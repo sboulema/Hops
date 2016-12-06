@@ -15,5 +15,6 @@ namespace Hops.Repositories
         List<string> Autocomplete(string searchTerm);
         List<Malt> GetMalts();
         List<Yeast> GetYeasts();
+        ListModel<HopModel> TopSubstitutors();
     }
 }

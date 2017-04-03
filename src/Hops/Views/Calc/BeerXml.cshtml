@@ -1,0 +1,129 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "BeerXML Viewer - Hops";
+}
+
+@section Scripts {
+    <script src="https://unpkg.com/brauhaus@1.1.1/dist/brauhaus.min.js"></script>
+    <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
+}
+
+<div class="panel panel-default hidden-print">
+    <div class="panel-heading">BeerXML Viewer</div>
+
+    <div class="panel-body">
+        <p>Please select your recipe:</p>
+
+        <div class="row">
+            <div class="form-group col-xs-3">
+                <label class="btn btn-default hidden-print" for="my-file-selector">
+                    <input id="my-file-selector" accept="text/xml" type="file" style="display: none;" onchange="readURL(this);">
+                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span> Browse...
+                </label>
+            </div>
+        </div>
+
+        <script>
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        var recipe = Brauhaus.Recipe.fromBeerXml(e.target.result)[0];
+                        recipe.calculate();
+                        recipe.timeline();
+
+                        $("#name").text(recipe.name);
+
+                        $("#style").text("a " + recipe.style.name + " by " + recipe.author);
+
+                        $("#stats").append("<tr><td>OG</td><td><strong>" + recipe.og.toFixed(3) + "</strong></td></tr>");
+                        $("#stats").append("<tr><td>FG</td><td><strong>" + recipe.fg.toFixed(3) + "</strong></td></tr>");
+                        $("#stats").append("<tr><td>IBU</td><td><strong>" + recipe.ibu.toFixed(0) + "</strong></td></tr>");
+                        $("#stats").append("<tr><td>SRM</td><td><strong>" + recipe.color.toFixed(0) + "</strong></td></tr>");
+                        $("#stats").append("<tr><td>ABV</td><td><strong>" + recipe.abv.toFixed(1) + "%</strong></td></tr>");
+                        $("#stats").append("<tr><td>Balance</td><td><strong>" + recipe.buToGu.toFixed(2) + "</strong></td></tr>");                       
+
+                        $.each(recipe.fermentables, function (index, fermentable) {
+                            $("#fermentables").append("<tr>" +
+                                "<td>" + (fermentable.weight * 1000) + " g</td>" +
+                                "<td><span style='display: inline-block; width: 12px; height: 12px; background-color: " + fermentable.colorCss() + "'></span> " + fermentable.name + "</td>" +
+                                "<td>" + fermentable.addition().substring(0, 1).toUpperCase() + fermentable.addition().substring(1, fermentable.addition().length) + "</td>" +
+                                "<td>" + Math.ceil(fermentable.ppg()) + "</td>" +
+                                "<td>" + fermentable.color + " &deg;L</td></tr>");
+                        });
+
+                        $.each(recipe.spices, function (index, spice) {
+                            if (spice.aa !== 0) {
+                                $("#hops").append("<tr>" +
+                                    "<td>" + (spice.weight * 1000) + " g</td>" +
+                                    "<td>" + spice.name + "</td>" +
+                                    "<td>" + Brauhaus.displayDuration(spice.time) + "</td>" +
+                                    "<td>" + spice.use + "</td>" +
+                                    "<td>" + spice.form + "</td>" +
+                                    "<td>" + spice.aa.toFixed(1) + "%</td>" +
+                                    "</tr>");
+                            } else {
+                                $("#extras").append("<tr>" +
+                                    "<td>" + spice.weight + (spice.amountIsWeight ? " g" : " each") + "</td>" +
+                                    "<td>" + spice.name + "</td>" +
+                                    "<td>" + Brauhaus.displayDuration(spice.time) + "</td>" +
+                                    "<td>" + spice.use + "</td>" +
+                                    "</tr>");
+                            }                          
+                        });
+
+                        $.each(recipe.yeast, function (index, yeast) {
+                            $("#yeasts").append("<tr><td>" + yeast.name + "</td><td>" + yeast.laboratory + "</td><td>" + yeast.attenuation + "%</td></tr>");
+                        });
+
+                        $("#moreStats").append("<tr><td>Batch size</td><td><strong>" + recipe.batchSize + " L</strong></td></tr>");
+                        $("#moreStats").append("<tr><td>Boil time</td><td><strong>" + (recipe.boilEndTime - recipe.boilStartTime).toFixed(0) + " min</strong></td></tr>");
+
+                        $('#preview').show();
+                    };
+                    reader.readAsText(input.files[0]);
+                }
+            }
+        </script>
+    </div>
+</div>
+
+<div id="preview" style="display: none">
+    <button type="button" class="btn btn-default hidden-print" onclick="window.print();">
+        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print...
+    </button>
+    <h2 class="hidden-print" id="name">Name</h2>
+    <h6 id="style">Style</h6>
+    
+    <table id="stats" class="table">
+    </table>
+
+    <h2>Fermentables</h2>
+    <table id="fermentables" class="table">
+        <tr><th>Amount</th><th>Fermentable</th><th>Use</th><th>PPG</th><th>Color</th></tr>
+    </table>
+    
+    <h2>Hops</h2>
+    <table id="hops" class="table">
+        <tr><th>Amount</th><th>Hop</th><th>Time</th><th>Use</th><th>Form</th><th>AA</th></tr>
+    </table>
+    
+    <h2>Yeast</h2>
+    <table id="yeasts" class="table">
+        <tr><th>Name</th><th>Lab/Product</th><th>Attenuation</th></tr>
+    </table>
+    
+    <h2>Extras</h2>
+    <table id="extras" class="table">
+        <tr><th>Amount</th><th>Name</th><th>Time</th><th>Use</th></tr>
+    </table>
+    
+    <h2>Stats</h2>
+    <table id="moreStats" class="table"></table>
+</div>

@@ -1,0 +1,16 @@
+pipeline:
+  docker:
+    image: plugins/docker
+    repo: sboulema/hops
+  deploy:
+    image: appleboy/drone-ssh
+    host: sboulema.nl
+    username: ${SSH_USERNAME}
+    password: ${SSH_PASSWORD}
+    port: 22
+    script:
+      - sudo docker-compose -f /home/sboulema/stackfiles/Hops.yml pull
+      - sudo docker-compose -f /home/sboulema/stackfiles/Hops.yml up -d
+      - sudo docker-compose -f /home/sboulema/stackfiles/HaProxy.yml up -d
+    when:
+      status: success

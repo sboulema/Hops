@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:1.1.0-sdk-msbuild-rc4
+FROM microsoft/dotnet
  
 COPY src/Hops/ /dotnetapp
 WORKDIR /dotnetapp

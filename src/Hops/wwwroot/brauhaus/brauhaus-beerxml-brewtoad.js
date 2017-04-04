@@ -36,6 +36,12 @@ https://github.com/homebrewing/brauhausjs-beerxml
                     case "boil_size":
                         recipe.boilSize = parseFloat(recipeProperty.textContent);
                         break;
+                    case "boil_time":
+                        recipe.boilTime = parseFloat(recipeProperty.textContent);
+                        break;
+                    case "type":
+                        recipe.type = recipeProperty.textContent;
+                        break;
                     case "efficiency":
                         recipe.mashEfficiency = parseFloat(recipeProperty.textContent);
                         break;

@@ -9,6 +9,8 @@
     ViewBag.Title = "Search results - Hops";
 }
 
+<base href="/search/" />
+
 @if (!string.IsNullOrEmpty(Model.Pagination.SearchTerm))
 {
     <h3>Search results for "@Model.Pagination.SearchTerm":</h3>

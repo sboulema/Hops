@@ -107,7 +107,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return _resultMapper.Map(totalResultList, searchTerm, searchTerm, page);
+            return _resultMapper.Map(totalResultList, searchTerm, searchTerm, page, 0, "freetext");
         }
 
         public ListModel<HopModel> Search(List<long> hopIds, int page)
@@ -137,7 +137,7 @@ namespace Hops.Repositories
             .OrderBy(h => h.Hop.Name)
             .ToList();
 
-            return _resultMapper.Map(totalResultList, ((AromaProfileEnum)aromaProfile).Wordify(), page);
+            return _resultMapper.Map(totalResultList, ((AromaProfileEnum)aromaProfile).Wordify(), string.Empty, page, aromaProfile, string.Empty);
         }
 
         public ListModel<HopModel> TopSubstitutors()

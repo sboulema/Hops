@@ -22,8 +22,11 @@ namespace Hops.Controllers
             return View();
         }
 
-        [HttpGet("{searchTerm}/{page:int?}")]
-        public IActionResult Results(string searchTerm, int page = 1)
+        [HttpGet("{searchTerm}")]
+        public IActionResult Results(string searchTerm) => Results(searchTerm, 1);
+
+        [HttpGet("{searchTerm}/page/{page:int}")]
+        public IActionResult Results(string searchTerm, int page)
         {
             var results = _sqliteRepository.Search(SlugMapper.SlugToString(searchTerm), page);
 
@@ -44,8 +47,11 @@ namespace Hops.Controllers
             return View(page);
         }
 
-        [HttpGet("aroma/{profile:int}/{page:int?}")]
-        public IActionResult Results(int profile, int page = 1)
+        [HttpGet("aroma/{profile:int}")]
+        public IActionResult Results(int profile) => Results(profile, 1);
+
+        [HttpGet("aroma/{profile:int}/page/{page:int}")]
+        public IActionResult Results(int profile, int page)
         {
             var results = _sqliteRepository.Search(profile, page);
 
@@ -58,8 +64,11 @@ namespace Hops.Controllers
             return _sqliteRepository.Autocomplete(searchTerm);
         }
 
-        [HttpGet("freetext/{searchterm}/{page:int?}")]
-        public IActionResult FreeTextResults(string searchterm, int page = 1)
+        [HttpGet("freetext/{searchterm}")]
+        public IActionResult FreeTextResults(string searchterm) => FreeTextResults(searchterm, 1);
+
+        [HttpGet("freetext/{searchterm}/page/{page:int}")]
+        public IActionResult FreeTextResults(string searchterm, int page)
         {
             var results = _sqliteRepository.FreeTextSearch(searchterm, page);
 

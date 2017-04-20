@@ -50,15 +50,8 @@
             }
 
             function setLabels(labelImage, src) {
-                var maxWidth = parseInt($('#sizeSel').val());
-                var sizes = calculateAspectRatioFit(labelImage.width,
-                    labelImage.height,
-                    0.39 * 96 * maxWidth,
-                    302 + 5); // 0,39 cm/inch * 96 dpi * 5 cm + 5 magic
-
                 $('.labelPrint').attr('src', src);
-                $('.labelPrint').height(sizes.height);
-                $('.labelPrint').width(sizes.width);
+                $('.labelPrint').width($('#sizeSel').val() + "cm");
                 $('#preview').show();
 
                 $('#info')
@@ -94,7 +87,7 @@
         <p>
             @for (int j = 0; j < 3; j++)
             {
-                <img style="border: 1px solid black" class="labelPrint" alt="label" />
+                <img style="border: 1px solid black;" class="labelPrint" alt="label" />
             }
         </p>
     }

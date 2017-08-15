@@ -15,9 +15,9 @@ namespace Hops
 
             services.AddMvc();
 
-            services.AddSingleton<ISqliteRepository, SqliteRepository>();
-            services.AddSingleton<IMaltRepository, MaltRepository>();
-            services.AddSingleton<IYeastRepository, YeastRepository>();
+            services.AddScoped<ISqliteRepository, SqliteRepository>();
+            services.AddScoped<IMaltRepository, MaltRepository>();
+            services.AddScoped<IYeastRepository, YeastRepository>();
 
             services.AddSingleton<IResultMapper, ResultMapper>();
         }

@@ -1,5 +1,5 @@
 # First Stage
-FROM microsoft/dotnet:1.1-sdk
+FROM microsoft/dotnet:2.0-sdk
 
 RUN mkdir /build
 WORKDIR /build
@@ -10,7 +10,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 # Second Stage
-FROM microsoft/dotnet:1.1.2-runtime
+FROM microsoft/dotnet:2.0-runtime
 
 WORKDIR /app
 COPY --from=0 /build/out .

@@ -5,7 +5,7 @@ steps:
     type: build
     image_name: sboulema/hops
     working_directory: ./
-    dockerfile: Dockerfile.multi
+    dockerfile: Dockerfile
   PushingToDockerRegistry:
     title: Pushing to Docker Registry
     type: push

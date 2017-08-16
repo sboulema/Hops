@@ -15,5 +15,7 @@ FROM microsoft/dotnet:2.0-runtime
 WORKDIR /app
 COPY --from=0 /build/out .
 
+ENV ASPNETCORE_URLS http://+:5000 
 EXPOSE 5000/tcp
-ENTRYPOINT dotnet Hops.dll --server.urls http://0.0.0.0:5000
+
+ENTRYPOINT dotnet Hops.dll

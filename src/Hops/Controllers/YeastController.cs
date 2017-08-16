@@ -37,7 +37,7 @@ namespace Hops.Controllers
         {
             var results = yeastRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
 
-            return View("List", results);
+            return View("../Yeast/List", results);
         }
     }
 }

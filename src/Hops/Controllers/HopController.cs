@@ -50,7 +50,7 @@ namespace Hops.Controllers
         {
             var results = _sqliteRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
 
-            return View("List", results);
+            return View("../Hop/List", results);
         }
 
         [HttpGet("[action]/{page:int?}")]

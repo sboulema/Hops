@@ -37,7 +37,7 @@ namespace Hops.Controllers
         {
             var results = maltRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
 
-            return View("../Malt/List", results);
+            return View("~/Views/Malt/List.cshtml", results);
         }
     }
 }

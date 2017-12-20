@@ -30,7 +30,7 @@ namespace Hops.Controllers
         [HttpGet("page/{page}", Name = "Page")]
         public IActionResult Index(int page)
         {
-            return View(_sqliteRepository.Search(string.Empty, page));
+            return View("~/Views/Hop/Index.cshtml", _sqliteRepository.Search(string.Empty, page));
         }
 
         [HttpGet("{id:long}", Name = "Detail")]

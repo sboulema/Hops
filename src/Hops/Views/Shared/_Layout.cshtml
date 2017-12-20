@@ -21,7 +21,24 @@
     <link href="~/fontello-embedded.css" rel="stylesheet" />
     <link href="~/sticky-footer.css" rel="stylesheet" />
 
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBSpAPVZJBuGRejd-sv8kJ9i1FIeyT_1oc",
+            authDomain: "hops-ab2d7.firebaseapp.com",
+            databaseURL: "https://hops-ab2d7.firebaseio.com",
+            projectId: "hops-ab2d7",
+            storageBucket: "hops-ab2d7.appspot.com",
+            messagingSenderId: "973064227489"
+        };
+        firebase.initializeApp(config);
+    </script>
+
     <script src="~/inventory/inventory.js"></script>
+    <script src="~/inventory/firebaseHelper.js"></script>
 
     @RenderSection("Scripts", false)
 </head>

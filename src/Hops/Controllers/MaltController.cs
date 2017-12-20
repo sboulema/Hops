@@ -23,7 +23,7 @@ namespace Hops.Controllers
         [HttpGet("page/{page}")]
         public IActionResult Index(int page)
         {
-            return View(maltRepository.Search(string.Empty, page));
+            return View("~/Views/Malt/Index.cshtml", maltRepository.Search(string.Empty, page));
         }
 
         [HttpGet("{id}")]

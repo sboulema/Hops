@@ -23,7 +23,7 @@ namespace Hops.Controllers
         [HttpGet("page/{page}")]
         public IActionResult Index(int page)
         {
-            return View(yeastRepository.Search(string.Empty, page));
+            return View("~/Views/Yeast/Index.cshtml", yeastRepository.Search(string.Empty, page));
         }
 
         [HttpGet("{id}")]

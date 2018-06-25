@@ -1,5 +1,5 @@
 # First Stage
-FROM microsoft/dotnet:2.1.1-sdk
+FROM microsoft/dotnet:2.1.301-sdk
 
 RUN mkdir /build
 WORKDIR /build

@@ -1,5 +1,5 @@
 # First Stage
-FROM microsoft/aspnetcore-build:2.0.0
+FROM microsoft/dotnet:2.1.1-sdk
 
 RUN mkdir /build
 WORKDIR /build
@@ -10,7 +10,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 # Second Stage
-FROM microsoft/aspnetcore:2.0.0
+FROM microsoft/dotnet:2.1.1-aspnetcore-runtime
 
 WORKDIR /app
 COPY --from=0 /build/out .

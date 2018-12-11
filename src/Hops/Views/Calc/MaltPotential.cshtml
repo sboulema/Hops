@@ -1,0 +1,73 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Malt Potential Extract Calculator - Hops";
+}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Malt Potential Extract Calculator</div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="cg">Dry Basis Coarse Grind (CG):</label>
+                    <input type="number" class="form-control" id="cg" value="80">
+                </div>
+                <div class="form-group">
+                    <label for="fg">Dry Basis Fine Grind (FG):</label>
+                    <input type="number" class="form-control" id="fg" value="80">
+                </div>
+                <div class="form-group">
+                    <label for="potentialExtract">Potential Extract:</label>
+                    <input type="text" class="form-control" id="potentialExtract">
+                </div>
+                <div class="form-group">
+                    <label for="extractPpg">Extract PPG:</label>
+                    <input type="text" class="form-control" id="extractPpg">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Information</div>
+
+            <div class="panel-body">
+                Formula:
+                <pre>
+PPG = (((CG + FG) ÷ 2) ÷ 100) × 46
+Potential = (PPG ÷ 1000) + 1
+                </pre>
+            </div>
+        </div>
+
+<script>
+    function calculatePpg() {
+        var cg = parseFloat($('#cg').val());
+        var fg = parseFloat($('#fg').val());
+        var ppg = (((cg + fg) / 2) / 100) * 46;
+        $('#extractPpg').val(ppg.toFixed(0));
+    }
+
+    function calculatePotential() {
+        var ppg = $('#extractPpg').val();
+        var potential = (ppg / 1000) + 1;
+        $('#potentialExtract').val(potential.toFixed(3));
+    }
+
+    $('#cg').keyup(function () {
+        calculatePpg();
+        calculatePotential();
+    });
+
+    $('#fg').keyup(function () {
+        calculatePpg();
+        calculatePotential();
+    });
+
+    calculatePpg();
+    calculatePotential();
+</script>

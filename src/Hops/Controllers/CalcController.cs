@@ -52,5 +52,11 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult MaltPotential()
+        {
+            return View();
+        }
     }
 }

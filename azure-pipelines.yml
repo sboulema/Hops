@@ -26,4 +26,4 @@ steps:
   displayName: 'Deploy an image'
   inputs:
     sshEndpoint: CurleezBox
-commands: /home/sboulema/deployDockerContainer Hops hops
+    commands: /home/sboulema/deployDockerContainer Hops hops

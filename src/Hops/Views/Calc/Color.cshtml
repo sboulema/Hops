@@ -1,0 +1,104 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Color Converter - Hops";
+}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Color Converter</div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="srm">SRM:</label>
+                    <input type="number" class="form-control" id="srm">
+                </div>
+                <div class="form-group">
+                    <label for="lovibond">&deg;L:</label>
+                    <input type="number" class="form-control" id="lovibond">
+                </div>
+                <div class="form-group">
+                    <label for="ebc">EBC:</label>
+                    <input type="number" class="form-control" id="ebc">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Information</div>
+
+            <div class="panel-body">
+                <p>This converter converts between different color values.</p>
+
+                Formula:
+                <pre>
+SRM = EBC × 0.508
+SRM = (1.3546 × °L) - 0.76 
+EBC = SRM × 1.97 
+°L = (SRM + 0.76) ÷ 1.3546 
+                </pre>
+            </div>
+        </div>
+
+<script>
+    function srm_to_lovibond(srm) {
+        return (srm + 0.76) / 1.3546;
+    }
+
+    function srm_to_ebc(srm) {
+        return srm * 1.97;
+    }
+
+    function ebc_to_lovibond(ebc) {
+        return srm_to_lovibond(ebc_to_srm(ebc));
+    }
+
+    function ebc_to_srm(ebc) {
+        return ebc * 0.508;
+    }
+
+    function lovibond_to_srm(lovibond) {
+        return (1.3546 * lovibond) - 0.76;
+    }
+
+    function lovibond_to_ebc(lovibond) {
+        return srm_to_ebc(lovibond_to_srm(lovibond));
+    }
+
+    $('#srm').keyup(function () {
+        if ($(this).val() === '') {
+            $('#ebc').val('');
+            $('#lovibond').val('');
+            return;
+        }
+        var srm = parseFloat($(this).val());
+        $('#ebc').val(srm_to_ebc(srm).toFixed(1));
+        $('#lovibond').val(srm_to_lovibond(srm).toFixed(1));
+    });
+
+    $('#ebc').keyup(function () {
+        if ($(this).val() === '') {
+            $('#srm').val('');
+            $('#lovibond').val('');
+            return;
+        }
+        var ebc = parseFloat($(this).val());
+        $('#srm').val(ebc_to_srm(ebc));
+        $('#lovibond').val(ebc_to_lovibond(ebc).toFixed(1));
+    });
+
+    $('#lovibond').keyup(function () {
+        if ($(this).val() === '') {
+            $('#srm').val('');
+            $('#ebc').val('');
+            return;
+        }
+        var lovibond = parseFloat($(this).val());
+        $('#srm').val(lovibond_to_srm(lovibond).toFixed(1));
+        $('#ebc').val(lovibond_to_ebc(lovibond).toFixed(1));
+    });
+</script>

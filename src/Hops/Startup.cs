@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Hops.Models;
 using Hops.Repositories;
 using Hops.Mappers;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hops
 {
@@ -13,7 +14,7 @@ namespace Hops
         {
             services.AddDbContext<HopContext>();
 
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddScoped<ISqliteRepository, SqliteRepository>();
             services.AddScoped<IMaltRepository, MaltRepository>();

@@ -1,11 +1,21 @@
-FROM microsoft/dotnet
- 
-COPY src/Hops/ /dotnetapp
-WORKDIR /dotnetapp
+# First Stage
+FROM microsoft/dotnet:2.2-sdk
 
+RUN mkdir /build
+WORKDIR /build
+
+COPY src/Hops/ .
 RUN dotnet restore
+
+RUN dotnet publish -c Release -o out
+
+# Second Stage
+FROM microsoft/dotnet:2.2-aspnetcore-runtime
+
+WORKDIR /app
+COPY --from=0 /build/out .
 
 ENV ASPNETCORE_URLS http://+:5000 
 EXPOSE 5000/tcp
 
-ENTRYPOINT dotnet run
+ENTRYPOINT dotnet Hops.dll

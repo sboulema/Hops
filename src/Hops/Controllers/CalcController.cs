@@ -34,5 +34,23 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult Color()
+        {
+            return View();
+        }
+
+        [Route("[action]")]
+        public IActionResult Alcohol()
+        {
+            return View();
+        }
+
+        [Route("[action]")]
+        public IActionResult Hydrometer()
+        {
+            return View();
+        }
     }
 }

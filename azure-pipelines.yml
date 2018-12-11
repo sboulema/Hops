@@ -1,0 +1,29 @@
+resources:
+- repo: self
+
+queue:
+  name: Hosted Linux Preview
+
+steps:
+- task: Docker@1
+  displayName: 'Build an image'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Docker Hub'
+    imageName: sboulema/hops
+    includeLatestTag: true
+
+- task: Docker@1
+  displayName: 'Push an image'
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'Docker Hub'
+    command: 'Push an image'
+    imageName: sboulema/hops
+    includeLatestTag: true
+
+- task: SSH@0
+  displayName: 'Deploy an image'
+  inputs:
+    sshEndpoint: CurleezBox
+commands: /home/sboulema/deployDockerContainer Hops hops

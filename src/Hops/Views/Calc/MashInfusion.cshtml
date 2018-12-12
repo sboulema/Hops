@@ -1,0 +1,168 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Mash Infusion Calculator - Hops";
+}
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Mash Infusion Calculator</div>
+
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="measurementSystem">Measurement System:</label>
+                    <select class="form-control" id="measurementSystem">
+                        <option value="1">U.S. Customary</option>
+                        <option value="2">Metric</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="starting-temp">Starting Temperature (<span id="startingTempLabel">&deg;F</span>):</label>
+                    <input type="number" class="form-control" id="starting-temp" value="152">
+                </div>
+                <div class="form-group">
+                    <label for="grain-weight">Grain Weight (<span id="grainWeightLabel">lb</span>):</label>
+                    <input type="number" class="form-control" id="grain-weight" value="10">
+                </div>
+                <div class="form-group">
+                    <label for="mash-thickness">Mash Thickness (<span id="mashThicknessLabel">qt/lb</span>):</label>
+                    <input type="number" class="form-control" id="mash-thickness" value="1.5">
+                </div>
+                <div class="form-group">
+                    <label for="target-temp">Target Temperature (<span id="targetTempLabel">&deg;F</span>):</label>
+                    <input type="text" class="form-control" id="target-temp" value="168">
+                </div>
+                <div class="form-group">
+                    <label for="boiling-water">Amount Of Boiling Water (<span id="boilingWaterLabel">gal</span>):</label>
+                    <input type="text" class="form-control" id="boiling-water">
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Information</div>
+
+            <div class="panel-body">
+                <p>Finds the amount of boiling water needed to reach a new rest temperature in your mash tun.</p>
+
+                Formula:
+                <pre>
+normalizedVolumeAddition = ((targetTemp - startingTemp) * (thermodynamicConstant * grainWeight + mashVolume) / (boilingTemp - targetTemp));
+                </pre>
+            </div>
+        </div>
+
+<script>
+    function celsiusToFahrenheit(celsius) {
+        return (celsius * (9 / 5)) + 32;
+    }
+
+    function fahrenheitToCelsius(fahrenheit) {
+        return (fahrenheit - 32) * (5 / 9);
+    }
+
+    function qtToGal(qt) {
+        return qt * 0.25;
+    }
+
+    function qtToL(qt) {
+        return qt * 0.946353;
+    }
+
+    function lbToKg(lb) {
+        return lb * 0.453592;
+    }
+
+    function kgToLb(kg) {
+        return kg * 2.20462;
+    }
+
+    function qtLbToLKg(qtLb) {
+        return qtLb * 2.08635112182;
+    }
+
+    function LKgtoQtLb(lKg) {
+        return lKg * 0.479305707242;
+    }
+
+    $('#measurementSystem').on('change', function () {
+        var $this = $(this);
+
+        if (parseInt($this.val()) === 2) {
+            $('#starting-temp').val(fahrenheitToCelsius($('#starting-temp').val()).toFixed(1));
+            $('#target-temp').val(fahrenheitToCelsius($('#target-temp').val()).toFixed(1))
+            $('#grain-weight').val(lbToKg($('#grain-weight').val()).toFixed(2))
+            $('#mash-thickness').val(qtLbToLKg($('#mash-thickness').val()).toFixed(2))
+            $('#startingTempLabel').html('&deg;C');
+            $('#targetTempLabel').html('&deg;C');
+            $('#grainWeightLabel').text('Kg');
+            $('#mashThicknessLabel').text('L/Kg');
+            $('#boilingWaterLabel').text('L');
+        } else {
+            $('#starting-temp').val(celsiusToFahrenheit($('#starting-temp').val()).toFixed(1));
+            $('#target-temp').val(celsiusToFahrenheit($('#target-temp').val()).toFixed(1))
+            $('#grain-weight').val(kgToLb($('#grain-weight').val()).toFixed(2))
+            $('#mash-thickness').val(LKgtoQtLb($('#mash-thickness').val()).toFixed(2))
+            $('#startingTempLabel').html('&deg;F');
+            $('#targetTempLabel').html('&deg;F');
+            $('#grainWeightLabel').text('Lb');
+            $('#mashThicknessLabel').text('qt/lb');
+            $('#boilingWaterLabel').text('gal');
+        }
+
+        calcInfusion();
+    });
+
+    $('input').on('keyup', function () {
+        calcInfusion();
+    });
+
+    function calcVolumeAddition(startingTemp, targetTemp, thermodynamicConstant, grainWeight, mashVolume, boilingTemp) {
+        if (targetTemp <= startingTemp) {
+            return 0;
+        }
+
+        var normalizedVolumeAddition = ((targetTemp - startingTemp) *
+            (thermodynamicConstant * grainWeight + mashVolume) /
+            (boilingTemp - targetTemp));
+
+        if (isNaN(normalizedVolumeAddition)) {
+            return 0;
+        }
+
+        return normalizedVolumeAddition;
+    }
+
+    function calcInfusion() {
+        var measurementSystem = parseInt($('#measurementSystem').val());
+        var startingTemp = parseFloat($('#starting-temp').val());
+        var grainWeight = parseFloat($('#grain-weight').val());
+        var mashThickness = parseFloat($('#mash-thickness').val());
+        var targetTemp = parseFloat($('#target-temp').val());
+        var thermodynamicConstant = 0.2;
+        var boilingTemp = 212;
+
+        if (measurementSystem === 2) {
+            thermodynamicConstant = 0.41;
+            boilingTemp = 100;
+        }
+
+        var mashVolume = grainWeight * mashThickness;
+
+        var volumeAddition = calcVolumeAddition(startingTemp, targetTemp, thermodynamicConstant, grainWeight, mashVolume, boilingTemp);
+
+        $('#boiling-water').val(qtToGal(volumeAddition).toFixed(2));
+
+        if (measurementSystem === 2) {
+            $('#boiling-water').val(qtToL(volumeAddition).toFixed(2));
+            $('.extra').hide();
+        }
+    }
+
+    calcInfusion();
+
+</script>

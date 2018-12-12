@@ -64,5 +64,11 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult MashInfusion()
+        {
+            return View();
+        }
     }
 }

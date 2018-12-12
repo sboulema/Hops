@@ -1,0 +1,563 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Mash Water Calculator - Hops";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">Mash Water Calculator</div>
+
+    <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="mash-profile">Mash Profile:</label>
+                        <select class="form-control" id="mash-profile">
+                            <option value="1">Single Infusion, Batch Sparge</option>
+                            <option value="2">Single Infusion, Mash Out, Batch Sparge</option>
+                            <option value="3">Single Infusion, Mash Out, Batch Sparge (Equal Runnings)</option>
+                            <option value="4">Single Infusion, Two Equal Batch Sparges</option>
+                            <option value="5">Single Infusion, No Sparge (BIAB)</option>
+                            <option value="6">Single Infusion, Sparge Rinse (BIAB)</option>
+                        </select>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Mash Schedule</div>
+
+                        <div class="panel-body">
+                            <div id="mash-schedule-error" class="alert alert-danger" role="alert">Required Fields Are Missing</div>
+                            <ol id="mash-schedule"></ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 mash">
+                    <div class="form-group">
+                        <label for="mash-time">Mash Time (min):</label>
+                        <input type="number" class="form-control" id="mash-time" value="60">
+                    </div>
+                    <div class="form-group">
+                        <label for="saccharification-temp">Temperature (&deg;F):</label>
+                        <input type="number" class="form-control" id="saccharification-temp" value="155">
+                    </div>
+                    <div class="form-group">
+                        <label for="grain-weight">Grain Weight (lb):</label>
+                        <input type="number" class="form-control" id="grain-weight">
+                    </div>
+                    <div class="form-group">
+                        <label for="grain-temp">Grain Temperature (&deg;F):</label>
+                        <input type="number" class="form-control" id="grain-temp" value="65">
+                    </div>
+                    <div class="form-group">
+                        <label for="boil-volume">Boil Volume (gal):</label>
+                        <input type="number" class="form-control" id="boil-volume">
+                    </div>
+                    <div class="form-group">
+                        <label for="lauter-deadspace">Lauter Deadspace (gal):</label>
+                        <input type="number" class="form-control" id="lauter-deadspace">
+                    </div>
+                    <div class="form-group">
+                        <label for="mash-thickness">Mash Thickness (qt/lb):</label>
+                        <input type="number" class="form-control" id="mash-thickness">
+                    </div>
+                    <div class="form-group">
+                        <label for="boiling-temp">Boiling Temperature (&deg;F):</label>
+                        <input type="number" class="form-control" id="boiling-temp" value="212">
+                    </div>
+                    <div class="form-group">
+                        <label for="grain-absorption-factor">Grain Absorption Factor (gal/lb):</label>
+                        <input type="number" class="form-control" id="grain-absorption-factor">
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+<script>
+    Number.prototype.round = function (decimals) {
+        return Math.round(this * Math.pow(10, decimals)) / Math.pow(10, decimals);
+    }
+
+    String.prototype.supplant = function (o) {
+        return this.replace(/{([^{}]*)}/g,
+            function (a, b) {
+                var r = o[b];
+                return typeof r === 'string' || typeof r === 'number' ? r : a;
+            }
+        );
+    };
+
+    $(document).ready(function () {
+
+        function recalculate() {
+            var valid = true;
+
+            $('.mash input').each(function (idx) {
+                if (isNaN(parseFloat($(this).val()))) {
+                    valid = false;
+                    $(this).parent().addClass('has-error');
+                } else {
+                    $(this).parent().removeClass('has-error');
+                }
+            });
+
+            if (valid === false) {
+                $('#mash-schedule').hide();
+                $('#mash-schedule-error').show();
+                return;
+            } else {
+                $('#mash-schedule-error').hide();
+                $('#mash-schedule').show();
+            }
+
+            var mashThickness = parseFloat(Boolean(false) ?
+                $('#mash-thickness').val() :
+                $('#mash-thickness').val() / 4);
+
+            var mashCalc = new MashWaterCalculator({
+                metric: false,
+                grainWeight: parseFloat($('#grain-weight').val()),
+                grainTemp: parseFloat($('#grain-temp').val()),
+                boilVolume: parseFloat($('#boil-volume').val()),
+                grainAbsorptionFactor: parseFloat($('#grain-absorption-factor').val()),
+                lauterDeadspace: parseFloat($('#lauter-deadspace').val()),
+                mashThickness: mashThickness,
+                mashTemp: parseFloat($('#saccharification-temp').val()),
+                mashTime: parseFloat($('#mash-time').val()),
+                boilingTemp: parseFloat($('#boiling-temp').val())
+            });
+
+            var schedule,
+                profile = parseInt($('#mash-profile').val());
+
+            switch (profile) {
+                case 1:
+                    schedule = mashCalc.singleInfusionBatchSparge();
+                    break;
+                case 2:
+                    schedule = mashCalc.singleInfusionMashOutBatchSparge();
+                    break;
+                case 3:
+                    schedule = mashCalc.singleInfusionMashOutBatchSpargeEqualRunnings();
+                    break;
+                case 4:
+                    schedule = mashCalc.singleInfusionTwoEqualBatchSparges();
+                    break;
+                case 5:
+                    schedule = mashCalc.singleInfusionNoSpargeBiab();
+                    break;
+                case 6:
+                    schedule = mashCalc.singleInfusionSpargeRinseBiab();
+                    break;
+                default:
+                    return;
+            }
+
+            $('#mash-schedule').html(schedule);
+        }
+
+        $('input, select').on('keyup change', recalculate)
+
+        function loadEquipmentProfile() {
+            var metric = $('body').attr('data-metric') === 'true';
+            var $equipmentProfile = $('#equipment-profile').find(":selected");
+
+            var grainAbsorptionFactor = parseFloat($equipmentProfile.attr('data-grain-absorption-factor')),
+                boilingTemp = parseFloat($equipmentProfile.attr('data-boiling-temp')),
+                mashThickness = parseFloat($equipmentProfile.attr('data-mash-thickness')),
+                lauterDeadspace = parseFloat($equipmentProfile.attr('data-lauter-deadspace'));
+
+            if (isNaN(grainAbsorptionFactor)) {
+                if (metric) {
+                    grainAbsorptionFactor = 0.8345;
+                } else {
+                    grainAbsorptionFactor = 0.1
+                }
+            }
+
+            if (isNaN(mashThickness)) {
+                if (metric) {
+                    mashThickness = 2.6079
+                } else {
+                    mashThickness = 1.25
+                }
+            }
+
+            if (isNaN(lauterDeadspace)) {
+                if (metric) {
+                    lauterDeadspace = 2
+                } else {
+                    lauterDeadspace = 0.5
+                }
+            }
+
+            $('#grain-absorption-factor').val(grainAbsorptionFactor);
+            $('#mash-thickness').val(mashThickness);
+            $('#lauter-deadspace').val(lauterDeadspace);
+
+            recalculate();
+        }
+
+        $('#equipment-profile').change(function () {
+            loadEquipmentProfile();
+        });
+
+        loadEquipmentProfile();
+    });
+
+    function MashWaterCalculator(attrs) {
+        for (var i in attrs) {
+            this[i] = attrs[i];
+        }
+
+        if (this.metric) {
+            this.thermodynamicConstant = 0.41;
+            this.mashOutTemp = 75.5;
+            this.volumeUnit = 'L'
+            this.weightUnit = 'kg'
+            this.tempUnit = '&deg;C';
+        } else {
+            this.thermodynamicConstant = 0.2;
+            this.mashOutTemp = 168;
+            this.volumeUnit = 'gal'
+            this.weightUnit = 'lb'
+            this.tempUnit = '&deg;F';
+        }
+
+        this.strikeStep = function (mashWater, strikeTemp) {
+            return 'Strike grains with {mashWater} {volumeUnit} of water at {strikeTemp} {tempUnit}.'.supplant({
+                mashWater: mashWater.round(2),
+                volumeUnit: this.volumeUnit,
+                strikeTemp: strikeTemp.round(1),
+                tempUnit: this.tempUnit
+            });
+        }
+
+        this.mashRestStep = function (mashTemp, mashTime) {
+            return 'Mash at {mashTemp} {tempUnit} for {mashTime} min.'.supplant({
+                mashTemp: mashTemp.round(1),
+                tempUnit: this.tempUnit,
+                mashTime: mashTime
+            });
+        }
+
+        this.vorlaufAndLauterStep = function (runnings, which) {
+            return 'Vorlauf and lauter {runnings} {volumeUnit} in your {which} runnings.'.supplant({
+                runnings: runnings.round(2),
+                volumeUnit: this.volumeUnit,
+                which: which
+            });
+        }
+
+        this.spargeStep = function (spargeWater, spargeTemp) {
+            return 'Add {spargeWater} {volumeUnit} of sparge water at {spargeTemp} {tempUnit}.'.supplant({
+                spargeWater: spargeWater.round(2),
+                spargeTemp: spargeTemp,
+                volumeUnit: this.volumeUnit,
+                tempUnit: this.tempUnit
+            });
+        }
+
+        this.mashOutStep = function (mashOut, mashOutTemp) {
+            return 'Mash out with {mashOut} {volumeUnit} of water at {mashOutTemp} {tempUnit}.'.supplant({
+                mashOut: mashOut.round(2),
+                volumeUnit: this.volumeUnit,
+                mashOutTemp: mashOutTemp,
+                tempUnit: this.tempUnit
+            });
+        }
+
+        this.combinedRunningsStep = function (combinedRunnings) {
+            return 'Your combined runnings should be {combinedRunnings} {volumeUnit}.'.supplant({
+                combinedRunnings: combinedRunnings.round(2),
+                volumeUnit: this.volumeUnit
+            });
+        }
+
+        this.rinseSpargeStep = function (spargeWaterVolume) {
+            return 'Rinse the grain in {spargeWaterVolume} {volumeUnit} sparge water at {spargeTemp} {tempUnit}.'.supplant({
+                spargeWaterVolume: spargeWaterVolume.round(2),
+                spargeTemp: this.mashOutTemp,
+                volumeUnit: this.volumeUnit,
+                tempUnit: this.tempUnit
+            });
+        }
+
+        this.drainBagStep = function (combinedRunningsVolume) {
+            return 'Drain the grain bag into the mash water to make {combinedRunningsVolume} {volumeUnit} wort.'.supplant({
+                combinedRunningsVolume: combinedRunningsVolume.round(2),
+                volumeUnit: this.volumeUnit
+            });
+        }
+
+        this.drainBagAndCombineRunningsStep = function (combinedRunningsVolume) {
+            return 'Drain the grain bag and combine the mash and sparge water to make {combinedRunningsVolume} {volumeUnit} wort.'.supplant({
+                combinedRunningsVolume: combinedRunningsVolume.round(2),
+                volumeUnit: this.volumeUnit
+            });
+        }
+
+        //
+        // Returns the temperature of water required to raise the grain to the
+        // correct mash temperature
+        //
+        this.strikeWaterTemp = function (mashThickness, mashTemp, grainTemp) {
+            if (this.metric) {
+                var mt = (mashThickness * 0.119826427) * 4;
+            } else {
+                var mt = mashThickness * 4;
+            }
+            return (this.thermodynamicConstant / mt) *
+                (mashTemp - grainTemp) + mashTemp;
+        }
+
+        //
+        // Returns the volume in gallons of boiling water required to raise the
+        // mash to a given temperature
+        //
+        this.mashInfusionTemp = function (mashVolume, grainWeight, mashTemp, targetTemp) {
+            return ((targetTemp - mashTemp) *
+                (this.thermodynamicConstant * grainWeight + mashVolume) /
+                (this.boilingTemp - targetTemp)) / 4;
+        }
+
+        //
+        // Returns the volume in gallons of boiling water required to raise the mash
+        // to the mash out temperature
+        //
+        this.mashOutWaterVolume = function (mashVolume, grainWeight, mashTemp) {
+            return this.mashInfusionTemp(mashVolume, grainWeight, mashTemp, this.mashOutTemp);
+        }
+
+        //
+        // Wraps each list item in HTML list item tags, adds line breaks, and returns
+        // a string
+        //
+        this.arrayToList = function (arr) {
+            return arr.map(function (o) { return '<li>' + o + '</li>' }).join("\n");
+        }
+
+        //
+        // A single infusion mash with a single batch sparge
+        //
+        this.singleInfusionBatchSparge = function () {
+            //
+            var mashWaterVolume = this.grainWeight * this.mashThickness + this.lauterDeadspace;
+
+            //
+            var correctedMashThickness = mashWaterVolume / this.grainWeight;
+
+            //
+            var spargeWaterVolume = this.boilVolume - mashWaterVolume +
+                (this.grainWeight * this.grainAbsorptionFactor) + this.lauterDeadspace;
+
+            //
+            var firstRunnings = mashWaterVolume -
+                (this.grainWeight * this.grainAbsorptionFactor) - this.lauterDeadspace;
+
+            //
+            var secondRunnings = spargeWaterVolume;
+
+            //
+            var combinedRunnings = firstRunnings + secondRunnings;
+
+            //
+            var strikeWaterTemp =
+                this.strikeWaterTemp(correctedMashThickness, this.mashTemp, this.grainTemp);
+
+            return this.arrayToList([
+                this.strikeStep(mashWaterVolume, strikeWaterTemp),
+                this.mashRestStep(this.mashTemp, this.mashTime),
+                this.vorlaufAndLauterStep(firstRunnings, 'first'),
+                this.spargeStep(spargeWaterVolume, this.mashOutTemp),
+                this.vorlaufAndLauterStep(secondRunnings, 'second'),
+                this.combinedRunningsStep(combinedRunnings)
+            ]);
+        }
+
+        //
+        // A single infusion mash with a mash out raise the mash out temp before
+        // a single batch sparge
+        //
+        this.singleInfusionMashOutBatchSparge = function () {
+            // Water required to mash plus additional water to fill the mash tun
+            var mashWaterVolume = (this.grainWeight * this.mashThickness) +
+                this.lauterDeadspace;
+
+            // Mash thickness changes slightly because of the lauter deadspace
+            var correctedMashThickness = mashWaterVolume / this.grainWeight;
+
+            // Calculate amount of boiling water is needed to bring the mash to the mash
+            // out temperature
+            var mashOutWaterVolume =
+                this.mashOutWaterVolume(mashWaterVolume, this.grainWeight, this.mashTemp);
+
+            // Mash water + mash out water - water absorbed by grain - lauter deadspace
+            var firstRunnings = mashWaterVolume + mashOutWaterVolume -
+                (this.grainWeight * this.grainAbsorptionFactor) - this.lauterDeadspace;
+
+            // Use the rest of the water for the sparge
+            var spargeWaterVolume = this.boilVolume - firstRunnings;
+
+            // Grain is already saturated and deadspace is full
+            var secondRunnings = spargeWaterVolume;
+
+            // Combined runnings
+            var combinedRunnings = firstRunnings + secondRunnings;
+
+            // Calculate strike water temperature
+            var strikeWaterTemp =
+                this.strikeWaterTemp(correctedMashThickness, this.mashTemp, this.grainTemp);
+
+            return this.arrayToList([
+                this.strikeStep(mashWaterVolume, strikeWaterTemp),
+                this.mashRestStep(this.mashTemp, this.mashTime),
+                this.mashOutStep(mashOutWaterVolume, this.boilingTemp),
+                this.vorlaufAndLauterStep(firstRunnings, 'first'),
+                this.spargeStep(spargeWaterVolume, this.mashOutTemp),
+                this.vorlaufAndLauterStep(secondRunnings, 'second'),
+                this.combinedRunningsStep(combinedRunnings)
+            ]);
+        }
+
+        //
+        // A single infusion mash with a mash out to bring the volume of the first
+        // runnings to half the boil volume and a single batch sparge with the
+        // remaining water.
+        //
+        this.singleInfusionMashOutBatchSpargeEqualRunnings = function () {
+            // Mash with just enough water
+            var mashWaterVolume = this.grainWeight * this.mashThickness;
+
+            // Mash out water volume + first runnings = half of the pre-boil volume
+            var mashOutWaterVolume = (this.boilVolume / 2) -
+                (mashWaterVolume - (this.grainWeight * this.grainAbsorptionFactor) - this.lauterDeadspace);
+
+            // Sparge water makes up the other half of the pre-boil volume
+            var spargeWaterVolume = this.boilVolume / 2;
+
+            // Mash water + mash out water - grain absorption - lauter deadspace
+            var firstRunnings = mashWaterVolume + mashOutWaterVolume -
+                (this.grainWeight * this.grainAbsorptionFactor) - this.lauterDeadspace;
+
+            //
+            var secondRunnings = spargeWaterVolume;
+
+            //
+            var combinedRunnings = firstRunnings + secondRunnings;
+
+            //
+            var strikeWaterTemp =
+                this.strikeWaterTemp(this.mashThickness, this.mashTemp, this.grainTemp);
+
+            return this.arrayToList([
+                this.strikeStep(mashWaterVolume, strikeWaterTemp),
+                this.mashRestStep(this.mashTemp, this.mashTime),
+                this.mashOutStep(mashOutWaterVolume, this.mashOutTemp),
+                this.vorlaufAndLauterStep(firstRunnings, 'first'),
+                this.spargeStep(spargeWaterVolume, this.mashOutTemp),
+                this.vorlaufAndLauterStep(secondRunnings, 'second'),
+                this.combinedRunningsStep(combinedRunnings)
+            ]);
+        }
+
+        //
+        // A single infusion mash with two batch sparges, each using half of the total
+        // sparge water.
+        //
+        this.singleInfusionTwoEqualBatchSparges = function () {
+            //
+            var mashWaterVolume = this.grainWeight * this.mashThickness + this.lauterDeadspace;
+
+            //
+            var correctedMashThickness = mashWaterVolume / this.grainWeight;
+
+            //
+            var firstRunnings = mashWaterVolume -
+                (this.grainWeight * this.grainAbsorptionFactor) - this.lauterDeadspace;
+
+            //
+            var spargeWaterVolume = (this.boilVolume - firstRunnings) / 2;
+
+            //
+            var secondRunnings = spargeWaterVolume;
+
+            //
+            var thirdRunnings = spargeWaterVolume;
+
+            //
+            var combinedRunnings = firstRunnings + secondRunnings + thirdRunnings;
+
+            //
+            var strikeWaterTemp =
+                this.strikeWaterTemp(correctedMashThickness, this.mashTemp, this.grainTemp);
+
+            return this.arrayToList([
+                this.strikeStep(mashWaterVolume, strikeWaterTemp),
+                this.mashRestStep(this.mashTemp, this.mashTime),
+                this.vorlaufAndLauterStep(firstRunnings, 'first'),
+                this.spargeStep(spargeWaterVolume, this.mashOutTemp),
+                this.vorlaufAndLauterStep(secondRunnings, 'second'),
+                this.spargeStep(spargeWaterVolume, this.mashOutTemp),
+                this.vorlaufAndLauterStep(thirdRunnings, 'third'),
+                this.combinedRunningsStep(combinedRunnings)
+            ]);
+        }
+
+        //
+        // A single infusion BIAB mash
+        //
+        this.singleInfusionNoSpargeBiab = function () {
+            // Mash with just enough water
+            var mashWaterVolume = this.boilVolume + (this.grainWeight * this.grainAbsorptionFactor);
+
+            //
+            var correctedMashThickness = mashWaterVolume / this.grainWeight;
+
+            //
+            var combinedRunningsVolume = mashWaterVolume - (this.grainWeight * this.grainAbsorptionFactor);
+
+            //
+            var strikeWaterTemp =
+                this.strikeWaterTemp(correctedMashThickness, this.mashTemp, this.grainTemp);
+
+            return this.arrayToList([
+                this.strikeStep(mashWaterVolume, strikeWaterTemp),
+                this.mashRestStep(this.mashTemp, this.mashTime),
+                this.drainBagStep(combinedRunningsVolume)
+            ]);
+        }
+
+        //
+        // A single infusion BIAB mash with a sparge rinse
+        //
+        this.singleInfusionSpargeRinseBiab = function () {
+            // Mash with just enough water
+            var mashWaterVolume = (this.grainWeight * this.mashThickness);
+
+            //
+            var strikeWaterTemp =
+                this.strikeWaterTemp(this.mashThickness, this.mashTemp, this.grainTemp);
+
+            //
+            var spargeWaterVolume = this.boilVolume - mashWaterVolume + (this.grainWeight * this.grainAbsorptionFactor)
+
+            //
+            var combinedRunningsVolume = mashWaterVolume + spargeWaterVolume - (this.grainWeight * this.grainAbsorptionFactor)
+
+            return this.arrayToList([
+                this.strikeStep(mashWaterVolume, strikeWaterTemp),
+                this.mashRestStep(this.mashTemp, this.mashTime),
+                this.rinseSpargeStep(spargeWaterVolume),
+                this.drainBagAndCombineRunningsStep(combinedRunningsVolume)
+            ]);
+        }
+    }
+    ;
+
+</script>

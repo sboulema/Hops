@@ -58,5 +58,11 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult MashWater()
+        {
+            return View();
+        }
     }
 }

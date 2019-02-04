@@ -10,31 +10,33 @@
 }
 
 @section Scripts {
-    <script src="~/mark/jquery.mark.min.js"></script>
+    <script src="~/lib/mark.js/jquery.mark.min.js"></script>
 }
 
 <div class="jumbotron">
-    <span style="cursor: pointer;" class="hop-inv glyphicon glyphicon-star-empty pull-right btn btn-default hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
+    <span style="cursor: pointer;" class="hop-inv fal fa-star float-right btn btn-default hidden-print text-warning" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
 
     <h1>@Model.Hop.Name</h1>
     <p>@Model.Hop.Trade</p>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Information</div>
-    <div class="panel-body">
+<div class="card">
+    <div class="card-header">
+        Information
+    </div>
+    <div class="card-body">
         <p>@Model.Hop.Info</p>
         @if (Model.Aliases.Any())
         {
             <p>Also known as: @string.Join(", ", Model.Aliases)</p>
-        }      
+        }
         <p>
-            <strong>Pedigree:</strong> @Model.Hop.Pedigree<br/>
+            <strong>Pedigree:</strong> @Model.Hop.Pedigree<br />
             @if (!string.IsNullOrEmpty(Model.Hop.Aroma))
             {
                 <strong>Aroma:</strong> @Model.Hop.Aroma<br />
             }
-           
+
             @if (Model.Aromas.Any())
             {
                 <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", Model.Aromas.Select(a => $"<a href=\"/Search/Aroma/{(int)a}\">{a.Wordify()}</a>")))<br />
@@ -47,61 +49,87 @@
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Brewing values</div>
+<br />
 
-    <div class="panel-body">
-        Brewing Usage: @Model.Hop.BrewingUsageString()
+<div class="card">
+    <div class="card-header">
+        Brewing values
     </div>
+    <div class="card-body p-0">
+        Brewing Usage: @Model.Hop.BrewingUsageString()
 
-    <table class="table table-striped">
-        <tr><td style="padding-left:15px;">Alpha Acid <span class="glyphicon glyphicon-info-sign" 
-                                 data-toggle="tooltip" 
-                                 title="Alpha acids are a major component of the soft resins. When isomerized, these materials provide the main bitter compaunds associated with beer." />
-            </td><td>@Model.Hop.AlphaAcid()%</td>
-        </tr>
-        <tr><td style="padding-left:15px;">Beta Acid <span class="glyphicon glyphicon-info-sign"
-                                data-toggle="tooltip"
-                                title="Beta acids, another soft resin component, are not bitter in their natural, or isomeric, form. Some of the oxidation products do provide bitterness." />
-            </td><td>@Model.Hop.BetaAcid()%</td>
-        </tr>
-        <tr><td style="padding-left:15px;">Co-humulone <span class="glyphicon glyphicon-info-sign"
-                                  data-toggle="tooltip"
-                                  title="It is widely held that higher levels of co-humulone produce a harsh, unpleasant bitterness and have a negative impact on head retention." />
-            </td><td>@Model.Hop.CoHumulone()%</td>
-        </tr>
-        <tr><td style="padding-left:15px;">Total Oil <span class="glyphicon glyphicon-info-sign"
-                                data-toggle="tooltip"
-                                title="The quantity and composition of the essential oils are responsible for the amount and quality of hop flavor and aroma in beer." />
-            </td><td>@Model.Hop.TotalOil() mL/100g</td>
-        </tr>
-    </table>
+        <table class="table table-striped">
+            <tr>
+                <td style="padding-left:15px;">
+                    Alpha Acid <span class="fas fa-info-circle"
+                                     data-toggle="tooltip"
+                                     title="Alpha acids are a major component of the soft resins. When isomerized, these materials provide the main bitter compaunds associated with beer." />
+                </td>
+                <td>@Model.Hop.AlphaAcid()%</td>
+            </tr>
+            <tr>
+                <td style="padding-left:15px;">
+                    Beta Acid <span class="fas fa-info-circle"
+                                    data-toggle="tooltip"
+                                    title="Beta acids, another soft resin component, are not bitter in their natural, or isomeric, form. Some of the oxidation products do provide bitterness." />
+                </td>
+                <td>@Model.Hop.BetaAcid()%</td>
+            </tr>
+            <tr>
+                <td style="padding-left:15px;">
+                    Co-humulone <span class="fas fa-info-circle"
+                                      data-toggle="tooltip"
+                                      title="It is widely held that higher levels of co-humulone produce a harsh, unpleasant bitterness and have a negative impact on head retention." />
+                </td>
+                <td>@Model.Hop.CoHumulone()%</td>
+            </tr>
+            <tr>
+                <td style="padding-left:15px;">
+                    Total Oil <span class="fas fa-info-circle"
+                                    data-toggle="tooltip"
+                                    title="The quantity and composition of the essential oils are responsible for the amount and quality of hop flavor and aroma in beer." />
+                </td>
+                <td>@Model.Hop.TotalOil() mL/100g</td>
+            </tr>
+        </table>
+    </div>
 </div>
+
+<br />
 
 @if (Model.Substitutions.Any())
 {
-    <div class="panel panel-default">
-        <div class="panel-heading">Possible substitutions</div>
-        <div class="list-group">
+    <div class="card">
+        <div class="card-header">
+            Possible substitutions
+        </div>
+        <ul class="list-group list-group-flush">
             @foreach (var substitute in Model.Substitutions)
             {
-                <a href="@Url.Action("DetailBySlug", new { Slug = substitute.Slug() })" class="list-group-item">
-                    @substitute.Name
-                    <span class="hop-inv pull-right glyphicon glyphicon-star-empty hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@substitute.Id"></span>
-                </a>
+
+                    <a href="@Url.Action("DetailBySlug", new { Slug = substitute.Slug() })" class="list-group-item">
+                        @substitute.Name
+                        <span class="hop-inv pull-right fal fa-star hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@substitute.Id"></span>
+                    </a>
             }
-        </div>
+        </ul>
     </div>
 }
 
-<div class="well hidden-print">
-    <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Hop.Name">Suggest an edit</a>
+<br/>
+
+<div class="card d-print-none">
+    <div class="card-body">
+        <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Hop.Name">Suggest an edit</a>
+    </div>
 </div>
 
+<br />
+
 <script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    loadFromInventory();
-    $(".container").mark(window.location.hash.slice(1));
-});
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        loadFromInventory();
+        $(".container").mark(window.location.hash.slice(1));
+    });
 </script>

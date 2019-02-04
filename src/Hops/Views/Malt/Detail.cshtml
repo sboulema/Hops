@@ -10,45 +10,60 @@
 }
 
 <div class="jumbotron">
-    <span style="cursor: pointer;" class="malt-inv glyphicon glyphicon-star-empty pull-right btn btn-default hidden-print" aria-hidden="true" aria-label="star" data-malt-id="@Model.Id" onclick="save(this);"></span>
+    <span style="cursor: pointer;" class="malt-inv fal fa-star float-right btn btn-default hidden-print text-warning" aria-hidden="true" aria-label="star" data-malt-id="@Model.Id" onclick="save(this);"></span>
 
     <h1>@Model.Name</h1>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Information</div>
-    <div class="panel-body">
-        <p>@Model.Description</p>     
-        <p>
-            <strong>Maltster:</strong> @(((MaltsterEnum)Model.Maltster).Wordify())<br/>
-        </p>
+<div class="card">
+    <div class="card-header">
+        Information
+    </div>
+    <div class="card-body">
+        <p>@Model.Description</p>
+        <p><strong>Maltster:</strong> @(((MaltsterEnum)Model.Maltster).Wordify())<br /></p>
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Brewing values</div>
+<br />
 
-    <table class="table table-striped">
-        <tr><td style="padding-left:15px;">Colour <span class="glyphicon glyphicon-info-sign" 
-                                 data-toggle="tooltip" 
+<div class="card">
+    <div class="card-header">
+        Brewing values
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped">
+            <tr>
+                <td style="padding-left:15px;">
+                    Colour <span class="fas fa-info-circle"
+                                 data-toggle="tooltip"
                                  title="'European Brewing Convention'. In practice the EBC color is approximately 1.97 times the SRM color." />
-            </td><td>@Model.EBC() EBC</td>
-        </tr>
-        <tr><td style="padding-left:15px;">Ratio <span class="glyphicon glyphicon-info-sign"
+                </td>
+                <td>@Model.EBC() EBC</td>
+            </tr>
+            <tr>
+                <td style="padding-left:15px;">
+                    Ratio <span class="fas fa-info-circle"
                                 data-toggle="tooltip"
                                 title="The max percentage this malt can be used up to of the grain bill" />
-            </td><td>@Model.Ratio%</td>
-        </tr>
-    </table>
+                </td>
+                <td>@Model.Ratio%</td>
+            </tr>
+        </table>
+    </div>
 </div>
 
-<div class="well hidden-print">
-    <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Name">Suggest an edit</a>
+<br />
+
+<div class="card d-print-none">
+    <div class="card-body">
+        <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Name">Suggest an edit</a>
+    </div>
 </div>
 
 <script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();
-    loadFromInventory();
-});
+    $(document).ready(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        loadFromInventory();
+    });
 </script>

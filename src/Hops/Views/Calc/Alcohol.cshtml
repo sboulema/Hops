@@ -9,57 +9,57 @@
     ViewBag.Title = "Alcohol Calculator - Hops";
 }
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Alcohol Calculator</div>
-
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="og">Original Gravity:</label>
-                    <input type="number" class="form-control" id="og" placeholder="1.000">
-                </div>
-                <div class="form-group">
-                    <label for="fg">Final Gravity:</label>
-                    <input type="number" class="form-control" id="fg" placeholder="1.000">
-                </div>
-                <div class="form-group">
-                    <label for="oBrix">Original Brix:</label>
-                    <input type="number" class="form-control" id="oBrix">
-                </div>
-                <div class="form-group">
-                    <label for="mBrix">Measured Final Brix:</label>
-                    <input type="number" class="form-control" id="mBrix">
-                    <h5><small>Alcohol affects the measured index of refraction, so we need to correct for that post-fermentation using the original brix measurement.</small></h5>
-                </div>
-                <div class="form-group">
-                    <label for="fBrix">Final Brix:</label>
-                    <input type="number" class="form-control" id="fBrix">
-                </div>
-                <div class="form-group">
-                    <label for="abv">Alcohol By Volume:</label>
-                    <input type="text" class="form-control" id="abv">
-                </div>
-                <div class="form-group">
-                    <label for="abw">Alcohol By Weight:</label>
-                    <input type="text" class="form-control" id="abw">
-                </div>
-            </div>
+<div class="card">
+    <div class="card-header">Alcohol Calculator</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="og">Original Gravity:</label>
+            <input type="number" class="form-control" id="og" placeholder="1.000">
         </div>
+        <div class="form-group">
+            <label for="fg">Final Gravity:</label>
+            <input type="number" class="form-control" id="fg" placeholder="1.000">
+        </div>
+        <div class="form-group">
+            <label for="oBrix">Original Brix:</label>
+            <input type="number" class="form-control" id="oBrix">
+        </div>
+        <div class="form-group">
+            <label for="mBrix">Measured Final Brix:</label>
+            <input type="number" class="form-control" id="mBrix">
+            <h5><small>Alcohol affects the measured index of refraction, so we need to correct for that post-fermentation using the original brix measurement.</small></h5>
+        </div>
+        <div class="form-group">
+            <label for="fBrix">Final Brix:</label>
+            <input type="number" class="form-control" id="fBrix">
+        </div>
+        <div class="form-group">
+            <label for="abv">Alcohol By Volume:</label>
+            <input type="text" class="form-control" id="abv">
+        </div>
+        <div class="form-group">
+            <label for="abw">Alcohol By Weight:</label>
+            <input type="text" class="form-control" id="abw">
+        </div>
+    </div>
+</div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
+<br/>
 
-            <div class="panel-body">
-                <p>This tool allows you to convert between brix and gravity and calculates alcohol by volume (ABV) as well as alcohol by weight (ABV).</p>
+<div class="card">
+    <div class="card-header">Information</div>
+    <div class="card-body">
+        <p>This tool allows you to convert between brix and gravity and calculates alcohol by volume (ABV) as well as alcohol by weight (ABV).</p>
 
-                Formula:
-                <pre>
+        Formula:
+        <pre>
 ABV = (OG - FG) × 131
 ABW = ABV × 0.79336 
 GRAVITY = BRIX ÷ (258.6 - (BRIX ÷ 258.2 × 227.1))) + 1 
 BRIX = (((182.4601 × GRAVITY - 775.6821) × GRAVITY + 1262.7794) × GRAVITY - 669.5622) 
                 </pre>
-            </div>
-        </div>
+    </div>
+</div>
 
 <script>
     function brixToGravity(brix) {

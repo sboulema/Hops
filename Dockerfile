@@ -1,10 +1,13 @@
 # First Stage
 FROM microsoft/dotnet:2.2-sdk
 
+RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+
 RUN mkdir /build
 WORKDIR /build
 
 COPY src/Hops/ .
+RUN libman restore
 RUN dotnet restore
 
 RUN dotnet publish -c Release -o out

@@ -9,10 +9,9 @@
     ViewBag.Title = "IBU Calculator - Hops";
 }
 
-<div class="panel panel-default">
-    <div class="panel-heading">IBU Calculator</div>
-
-    <div class="panel-body">
+<div class="card">
+    <div class="card-header">IBU Calculator</div>
+    <div class="card-body">
         <div class="form-group">
             <label for="og">Target Original Gravity (OG):</label>
             <input type="number" step="1" class="form-control" id="og" placeholder="1.000">
@@ -46,14 +45,15 @@
 
         <div class="form-group">
             <button id="button" class="btn btn-default" onclick="calcBitter()">Calculate</button>
-        </div> 
+        </div>
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Information</div>
+<br/>
 
-    <div class="panel-body">
+<div class="card">
+    <div class="card-header">Information</div>
+    <div class="card-body">
         <p>This calculator is setup for 1 gallon of beer brewed using extract.</p>
 
         Formula:

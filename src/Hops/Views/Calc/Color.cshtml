@@ -9,40 +9,40 @@
     ViewBag.Title = "Color Converter - Hops";
 }
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Color Converter</div>
-
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="srm">SRM:</label>
-                    <input type="number" class="form-control" id="srm">
-                </div>
-                <div class="form-group">
-                    <label for="lovibond">&deg;L:</label>
-                    <input type="number" class="form-control" id="lovibond">
-                </div>
-                <div class="form-group">
-                    <label for="ebc">EBC:</label>
-                    <input type="number" class="form-control" id="ebc">
-                </div>
-            </div>
+<div class="card">
+    <div class="card-header">Color Converter</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="srm">SRM:</label>
+            <input type="number" class="form-control" id="srm">
         </div>
+        <div class="form-group">
+            <label for="lovibond">&deg;L:</label>
+            <input type="number" class="form-control" id="lovibond">
+        </div>
+        <div class="form-group">
+            <label for="ebc">EBC:</label>
+            <input type="number" class="form-control" id="ebc">
+        </div>
+    </div>
+</div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
+<br />
 
-            <div class="panel-body">
-                <p>This converter converts between different color values.</p>
+<div class="card">
+    <div class="card-header">Information</div>
+    <div class="card-body">
+        <p>This converter converts between different color values.</p>
 
-                Formula:
-                <pre>
+        Formula:
+        <pre>
 SRM = EBC × 0.508
 SRM = (1.3546 × °L) - 0.76 
 EBC = SRM × 1.97 
 °L = (SRM + 0.76) ÷ 1.3546 
                 </pre>
-            </div>
-        </div>
+    </div>
+</div>
 
 <script>
     function srm_to_lovibond(srm) {

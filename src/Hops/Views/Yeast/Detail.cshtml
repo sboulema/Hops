@@ -10,43 +10,57 @@
 }
 
 <div class="jumbotron">
-    <span style="cursor: pointer;" class="yeast-inv glyphicon glyphicon-star-empty pull-right btn btn-default hidden-print" aria-hidden="true" aria-label="star" data-yeast-id="@Model.Id" onclick="save(this);"></span>
+    <span style="cursor: pointer;" class="yeast-inv fal fa-star float-right btn btn-default hidden-print text-warning" aria-hidden="true" aria-label="star" data-yeast-id="@Model.Id" onclick="save(this);"></span>
 
     <h1>@Model.Name</h1>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Information</div>
-    <div class="panel-body">
-        <p>@Model.Description</p>     
+<div class="card">
+    <div class="card-header">
+        Information
+    </div>
+    <div class="card-body">
+        <p>@Model.Description</p>
         <p>
-            <strong>Lab:</strong> @(((YeastLabEnum)Model.Lab).Wordify())<br/>
+            <strong>Lab:</strong> @(((YeastLabEnum)Model.Lab).Wordify())<br />
         </p>
     </div>
 </div>
 
-<div class="panel panel-default">
-    <div class="panel-heading">Brewing values</div>
+<br/>
 
-    <table class="table table-striped">
-        <tr><td style="padding-left:15px;">Temperature <span class="glyphicon glyphicon-info-sign"
-                                data-toggle="tooltip"
-                                title="For best results ferment at these temperatures" />
-            </td><td>@Html.Raw(Model.Temp())</td>
-        </tr>
-        <tr>
-            <td style="padding-left:15px;">
-                Attenuation <span class="glyphicon glyphicon-info-sign"
-                                  data-toggle="tooltip"
-                                  title="The percentage that measures the conversion of sugars into alcohol and carbon dioxide by the fermentation process" />
-            </td>
-            <td>@Model.Attenuation()</td>
-        </tr>
-    </table>
+<div class="card">
+    <div class="card-header">
+        Brewing values
+    </div>
+    <div class="card-body p-0">
+        <table class="table table-striped">
+            <tr>
+                <td style="padding-left:15px;">
+                    Temperature <span class="fas fa-info-circle"
+                                      data-toggle="tooltip"
+                                      title="For best results ferment at these temperatures" />
+                </td>
+                <td>@Html.Raw(Model.Temp())</td>
+            </tr>
+            <tr>
+                <td style="padding-left:15px;">
+                    Attenuation <span class="fas fa-info-circle"
+                                      data-toggle="tooltip"
+                                      title="The percentage that measures the conversion of sugars into alcohol and carbon dioxide by the fermentation process" />
+                </td>
+                <td>@Model.Attenuation()</td>
+            </tr>
+        </table>
+    </div>
 </div>
 
-<div class="well hidden-print">
-    <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Name">Suggest an edit</a>
+<br/>
+
+<div class="card d-print-none">
+    <div class="card-body">
+        <a href="mailto:hops@curleezme.nl?subject=Hops - Suggested edit - @Model.Name">Suggest an edit</a>
+    </div>
 </div>
 
 <script>

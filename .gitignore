@@ -7,3 +7,4 @@
 /src/Hops/bin
 /src/Hops/obj
 /src/Hops/project.lock.json
+/src/Hops/wwwroot/lib

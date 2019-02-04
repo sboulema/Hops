@@ -52,7 +52,7 @@ function save(element) {
         });     
     }
 
-    $(element).toggleClass("glyphicon-star glyphicon-star-empty");
+    $(element).toggleClass("fas fal");
 }
 
 function loadFromInventory() {
@@ -60,21 +60,21 @@ function loadFromInventory() {
         $(".hop-inv").each(function (index) {
             var foundAtIndex = isFoundAtIndex($(this).data("hop-id"), inventory.Hops);
             if (foundAtIndex > -1) {
-                $(this).toggleClass("glyphicon-star glyphicon-star-empty");
+                $(this).toggleClass("fas fal");
                 $(".hop-inv-amount[data-hop-id='" + $(this).data("hop-id") + "']").val(inventory.Hops[foundAtIndex].amount);
             }
         });
         $(".malt-inv").each(function (index) {
             var foundAtIndex = isFoundAtIndex($(this).data("malt-id"), inventory.Malts);
             if (foundAtIndex > -1) {
-                $(this).toggleClass("glyphicon-star glyphicon-star-empty");
+                $(this).toggleClass("fas fal");
                 $(".malt-inv-amount[data-malt-id='" + $(this).data("malt-id") + "']").val(inventory.Malts[foundAtIndex].amount);
             }
         });
         $(".yeast-inv").each(function (index) {
             var foundAtIndex = isFoundAtIndex($(this).data("yeast-id"), inventory.Yeasts);
             if (foundAtIndex > -1) {
-                $(this).toggleClass("glyphicon-star glyphicon-star-empty");
+                $(this).toggleClass("fas fal");
                 $(".yeast-inv-amount[data-yeast-id='" + $(this).data("yeast-id") + "']").val(inventory.Yeasts[foundAtIndex].amount);
             }
         });

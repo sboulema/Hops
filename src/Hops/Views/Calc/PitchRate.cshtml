@@ -9,26 +9,26 @@
     ViewBag.Title = "Pitch Rate Calculator - Hops";
 }
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Pitch Rate Calculator</div>
-
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="og">Original Gravity (OG):</label>
-                    <input type="number" step="1" class="form-control" id="og" onkeypress="handle(event, calculate)" placeholder="1.000">
-                </div>
-                <button id="button" class="btn btn-default" onclick="calculate()">Calculate</button>
-            </div>
+<div class="card">
+    <div class="card-header">Pitch Rate Calculator</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="og">Original Gravity (OG):</label>
+            <input type="number" step="1" class="form-control" id="og" onkeypress="handle(event, calculate)" placeholder="1.000">
         </div>
+        <button id="button" class="btn btn-default" onclick="calculate()">Calculate</button>
+    </div>
+</div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
+<br />
 
-            <div class="panel-body">
-                <p>This calculator is setup to calculate dry yeast (20 billion cells/gram) needed for 1 gallon of Ale beer.</p>
+<div class="card">
+    <div class="card-header">Information</div>
+    <div class="card-body">
+        <p>This calculator is setup to calculate dry yeast (20 billion cells/gram) needed for 1 gallon of Ale beer.</p>
 
-                Formula:
-                <pre>
+        Formula:
+        <pre>
 var og = document.getElementById('og').value;
 var wortVolume = 3785; // 1 gallon in ml
 var cellsForYeastType = 750000;
@@ -36,8 +36,8 @@ var measuredPlato = 259 - (259 / og);
 var numCells = parseFloat(cellsForYeastType * wortVolume * measuredPlato) * 0.000000001;
 var dryYeastNeeded = Math.round(numCells / 20);
                 </pre>
-            </div>
-        </div>
+    </div>
+</div>
 
 <script>
     function calculate() {

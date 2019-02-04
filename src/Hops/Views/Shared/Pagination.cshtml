@@ -3,36 +3,33 @@
 
 @if (Model.NumberOfPages > 1)
 {
-    <div class="row hidden-print">
-        <div class="col-lg-6 col-lg-offset-3 text-center">
-            <nav>
-                <ul class="pagination">
-                @if (Model.CurrentPageIndex > 1)
-                {
-                    <li>
-                        <a href="@(Model.PaginationUrl + (Model.CurrentPageIndex - 1))" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                }
+    <br/>
+    <nav class="d-print-none">
+        <ul class="pagination justify-content-center">
+            @if (Model.CurrentPageIndex > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@(Model.PaginationUrl + (Model.CurrentPageIndex - 1))" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            }
 
-                @for (int i = 1; i <= Model.NumberOfPages; i++)
-                {
-                    <li @(Model.CurrentPageIndex == i ? "class=active" : string.Empty)>
-                        <a href="@(Model.PaginationUrl + i)">@i</a>
-                    </li>
-                }
+            @for (int i = 1; i <= Model.NumberOfPages; i++)
+            {
+                <li class="page-item @(Model.CurrentPageIndex == i ? "active" : string.Empty)">
+                    <a class="page-link" href="@(Model.PaginationUrl + i)">@i</a>
+                </li>
+            }
 
-                @if (Model.CurrentPageIndex != Model.NumberOfPages)
-                {
-                    <li>
-                        <a href="@(Model.PaginationUrl + (Model.CurrentPageIndex + 1))" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                }
-                </ul>
-            </nav>
-        </div>
-    </div>
+            @if (Model.CurrentPageIndex != Model.NumberOfPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@(Model.PaginationUrl + (Model.CurrentPageIndex + 1))" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
 }

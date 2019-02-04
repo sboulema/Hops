@@ -13,49 +13,42 @@
 <h3>Inventory</h3>
 
 <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-    <li class="active"><a href="#hop" data-toggle="tab">Hops</a></li>
-    <li><a href="#malt" data-toggle="tab">Malts</a></li>
-    <li><a href="#yeast" data-toggle="tab">Yeast</a></li>
+    <li class="nav-item"><a class="nav-link active" href="#hop" data-toggle="tab" role="tab">Hops</a></li>
+    <li class="nav-item"><a class="nav-link" href="#malt" data-toggle="tab" role="tab">Malts</a></li>
+    <li class="nav-item"><a class="nav-link" href="#yeast" data-toggle="tab" role="tab">Yeast</a></li>
 </ul>
 
-<div id="my-tab-content" class="tab-content">
-    <div class="tab-pane active" id="hop">
-        <div class="hop-inv"></div>
-    </div>
-    <div class="tab-pane" id="malt">
-        <div class="malt-inv"></div>
-    </div>
-    <div class="tab-pane" id="yeast">
-        <div class="yeast-inv"></div>
-    </div>
+<div class="tab-content">
+    <div class="tab-pane active" id="hop" role="tabpanel"><div class="hop-inv"></div></div>
+    <div class="tab-pane" id="malt" role="tabpanel"><div class="malt-inv"></div></div>
+    <div class="tab-pane" id="yeast" role="tabpanel"><div class="yeast-inv"></div></div>
 </div>
 
-<label class="btn btn-default hidden-print" for="my-file-selector">
-    <input id="my-file-selector" type="file" style="display:none;" onchange="importInventory(this);">
-    <span class="glyphicon glyphicon-import" aria-hidden="true"></span> Import
-</label>
+<br/>
 
-<button type="button" class="btn btn-default hidden-print" onclick="exportInventory();">
-    <span class="glyphicon glyphicon-export" aria-hidden="true"></span> Export
-</button>
+<div class="file btn btn-primary" style="position: relative; overflow: hidden;">
+    <i class="fas fa-import"></i>Import
+    <input type="file" name="file" onchange="importInventory(this)" style="position: absolute; font-size: 50px; opacity: 0; right: 0; top: 0;">
+</div>
 
-<button type="button" class="btn btn-default hidden-print" onclick="window.print();">
-    <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print
-</button>
+<button type="button" class="btn btn-primary" onclick="exportInventory();"><i class="fas fa-file-export"></i> Export</button>
+<button type="button" class="btn btn-primary" onclick="window.print();"><i class="fas fa-print"></i> Print</button>
 
-<button type="button" class="btn btn-danger pull-right hidden-print" onclick="deleteInventory();">Delete ALL</button>
+<button type="button" class="btn btn-danger float-right hidden-print" onclick="deleteInventory();">Delete ALL</button>
 
-<br/><br/>
+<br /><br />
 
-<div class="well">
-    <label for="invCode">Your personal inventory code</label>
-    <div class="input-group">
-        <input id="invCode" type="text" class="form-control" placeholder="Inventory code...">
-        <span class="input-group-btn hidden-print">
-            <button class="btn btn-default" type="button" onclick="syncInventory();">
-                <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Sync
-            </button>
-        </span>
+<div class="card">
+    <div class="card-header">
+        Your personal inventory code
+    </div>
+    <div class="card-body">
+        <div class="input-group">
+            <input id="invCode" type="text" class="form-control" placeholder="Inventory code...">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary fas fa-sync" type="button" onclick="syncInventory();"></button>
+            </div>
+        </div>
     </div>
 </div>
 

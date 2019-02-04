@@ -9,40 +9,40 @@
     ViewBag.Title = "Malt Potential Extract Calculator - Hops";
 }
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Malt Potential Extract Calculator</div>
-
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="cg">Dry Basis Coarse Grind (CG):</label>
-                    <input type="number" class="form-control" id="cg" value="80">
-                </div>
-                <div class="form-group">
-                    <label for="fg">Dry Basis Fine Grind (FG):</label>
-                    <input type="number" class="form-control" id="fg" value="80">
-                </div>
-                <div class="form-group">
-                    <label for="potentialExtract">Potential Extract:</label>
-                    <input type="text" class="form-control" id="potentialExtract">
-                </div>
-                <div class="form-group">
-                    <label for="extractPpg">Extract PPG:</label>
-                    <input type="text" class="form-control" id="extractPpg">
-                </div>
-            </div>
+<div class="card">
+    <div class="card-header">Malt Potential Extract Calculator</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="cg">Dry Basis Coarse Grind (CG):</label>
+            <input type="number" class="form-control" id="cg" value="80">
         </div>
+        <div class="form-group">
+            <label for="fg">Dry Basis Fine Grind (FG):</label>
+            <input type="number" class="form-control" id="fg" value="80">
+        </div>
+        <div class="form-group">
+            <label for="potentialExtract">Potential Extract:</label>
+            <input type="text" class="form-control" id="potentialExtract">
+        </div>
+        <div class="form-group">
+            <label for="extractPpg">Extract PPG:</label>
+            <input type="text" class="form-control" id="extractPpg">
+        </div>
+    </div>
+</div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
+<br/>
 
-            <div class="panel-body">
-                Formula:
-                <pre>
+<div class="card">
+    <div class="card-header">Information</div>
+    <div class="card-body">
+        Formula:
+        <pre>
 PPG = (((CG + FG) ÷ 2) ÷ 100) × 46
 Potential = (PPG ÷ 1000) + 1
                 </pre>
-            </div>
-        </div>
+    </div>
+</div>
 
 <script>
     function calculatePpg() {

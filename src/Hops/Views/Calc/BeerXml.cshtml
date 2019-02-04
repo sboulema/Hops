@@ -10,23 +10,20 @@
 }
 
 @section Scripts {
-    <script src="https://unpkg.com/brauhaus@1.1.1/dist/brauhaus.min.js"></script>
+    <script src="~/lib/brauhaus/brauhaus.min.js"></script>
     <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
 }
 
-<div class="panel panel-default hidden-print">
-    <div class="panel-heading">BeerXML Viewer</div>
-
-    <div class="panel-body">
+<div class="card">
+    <div class="card-header">BeerXML Viewer</div>
+    <div class="card-body">
         <p>Please select your recipe:</p>
 
-        <div class="row">
-            <div class="form-group col-xs-3">
-                <label class="btn btn-default hidden-print" for="my-file-selector">
-                    <input id="my-file-selector" accept="text/xml" type="file" style="display: none;" onchange="readURL(this);">
-                    <span class="glyphicon glyphicon-file" aria-hidden="true"></span> Browse...
-                </label>
-            </div>
+        <div class="form-group">
+            <label class="btn btn-primary d-print-none" for="my-file-selector">
+                <input id="my-file-selector" accept="text/xml" type="file" style="display: none;" onchange="readURL(this);">
+                <span class="fas file-upload" aria-hidden="true"></span> Browse...
+            </label>
         </div>
 
         <script>
@@ -43,7 +40,7 @@
                         $("#style").text("a " + recipe.type + " " + recipe.style.name + " by " + recipe.author);
 
                         $("#stats").empty();
-                        $("#stats").append("<tr><td style='width:6%;'>OG</td>     <td style='width:6%;'><strong>" + recipe.og.toFixed(3) + "</strong></td><td width='88%'>" + createBar(recipe.og, 1.000, 1.150 ,recipe.style.og[0], recipe.style.og[1]) + "</td></tr>");
+                        $("#stats").append("<tr><td style='width:6%;'>OG</td>     <td style='width:6%;'><strong>" + recipe.og.toFixed(3) + "</strong></td><td width='88%'>" + createBar(recipe.og, 1.000, 1.150, recipe.style.og[0], recipe.style.og[1]) + "</td></tr>");
                         $("#stats").append("<tr><td style='width:6%;'>FG</td>     <td style='width:6%;'><strong>" + recipe.fg.toFixed(3) + "</strong></td><td width='88%'>" + createBar(recipe.fg, 1.000, 1.150, recipe.style.fg[0], recipe.style.fg[1]) + "</td></tr>");
                         $("#stats").append("<tr><td style='width:6%;'>IBU</td>    <td style='width:6%;'><strong>" + recipe.ibu.toFixed(0) + "</strong></td><td width='88%'>" + createBar(recipe.ibu, 0, 120, recipe.style.ibu[0], recipe.style.ibu[1]) + "</td></tr>");
                         $("#stats").append("<tr><td style='width:6%;'>SRM</td>    <td style='width:6%;'><strong>" + recipe.color.toFixed(0) + "</strong></td><td width='88%'>" + createBar(recipe.color, 0, 40, recipe.style.color[0], recipe.style.color[1]) + "</td></tr>");
@@ -53,7 +50,7 @@
                         recipe.calculate();
 
                         $("#stats").append("<tr><td style='width:6%;'>Balance</td><td style='width:6%;'><strong>" + recipe.bv.toFixed(2) + "</strong></td><td width='88%'>" + createBar(recipe.bv, 0, 1, calcBugu(recipe.style.og[0], recipe.style.ibu[0]), calcBugu(recipe.style.og[0], recipe.style.ibu[1])) + "</td></tr>");
-                        $("#stats").append("<tr><td style='width:6%;'></td><td style='width:6%;'></td><td style='width:88%;'><h5><small>" + (isConform(recipe) ? "<span class='glyphicon glyphicon-ok' aria-hidden='true'></span> " : "") + "Recipe " + (isConform(recipe) ? "conforms" : "does not conform") + " to the <strong>" + recipe.style.name + "</strong> style.</small><h5> </td></tr>");
+                        $("#stats").append("<tr><td style='width:6%;'></td><td style='width:6%;'></td><td style='width:88%;'><h5><small>" + (isConform(recipe) ? "<span class='fas fa-check' aria-hidden='true'></span> " : "") + "Recipe " + (isConform(recipe) ? "conforms" : "does not conform") + " to the <strong>" + recipe.style.name + "</strong> style.</small><h5> </td></tr>");
 
                         $("#fermentables").empty();
                         $.each(recipe.fermentables, function (index, fermentable) {
@@ -155,14 +152,13 @@
 </div>
 
 <div id="preview" style="display: none">
-    
-    <div class="panel panel-default">
-        <div class="panel-body">
 
+    <div class="card">
+        <div class="card-body">
             <button type="button" class="btn btn-default pull-right hidden-print" onclick="window.print();">
-                <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print...
+                <span class="fas fa-print" aria-hidden="true"></span> Print...
             </button>
-            
+
             <h2 id="name" style="margin-top: 0;">Name</h2>
 
             <h6 id="style">Style</h6>
@@ -186,7 +182,7 @@
                 <tr><th>Name</th><th>Lab/Product</th><th>Attenuation</th></tr>
                 <tbody id="yeasts"></tbody>
             </table>
-            
+
             <div id="extrasTable" style="display: none">
                 <h2>Extras</h2>
                 <table class="table">

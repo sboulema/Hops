@@ -6,28 +6,28 @@
     <title>@ViewBag.Title</title>
     <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
 
-    <link href="~/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet" />
-    <script src="~/bootstrap/dist/js/bootstrap.min.js"></script>
+    <link href="~/lib/twitter-bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <link href="~/sortable/sortable-theme-bootstrap.css" rel="stylesheet" />
-    <script src="~/sortable/sortable.min.js"></script>
+    <link href="~/lib/sortable/css/sortable-theme-bootstrap.min.css" rel="stylesheet" />
+    <script src="~/lib/sortable/js/sortable.min.js"></script>
 
-    <link href="~/typeahead/typeaheadjs.css" rel="stylesheet" />
-    <script src="~/typeahead/typeahead.bundle.js"></script>
+    <script src="~/lib/typeahead.js/typeahead.bundle.min.js"></script>
 
-    <link href="~/fontello-embedded.css" rel="stylesheet" />
     <link href="~/sticky-footer.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css" 
+          integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" 
+          crossorigin="anonymous">
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase-firestore.js"></script>
     <script>
         // Initialize Firebase
         var config = {
-            apiKey: "AIzaSyBSpAPVZJBuGRejd-sv8kJ9i1FIeyT_1oc",
+            apiKey: "{firebaseApiKey}",
             authDomain: "hops-ab2d7.firebaseapp.com",
             databaseURL: "https://hops-ab2d7.firebaseio.com",
             projectId: "hops-ab2d7",
@@ -43,67 +43,69 @@
     @RenderSection("Scripts", false)
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="~/">Curleez &amp; ME</a>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/hop">Hops</a></li>
-                    <li><a href="/malt">Malts</a></li>
-                    <li><a href="/yeast">Yeasts</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/calc/priming">Bottle Priming Calculator</a></li>
-                            <li><a href="~/calc/ibu">IBU Calculator</a></li>
-                            <li><a href="~/calc/pitchrate">Pitch Rate Calculator</a></li>
-                            <li><a href="~/calc/alcohol">Alcohol Calculator</a></li>
-                            <li><a href="~/calc/maltpotential">Malt Potential Extract Calculator</a></li>
-                            <li><a href="~/calc/mashwater">Mash Water Calculator</a></li>
-                            <li><a href="~/calc/mashinfusion">Mash Infusion Calculator</a></li>
-                            <li><a href="~/calc/color">Color Converter</a></li>
-                            <li><a href="~/calc/hydrometer">Hydrometer Temperature Correction</a></li>
-                            <li><a href="~/calc/labels">Label Printer</a></li>
-                            <li><a href="~/calc/beerxml">BeerXML Viewer</a></li>
-                        </ul>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <a class="navbar-brand" href="#">Curleez &amp; ME</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item"><a class="nav-link" href="/hop"><i class="fas fa-spa text-success"></i> Hops</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/malt"><i class="fas fa-wheat text-warning"></i> Malts</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/yeast"><i class="fas fa-flask text-info"></i> Yeasts</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-calculator"></i> Tools
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="~/calc/priming">Bottle Priming Calculator</a>
+                            <a class="dropdown-item" href="~/calc/ibu">IBU Calculator</a>
+                            <a class="dropdown-item" href="~/calc/pitchrate">Pitch Rate Calculator</a>
+                            <a class="dropdown-item" href="~/calc/alcohol">Alcohol Calculator</a>
+                            <a class="dropdown-item" href="~/calc/maltpotential">Malt Potential Extract Calculator</a>
+                            <a class="dropdown-item" href="~/calc/mashwater">Mash Water Calculator</a>
+                            <a class="dropdown-item" href="~/calc/mashinfusion">Mash Infusion Calculator</a>
+                            <a class="dropdown-item" href="~/calc/color">Color Converter</a>
+                            <a class="dropdown-item" href="~/calc/hydrometer">Hydrometer Temperature Correction</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="~/calc/labels">Label Printer</a>
+                            <a class="dropdown-item" href="~/calc/beerxml">BeerXML Viewer</a>
+                        </div>
                     </li>
-                    <li><a id="inventory" href="/search/inventory">Inventory</a></li>
-                    <li class="visible-xs-inline"><a href="/search/">Search</a></li>
+
+                    <li class="nav-item"><a class="nav-link" id="inventory" href="/search/inventory"><i class="fas fa-inventory"></i> Inventory</a></li>
+                    <li class="nav-item d-block d-sm-none"><a class="nav-link" href="/search/">Search</a></li>
                 </ul>
 
                 @if (!ViewBag.Title.Equals("Search"))
                 {
-                    <div class="navbar-form navbar-right hidden-xs">
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
-                                <div class="input-group-btn">
-                                    <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
-                                        <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
-                                    </button>
-                                    <button type="button" class="btn btn-default dropdown-toggle" style="background-image:none;box-shadow:none;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span></button>
-                                    <ul class="dropdown-menu dropdown-menu-right">
-                                        <li><a href="/search/">Advanced search</a></li>
-                                    </ul>
+                    <form class="form-inline d-none d-sm-block">
+                        <div class="input-group">
+                            <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary"><span class="fas fa-search"></span></button>
+                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="/search/">Advanced search</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </form>
                 }
-            </div><!--/.nav-collapse -->
-        </div>
-    </nav>
 
-    <div class="container">
-        @RenderBody()
+                </div>
+        </nav>
+
+        <br/>
+
+        @RenderBody()  
+
+        <br/>
     </div>
 
     <footer class="footer hidden-print">
@@ -111,7 +113,7 @@
             <p class="text-muted">
                 Made by <a href="http://www.curleezme.nl">Curleez &amp; ME</a> - 
                 <a href="mailto:hops@curleezme.nl">Contact</a> - 
-                <a href="https://github.com/sboulema/Hops"><span class="icon-github-circled"></span></a> <a href="https://hub.docker.com/r/sboulema/hops/"><span class="icon-docker-white"></span></a>   
+                <a href="https://github.com/sboulema/Hops"><span class="fab fa-github"></span></a> <a href="https://hub.docker.com/r/sboulema/hops/"><span class="fab fa-docker"></span></a>   
             </p>
         </div>
     </footer>

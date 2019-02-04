@@ -9,48 +9,48 @@
     ViewBag.Title = "Hydrometer Temperature Correction - Hops";
 }
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Hydrometer Temperature Correction</div>
-
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="measurementSystem">Measurement System:</label>
-                    <select class="form-control" id="measurementSystem">
-                        <option value="1">U.S. Customary</option>
-                        <option value="2">Metric</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="measuredSg">Measured specific gravity:</label>
-                    <input type="number" class="form-control" id="measuredSg" placeholder="1.000">
-                </div>
-                <div class="form-group">
-                    <label for="measuredTemp">Measured temperature (&deg;<span id="measuredTempLabel">F</span>):</label>
-                    <input type="number" class="form-control" id="measuredTemp" value="120">
-                </div>
-                <div class="input-group">
-                    <label for="calibrationTemp">Hydrometer calibration temperature (&deg;<span id="calibrationTempLabel">F</span>):</label>
-                    <input type="number" class="form-control" id="calibrationTemp" value="68">
-                </div>
-                <div class="form-group">
-                    <label for="correctedSg">Corrected specific gravity:</label>
-                    <input type="text" class="form-control" id="correctedSg">
-                </div>
-            </div>
+<div class="card">
+    <div class="card-header">Hydrometer Temperature Correction</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="measurementSystem">Measurement System:</label>
+            <select class="form-control" id="measurementSystem">
+                <option value="1">U.S. Customary</option>
+                <option value="2">Metric</option>
+            </select>
         </div>
+        <div class="form-group">
+            <label for="measuredSg">Measured specific gravity:</label>
+            <input type="number" class="form-control" id="measuredSg" placeholder="1.000">
+        </div>
+        <div class="form-group">
+            <label for="measuredTemp">Measured temperature (&deg;<span id="measuredTempLabel">F</span>):</label>
+            <input type="number" class="form-control" id="measuredTemp" value="120">
+        </div>
+        <div class="input-group">
+            <label for="calibrationTemp">Hydrometer calibration temperature (&deg;<span id="calibrationTempLabel">F</span>):</label>
+            <input type="number" class="form-control" id="calibrationTemp" value="68">
+        </div>
+        <div class="form-group">
+            <label for="correctedSg">Corrected specific gravity:</label>
+            <input type="text" class="form-control" id="correctedSg">
+        </div>
+    </div>
+</div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
+<br />
 
-            <div class="panel-body">
-                <p>Correct for temperature when measuring specific gravity using a hydrometer.</p>
+<div class="card">
+    <div class="card-header">Information</div>
+    <div class="card-body">
+        <p>Correct for temperature when measuring specific gravity using a hydrometer.</p>
 
-                Formula:
-                <pre>
+        Formula:
+        <pre>
 correctedSg = measuredSg * ((1.00130346 - 0.000134722124 * measuredTemp + 0.00000204052596 * Math.pow(measuredTemp, 2) - 0.00000000232820948 * Math.pow(measuredTemp, 3)) / (1.00130346 - 0.000134722124 * calibrationTemp + 0.00000204052596 * Math.pow(calibrationTemp, 2) - 0.00000000232820948 * Math.pow(calibrationTemp, 3)))
                 </pre>
-            </div>
-        </div>
+    </div>
+</div>
 
 <script>
     function celsiusToFahrenheit(celsius) {

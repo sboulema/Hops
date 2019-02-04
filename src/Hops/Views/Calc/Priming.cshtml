@@ -8,10 +8,9 @@
 
 <div class="row">
     <div class="col-md-8">
-        <div class="panel panel-default">
-            <div class="panel-heading">Bottle Priming Calculator</div>
-
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-header">Bottle Priming Calculator</div>
+            <div class="card-body">
                 <div class="form-group">
                     <label for="volume">Volume of beer (L):</label>
                     <input type="number" step="0.1" class="form-control" placeholder="3.78541253426" value="3.78541253426" id="volume">
@@ -34,10 +33,11 @@
             </div>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Information</div>
+        <br />
 
-            <div class="panel-body">
+        <div class="card">
+            <div class="card-header">Information</div>
+            <div class="card-body">
                 <p>This calculator is setup for 1 gallon of beer at 70&deg;F.</p>
 
                 Formula:
@@ -61,102 +61,105 @@ function PrimingRate(u) {
         </div>
     </div>
     <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">Beer Carbonation Guide By Style</div>
+        <div class="card">
+            <div class="card-header">
+                Beer Carbonation Guide By Style
+            </div>
+            <div class="card-body p-0">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Styles</th>
+                            <th>CO2 Volumes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="active"><td colspan="2">Ales</td></tr>
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Styles</th>
-                        <th>CO2 Volumes</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="active"><td colspan="2">Ales</td></tr>
+                        <tr><td>Barley Wine</td><td>1.3 to 2.3</td></tr>
+                        <tr><td>English Bitter</td><td>0.75 to 1.3</td></tr>
+                        <tr><td>Scottish Ale</td><td>0.75 to 1.3</td></tr>
+                        <tr><td>English &amp; Scottish Strong Ale</td><td>1.5 to 2.3</td></tr>
 
-                    <tr><td>Barley Wine</td><td>1.3 to 2.3</td></tr>
-                    <tr><td>English Bitter</td><td>0.75 to 1.3</td></tr>
-                    <tr><td>Scottish Ale</td><td>0.75 to 1.3</td></tr>
-                    <tr><td>English &amp; Scottish Strong Ale</td><td>1.5 to 2.3</td></tr>
+                        <tr class="active"><td colspan="2">Belgian Specialty</td></tr>
+                        <tr><td>Flanders Brown</td><td>1.9 to 2.5</td></tr>
+                        <tr><td>Dubbel</td><td>1.3 to 2.3</td></tr>
+                        <tr><td>Trippel</td><td>1.9 to 2.4</td></tr>
+                        <tr><td>Belgian Ale</td><td>1.9 to 2.5</td></tr>
+                        <tr><td>Belgian Strong Ale</td><td>1.9 to 2.5</td></tr>
+                        <tr><td>White</td><td>2.1 to 2.6</td></tr>
+                        <tr><td>Lambic Gueuze</td><td>3.0 to 4.5</td></tr>
+                        <tr><td>Lambic Fruit</td><td>2.6 to 4.5</td></tr>
 
-                    <tr class="active"><td colspan="2">Belgian Specialty</td></tr>
-                    <tr><td>Flanders Brown</td><td>1.9 to 2.5</td></tr>
-                    <tr><td>Dubbel</td><td>1.3 to 2.3</td></tr>
-                    <tr><td>Trippel</td><td>1.9 to 2.4</td></tr>
-                    <tr><td>Belgian Ale</td><td>1.9 to 2.5</td></tr>
-                    <tr><td>Belgian Strong Ale</td><td>1.9 to 2.5</td></tr>
-                    <tr><td>White</td><td>2.1 to 2.6</td></tr>
-                    <tr><td>Lambic Gueuze</td><td>3.0 to 4.5</td></tr>
-                    <tr><td>Lambic Fruit</td><td>2.6 to 4.5</td></tr>
+                        <tr class="active"><td colspan="2">Pale Ale</td></tr>
+                        <tr><td>Classic English Pale Ale</td><td>1.5 to 2.3</td></tr>
+                        <tr><td>India Pale Ale</td><td>1.5 to 2.3</td></tr>
+                        <tr><td>American Style Pale Ale</td><td>2.26 to 2.78</td></tr>
 
-                    <tr class="active"><td colspan="2">Pale Ale</td></tr>
-                    <tr><td>Classic English Pale Ale</td><td>1.5 to 2.3</td></tr>
-                    <tr><td>India Pale Ale</td><td>1.5 to 2.3</td></tr>
-                    <tr><td>American Style Pale Ale</td><td>2.26 to 2.78</td></tr>
+                        <tr class="active"><td colspan="2">Brown Ale</td></tr>
+                        <tr><td>English Brown Ale</td><td>1.5 to 2.3</td></tr>
+                        <tr><td>English Mild Ale</td><td>1.3 to 2.0</td></tr>
+                        <tr><td>American Brown Ale</td><td>1.5 to 2.5</td></tr>
 
-                    <tr class="active"><td colspan="2">Brown Ale</td></tr>
-                    <tr><td>English Brown Ale</td><td>1.5 to 2.3</td></tr>
-                    <tr><td>English Mild Ale</td><td>1.3 to 2.0</td></tr>
-                    <tr><td>American Brown Ale</td><td>1.5 to 2.5</td></tr>
+                        <tr class="active"><td colspan="2">Porter</td></tr>
+                        <tr><td>Robust Porter</td><td>1.8 to 2.5</td></tr>
+                        <tr><td>Brown Porter</td><td>1.7 to 2.5</td></tr>
 
-                    <tr class="active"><td colspan="2">Porter</td></tr>
-                    <tr><td>Robust Porter</td><td>1.8 to 2.5</td></tr>
-                    <tr><td>Brown Porter</td><td>1.7 to 2.5</td></tr>
+                        <tr class="active"><td colspan="2">Stout</td></tr>
+                        <tr><td>Classic Dry Irish</td><td>1.6 to 2.0 </td></tr>
+                        <tr><td>Foreign Style</td><td>2.3 to 2.6</td></tr>
+                        <tr><td>Sweet Stout</td><td>2.0 to 2.4</td></tr>
+                        <tr><td>Imperial Stout</td><td>1.5 tp 2.3</td></tr>
 
-                    <tr class="active"><td colspan="2">Stout</td></tr>
-                    <tr><td>Classic Dry Irish</td><td>1.6 to 2.0 </td></tr>
-                    <tr><td>Foreign Style</td><td>2.3 to 2.6</td></tr>
-                    <tr><td>Sweet Stout</td><td>2.0 to 2.4</td></tr>
-                    <tr><td>Imperial Stout</td><td>1.5 tp 2.3</td></tr>
+                        <tr class="active"><td colspan="2">Lagers</td></tr>
 
-                    <tr class="active"><td colspan="2">Lagers</td></tr>
+                        <tr><td>American Dark</td><td>2.5 to 2.7</td></tr>
+                        <tr><td>Dortmund/Export</td><td>2.57</td></tr>
+                        <tr><td>Munich Helles</td><td>2.26 to 2.68</td></tr>
 
-                    <tr><td>American Dark</td><td>2.5 to 2.7</td></tr>
-                    <tr><td>Dortmund/Export</td><td>2.57</td></tr>
-                    <tr><td>Munich Helles</td><td>2.26 to 2.68</td></tr>
+                        <tr class="active"><td colspan="2">Bock</td></tr>
+                        <tr><td>Traditional German Dark</td><td>2.2 to 2.7</td></tr>
+                        <tr><td>Helles Bock</td><td>2.16 to 2.73</td></tr>
+                        <tr><td>Doppelbock</td><td>2.26 to 2.62</td></tr>
+                        <tr><td>Eisbock</td><td>2.37</td></tr>
 
-                    <tr class="active"><td colspan="2">Bock</td></tr>
-                    <tr><td>Traditional German Dark</td><td>2.2 to 2.7</td></tr>
-                    <tr><td>Helles Bock</td><td>2.16 to 2.73</td></tr>
-                    <tr><td>Doppelbock</td><td>2.26 to 2.62</td></tr>
-                    <tr><td>Eisbock</td><td>2.37</td></tr>
+                        <tr class="active"><td colspan="2">Bavarian Dark</td></tr>
+                        <tr><td>Munich Dunkel</td><td>2.21 to 2.66</td></tr>
+                        <tr><td>Schwarzbier</td><td>2.2 to 2.6</td></tr>
 
-                    <tr class="active"><td colspan="2">Bavarian Dark</td></tr>
-                    <tr><td>Munich Dunkel</td><td>2.21 to 2.66</td></tr>
-                    <tr><td>Schwarzbier</td><td>2.2 to 2.6</td></tr>
+                        <tr class="active"><td colspan="2">Classic Pilsener</td></tr>
+                        <tr><td>German Pilsener</td><td>2.52</td></tr>
+                        <tr><td>Bohemian Pilsener</td><td>2.3 to 2.5</td></tr>
 
-                    <tr class="active"><td colspan="2">Classic Pilsener</td></tr>
-                    <tr><td>German Pilsener</td><td>2.52</td></tr>
-                    <tr><td>Bohemian Pilsener</td><td>2.3 to 2.5</td></tr>
+                        <tr class="active"><td colspan="2">American Light Lager</td></tr>
+                        <tr><td>Diet/"Lite"</td><td>2.57</td></tr>
+                        <tr><td>American Standard</td><td>2.57</td></tr>
+                        <tr><td>American Premium</td><td>2.57 to 2.73</td></tr>
+                        <tr><td>Dry</td><td>2.6 to 2.7</td></tr>
 
-                    <tr class="active"><td colspan="2">American Light Lager</td></tr>
-                    <tr><td>Diet/"Lite"</td><td>2.57</td></tr>
-                    <tr><td>American Standard</td><td>2.57</td></tr>
-                    <tr><td>American Premium</td><td>2.57 to 2.73</td></tr>
-                    <tr><td>Dry</td><td>2.6 to 2.7</td></tr>
+                        <tr class="active"><td colspan="2">Vienna/Oktoberfest/Marzen</td></tr>
+                        <tr><td>Vienna</td><td>2.4 to 2.6</td></tr>
+                        <tr><td>Oktoberfest/Marzen</td><td>2.57 to 2.73</td></tr>
 
-                    <tr class="active"><td colspan="2">Vienna/Oktoberfest/Marzen</td></tr>
-                    <tr><td>Vienna</td><td>2.4 to 2.6</td></tr>
-                    <tr><td>Oktoberfest/Marzen</td><td>2.57 to 2.73</td></tr>
+                        <tr class="active"><td colspan="2">Mixed Style</td></tr>
 
-                    <tr class="active"><td colspan="2">Mixed Style</td></tr>
+                        <tr><td>Cream Ale</td><td>2.6 to 2.7</td></tr>
+                        <tr><td>American Wheat Beer</td><td>2.3 to 2.6</td></tr>
+                        <tr><td>Bamberg-style Rauchbier</td><td>2.16 to 2.57</td></tr>
+                        <tr><td>California Common Beer</td><td>2.4 to 2.8</td></tr>
 
-                    <tr><td>Cream Ale</td><td>2.6 to 2.7</td></tr>
-                    <tr><td>American Wheat Beer</td><td>2.3 to 2.6</td></tr>
-                    <tr><td>Bamberg-style Rauchbier</td><td>2.16 to 2.57</td></tr>
-                    <tr><td>California Common Beer</td><td>2.4 to 2.8</td></tr>
+                        <tr class="active"><td colspan="2">German Ale</td></tr>
+                        <tr><td>Dusseldorf-style Altbier</td><td>2.16 to 3.09</td></tr>
+                        <tr><td>Kolsch</td><td>2.42 to 2.73</td></tr>
 
-                    <tr class="active"><td colspan="2">German Ale</td></tr>
-                    <tr><td>Dusseldorf-style Altbier</td><td>2.16 to 3.09</td></tr>
-                    <tr><td>Kolsch</td><td>2.42 to 2.73</td></tr>
-
-                    <tr class="active"><td colspan="2">German Wheat Beer</td></tr>
-                    <tr><td>Berliner Weisse</td><td>3.45</td></tr>
-                    <tr><td>German-style Weizen (Weissbier)</td><td>3.6 to 4.48</td></tr>
-                    <tr><td>German-style Dunkelweizen</td><td>3.6 to 4.48</td></tr>
-                    <tr><td>German-style Weizenbock</td><td>3.71 to 4.74</td></tr>
-                </tbody>
-            </table>
+                        <tr class="active"><td colspan="2">German Wheat Beer</td></tr>
+                        <tr><td>Berliner Weisse</td><td>3.45</td></tr>
+                        <tr><td>German-style Weizen (Weissbier)</td><td>3.6 to 4.48</td></tr>
+                        <tr><td>German-style Dunkelweizen</td><td>3.6 to 4.48</td></tr>
+                        <tr><td>German-style Weizenbock</td><td>3.71 to 4.74</td></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

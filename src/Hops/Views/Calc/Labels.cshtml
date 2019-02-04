@@ -9,36 +9,29 @@
     ViewBag.Title = "Label Printer - Hops";
 }
 
-<div class="panel panel-default hidden-print">
-    <div class="panel-heading">Label Printer</div>
-
-    <div class="panel-body">
+<div class="card d-print-none">
+    <div class="card-header">Label Printer</div>
+    <div class="card-body">
         <p>Please select your label image:</p>
 
-        <div class="row">
-            <div class="form-group col-xs-3">
-                <label class="btn btn-default hidden-print" for="my-file-selector">
-                    <input id="my-file-selector" accept="image/*" type="file" style="display: none;" onchange="readURL(this);">
-                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Browse...
-                </label>
-            </div>
+        <div class="form-group">
+            <label class="btn btn-primary hidden-print" for="my-file-selector">
+                <input id="my-file-selector" accept="image/*" type="file" style="display: none;" onchange="readURL(this);">
+                <span class="fas fa-image" aria-hidden="true"></span> Browse...
+            </label>
         </div>
 
-        <div class="row">
-            <div class="form-group col-xs-3">
-                <label for="sizeSel">Size:</label>
-                <select class="form-control" id="sizeSel" onchange="setLabels(labelImage, $('.labelPrint').attr('src'))">
-                    <option value="3">Small</option>
-                    <option value="4">Medium</option>
-                    <option value="5" selected="selected">Large</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label for="sizeSel">Size:</label>
+            <select class="form-control" id="sizeSel" onchange="setLabels(labelImage, $('.labelPrint').attr('src'))">
+                <option value="3">Small</option>
+                <option value="4">Medium</option>
+                <option value="5" selected="selected">Large</option>
+            </select>
         </div>
 
-        <div class="row">
-            <div class="col-xs-8">
-                <h6><small id="info">Label will be duplicated 12 times and resized to be atleast smaller than 5x8cm</small></h6>
-            </div>
+        <div>
+            <h6><small id="info">Label will be duplicated 12 times and resized to be atleast smaller than 5x8cm</small></h6>
         </div>
 
         <script>
@@ -77,11 +70,13 @@
     </div>
 </div>
 
+<br/>
+
 <div id="preview" style="display: none" class="text-center">
-    <button type="button" class="btn btn-default hidden-print" onclick="window.print();">
-        <span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print...
+    <button type="button" class="btn btn-primary d-print-none" onclick="window.print();">
+        <span class="fas fa-print" aria-hidden="true"></span> Print...
     </button>
-    <h2 class="hidden-print">Preview:</h2>
+    <h2 class="d-print-none">Preview:</h2>
     @for (int i = 0; i < 4; i++)
     {
         <p>

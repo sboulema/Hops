@@ -1,10 +1,21 @@
 resources:
 - repo: self
 
+variables:
+- group: Hops
+
+
 queue:
   name: Hosted Ubuntu 1604
 
 steps:
+- powershell: |  
+   ((Get-Content -path src\Hops\Views\Shared\_Layout.cshtml -Raw) -replace '{firebaseApiKey}',$env:firebaseApiKey) | Set-Content -Path src\Hops\Views\Shared\_Layout.cshtml
+   
+  displayName: 'Insert FirebaseApiKey'
+  env:
+firebaseApiKey: $(firebaseApiKey)
+
 - task: Docker@1
   displayName: 'Build an image'
   inputs:

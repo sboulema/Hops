@@ -5,41 +5,43 @@
     ViewBag.Title = "Malts";
 }
 
-<div class="panel panel-default">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Maltster</th>
-                <th>Colour</th>
-                @if (Model.Pagination.SearchTerm.Equals("Inventory"))
-                {
-                    <th class="col-xs-2">Amount</th>
-                }
-                <th class="hidden-print"></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var malt in Model.List)
-            {
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover table-sm">
+            <thead>
                 <tr>
-                    <td><a href="/Malt/@malt.Id">@malt.Name</a></td>
-                    <td>@(((MaltsterEnum)malt.Maltster).Wordify())</td>
-                    <td>@malt.EBC() EBC</td>
+                    <th>Name</th>
+                    <th>Maltster</th>
+                    <th>Colour</th>
                     @if (Model.Pagination.SearchTerm.Equals("Inventory"))
                     {
-                        <td>
-                            <div class="input-group input-group-sm">
-                                <input type="number" step="1" min="0" class="form-control malt-inv-amount" data-malt-id="@malt.Id" onchange="saveAmountInventory(this);">
-                                <span class="input-group-addon">g</span>
-                            </div>
-                        </td>
+                        <th class="col-xs-2">Amount</th>
                     }
-                    <td class="hidden-print"><span style="cursor: pointer;" class="malt-inv pull-right glyphicon glyphicon-star-empty" aria-hidden="true" aria-label="star" data-malt-id="@malt.Id" onclick="save(this);"></span></td>
+                    <th class="hidden-print"></th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var malt in Model.List)
+                {
+                    <tr>
+                        <td><a href="/Malt/@malt.Id">@malt.Name</a></td>
+                        <td>@(((MaltsterEnum)malt.Maltster).Wordify())</td>
+                        <td>@malt.EBC() EBC</td>
+                        @if (Model.Pagination.SearchTerm.Equals("Inventory"))
+                        {
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="number" step="1" min="0" class="form-control malt-inv-amount" data-malt-id="@malt.Id" onchange="saveAmountInventory(this);">
+                                    <span class="input-group-addon">g</span>
+                                </div>
+                            </td>
+                        }
+                        <td class="hidden-print"><span style="cursor: pointer;" class="malt-inv float-right fal fa-star text-warning" aria-hidden="true" aria-label="star" data-malt-id="@malt.Id" onclick="save(this);"></span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
 @Html.Partial("Pagination", Model.Pagination)

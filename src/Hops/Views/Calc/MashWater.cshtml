@@ -9,72 +9,71 @@
     ViewBag.Title = "Mash Water Calculator - Hops";
 }
 
-<div class="panel panel-default">
-    <div class="panel-heading">Mash Water Calculator</div>
-
-    <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="mash-profile">Mash Profile:</label>
-                        <select class="form-control" id="mash-profile">
-                            <option value="1">Single Infusion, Batch Sparge</option>
-                            <option value="2">Single Infusion, Mash Out, Batch Sparge</option>
-                            <option value="3">Single Infusion, Mash Out, Batch Sparge (Equal Runnings)</option>
-                            <option value="4">Single Infusion, Two Equal Batch Sparges</option>
-                            <option value="5">Single Infusion, No Sparge (BIAB)</option>
-                            <option value="6">Single Infusion, Sparge Rinse (BIAB)</option>
-                        </select>
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Mash Schedule</div>
-
-                        <div class="panel-body">
-                            <div id="mash-schedule-error" class="alert alert-danger" role="alert">Required Fields Are Missing</div>
-                            <ol id="mash-schedule"></ol>
-                        </div>
-                    </div>
+<div class="card">
+    <div class="card-header">Mash Water Calculator</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="mash-profile">Mash Profile:</label>
+                    <select class="form-control" id="mash-profile">
+                        <option value="1">Single Infusion, Batch Sparge</option>
+                        <option value="2">Single Infusion, Mash Out, Batch Sparge</option>
+                        <option value="3">Single Infusion, Mash Out, Batch Sparge (Equal Runnings)</option>
+                        <option value="4">Single Infusion, Two Equal Batch Sparges</option>
+                        <option value="5">Single Infusion, No Sparge (BIAB)</option>
+                        <option value="6">Single Infusion, Sparge Rinse (BIAB)</option>
+                    </select>
                 </div>
-                <div class="col-sm-6 mash">
-                    <div class="form-group">
-                        <label for="mash-time">Mash Time (min):</label>
-                        <input type="number" class="form-control" id="mash-time" value="60">
-                    </div>
-                    <div class="form-group">
-                        <label for="saccharification-temp">Temperature (&deg;F):</label>
-                        <input type="number" class="form-control" id="saccharification-temp" value="155">
-                    </div>
-                    <div class="form-group">
-                        <label for="grain-weight">Grain Weight (lb):</label>
-                        <input type="number" class="form-control" id="grain-weight">
-                    </div>
-                    <div class="form-group">
-                        <label for="grain-temp">Grain Temperature (&deg;F):</label>
-                        <input type="number" class="form-control" id="grain-temp" value="65">
-                    </div>
-                    <div class="form-group">
-                        <label for="boil-volume">Boil Volume (gal):</label>
-                        <input type="number" class="form-control" id="boil-volume">
-                    </div>
-                    <div class="form-group">
-                        <label for="lauter-deadspace">Lauter Deadspace (gal):</label>
-                        <input type="number" class="form-control" id="lauter-deadspace">
-                    </div>
-                    <div class="form-group">
-                        <label for="mash-thickness">Mash Thickness (qt/lb):</label>
-                        <input type="number" class="form-control" id="mash-thickness">
-                    </div>
-                    <div class="form-group">
-                        <label for="boiling-temp">Boiling Temperature (&deg;F):</label>
-                        <input type="number" class="form-control" id="boiling-temp" value="212">
-                    </div>
-                    <div class="form-group">
-                        <label for="grain-absorption-factor">Grain Absorption Factor (gal/lb):</label>
-                        <input type="number" class="form-control" id="grain-absorption-factor">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">Mash Schedule</div>
+
+                    <div class="panel-body">
+                        <div id="mash-schedule-error" class="alert alert-danger" role="alert">Required Fields Are Missing</div>
+                        <ol id="mash-schedule"></ol>
                     </div>
                 </div>
             </div>
+            <div class="col-sm-6 mash">
+                <div class="form-group">
+                    <label for="mash-time">Mash Time (min):</label>
+                    <input type="number" class="form-control" id="mash-time" value="60">
+                </div>
+                <div class="form-group">
+                    <label for="saccharification-temp">Temperature (&deg;F):</label>
+                    <input type="number" class="form-control" id="saccharification-temp" value="155">
+                </div>
+                <div class="form-group">
+                    <label for="grain-weight">Grain Weight (lb):</label>
+                    <input type="number" class="form-control" id="grain-weight">
+                </div>
+                <div class="form-group">
+                    <label for="grain-temp">Grain Temperature (&deg;F):</label>
+                    <input type="number" class="form-control" id="grain-temp" value="65">
+                </div>
+                <div class="form-group">
+                    <label for="boil-volume">Boil Volume (gal):</label>
+                    <input type="number" class="form-control" id="boil-volume">
+                </div>
+                <div class="form-group">
+                    <label for="lauter-deadspace">Lauter Deadspace (gal):</label>
+                    <input type="number" class="form-control" id="lauter-deadspace">
+                </div>
+                <div class="form-group">
+                    <label for="mash-thickness">Mash Thickness (qt/lb):</label>
+                    <input type="number" class="form-control" id="mash-thickness">
+                </div>
+                <div class="form-group">
+                    <label for="boiling-temp">Boiling Temperature (&deg;F):</label>
+                    <input type="number" class="form-control" id="boiling-temp" value="212">
+                </div>
+                <div class="form-group">
+                    <label for="grain-absorption-factor">Grain Absorption Factor (gal/lb):</label>
+                    <input type="number" class="form-control" id="grain-absorption-factor">
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 

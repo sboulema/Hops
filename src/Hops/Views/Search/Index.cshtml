@@ -16,11 +16,9 @@
 <div class="form-group">
     <div class="input-group">
         <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
-        <span class="input-group-btn">
-            <button class="btn btn-default" onclick="search()" style="background-image:none;box-shadow:none;">
-                <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
-            </button>
-        </span>
+        <div class="input-group-append">
+            <span class="input-group-text fas fa-search"></span>
+        </div>
     </div>
 </div>
 
@@ -31,11 +29,9 @@
 <div class="form-group">
     <div class="input-group">
         <input type="text" class="form-control" id="freetextsearch" onkeypress="handle(event, freeTextSearch)" placeholder="Free Text Search Hops...">
-        <span class="input-group-btn">
-            <button class="btn btn-default" onclick="freeTextSearch()" style="background-image:none;box-shadow:none;">
-                <span aria-hidden="true" class="glyphicon glyphicon-search"></span>
-            </button>
-        </span>
+        <div class="input-group-append">
+            <span class="input-group-text fas fa-search"></span>
+        </div>
     </div>
 </div>
 

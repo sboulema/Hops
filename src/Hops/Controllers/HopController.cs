@@ -60,5 +60,12 @@ namespace Hops.Controllers
 
             return View("Index", results);
         }
+
+        [HttpGet("{name}/alphaacid")]
+        public double GetAlphaAcid(string name)
+        {
+            var hop = _sqliteRepository.GetHop(name);
+            return (hop.AlphaMin + hop.AlphaMax) / 2;
+        }
     }
 }

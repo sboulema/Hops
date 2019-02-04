@@ -65,7 +65,7 @@
                                 "</td>" +
                                 "<td>" +
                                 "<span style='display: inline-block; width: 12px; height: 12px; background-color: " + fermentable.colorCss() + "'></span> " +
-                                "<input type='text' class='form-control malt typeahead' onkeypress='handle(event, search)' value='" + fermentable.name + "'>" +
+                                "<input id='malt-" + index + "-name' type='text' class='form-control malt typeahead' onkeypress='handle(event, search)' value='" + fermentable.name + "'>" +
                                 "</td>" +
                                 "<td>" +
                                     "<select class='custom-select'>" + 
@@ -83,14 +83,14 @@
                         $("#extrasTable").hide();
                         $.each(recipe.spices, function (index, spice) {
                             if (spice.aa !== 0) {
-                                $("#hops").append("<tr>" +
+                                $("#hops").append("<tr id='hop-" + index + "'>" +
                                     "<td>" +
                                         "<div class='input-group'>" + 
                                             "<input type='text' class='form-control' value=" + (spice.weight * 1000) + ">" + 
                                             "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
                                         "</div>" +
                                     "</td>" +
-                                    "<td>" + "<input type='text' class='form-control hop typeahead' onkeypress='handle(event, search)' value='" + spice.name + "'>" + "</td>" +
+                                    "<td>" + "<input id='hop-" + index + "-name' type='text' class='form-control hop typeahead' onkeypress='handle(event, search)' value='" + spice.name + "'>" + "</td>" +
                                     "<td>" +
                                         "<div class='input-group'>" + 
                                             "<input type='text' class='form-control' value=" + spice.time + ">" + 
@@ -111,7 +111,7 @@
                                             "<option value='plugs'" + (spice.form.toLowerCase() === "plugs" ? " selected": "") + ">Plugs</option>" +
                                         "</select>" +
                                     "</td>" +
-                                    "<td>" + spice.aa.toFixed(1) + "%</td>" +
+                                    "<td id='hop-" + index + "-aa'>" + spice.aa.toFixed(1) + "%</td>" +
                                     "</tr>");
                             } else {
                                 $("#extras").append("<tr>" +
@@ -142,12 +142,13 @@
 
                         $("#yeasts").empty();
                         $.each(recipe.yeast, function (index, yeast) {
-                            $("#yeasts").append("<tr><td>" + yeast.name + "</td><td>" + yeast.laboratory + "</td><td>" + yeast.attenuation + "%</td></tr>");
+                            $("#yeasts").append("<tr id='yeast-" + index + "'>" +
+                                "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead' onkeypress='handle(event, search)' value='" + yeast.name + "'></td>" +
+                                "<td>" + yeast.laboratory + "</td><td id='yeast-" + index + "-att'>" + yeast.attenuation + "%</td></tr>");
                         });
 
-                        $("#moreStats").empty();
-                        $("#moreStats").append("<tr><td>Batch size</td><td><strong>" + recipe.batchSize + " L</strong></td></tr>");
-                        $("#moreStats").append("<tr><td>Boil time</td><td><strong>" + recipe.boilTime + " min</strong></td></tr>");
+                        $("#batchSize").val(recipe.batchSize);
+                        $("#boilTime").val(recipe.boilTime);
 
                         $("#printStats").empty();
                         $("#printStats").append("<tr><td>OG</td><td><strong>" + recipe.og.toFixed(3) + "</strong></td></tr>");
@@ -173,6 +174,20 @@
                             });
                         });
 
+                        $('.yeast.typeahead').on('typeahead:selected', function (e, searchTerm) {
+                            var id = $(this).closest("tr").attr("id");
+                            $.get("/yeast/" + searchTerm + "/attenuation", function (data) {                               
+                                $("#" + id + "-att").text(data + "%");
+                            });
+                        });
+
+                        $('.hop.typeahead').on('typeahead:selected', function (e, searchTerm) {
+                            var id = $(this).closest("tr").attr("id");
+                            $.get("/hop/" + searchTerm + "/alphaacid", function (data) {                               
+                                $("#" + id + "-aa").text(data + "%");
+                            });
+                        });
+
                         var malts = new Bloodhound({
                             datumTokenizer: Bloodhound.tokenizers.whitespace,
                             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -185,6 +200,22 @@
                         $('.malt.typeahead').typeahead(null, {
                             name: 'maltSearch',
                             source: malts,
+                            limit: 30,
+                            highlight: true
+                        });
+
+                        var yeast = new Bloodhound({
+                            datumTokenizer: Bloodhound.tokenizers.whitespace,
+                            queryTokenizer: Bloodhound.tokenizers.whitespace,
+                            remote: {
+                                url: '/search/autocompleteyeast/%QUERY',
+                                wildcard: '%QUERY'
+                            }
+                        });
+
+                        $('.yeast.typeahead').typeahead(null, {
+                            name: 'yeastSearch',
+                            source: yeast,
                             limit: 30,
                             highlight: true
                         });
@@ -235,6 +266,55 @@
             function addFermentable() {
                 $("#fermentables").append("<tr><td>a</td><td>b</td><td>c</td><td>display</td><td>display</td><tr/>")
             }
+
+            function toBeerXml() {
+                var recipe = new Brauhaus.Recipe({
+                    name: 'My test brew',
+                    description: 'A new test beer using Brauhaus.js!',
+                    batchSize: parseFloat($("#batchSize").val()),
+                    boilSize: 10.0,
+                    boilTime: parseFloat($("#boilTime").val())
+                });
+
+                $("#fermentables tr").each(function(index) {
+                    recipe.add('fermentable', {
+                        name: document.getElementById("malt-" + index + "-name").value,
+                        color: Brauhaus.lovibondToSrm(parseFloat($(this).find("#malt-" + index + "-color").text())),
+                        weight: parseFloat($(this).find("input")[0].value) / 1000
+                    });
+                });
+
+                $("#hops tr").each(function(index) {
+                    recipe.add('spice', {
+                        name: document.getElementById("hop-" + index + "-name").value,
+                        weight: parseFloat($(this).find("input")[0].value) / 1000,
+                        aa: parseFloat($(this).find("#hop-" + index + "-aa").text()),
+                        use: $(this).find("select")[0].value,
+                        form: $(this).find("select")[1].value,
+                        time: parseFloat($(this).find("input")[3].value)
+                    });
+                });
+
+                $("#yeasts tr").each(function(index) {
+                    recipe.add('yeast', {
+                        name: document.getElementById("yeast-" + index + "-name").value,
+                        type: 'ale',
+                        form: 'dry',
+                        attenuation: parseFloat($(this).find("#yeast-" + index + "-att").text())
+                    });
+                });
+
+                $("#extras tr").each(function(index) {
+                    recipe.add('spice', {
+                        name: $(this).find("input")[1].value,
+                        weight: parseFloat($(this).find("input")[0].value) / 1000,
+                        use: $(this).find("select")[0].value,
+                        time: parseFloat($(this).find("input")[2].value)
+                    });
+                });
+
+                console.log(recipe.toBeerXml());
+            }
         </script>
     </div>
 </div>
@@ -247,6 +327,10 @@
         <div class="card-body">
             <button type="button" class="btn btn-primary float-right d-print-none" onclick="window.print();">
                 <span class="fas fa-print" aria-hidden="true"></span> Print...
+            </button>
+
+            <button type="button" class="btn btn-success float-right d-print-none" onclick="toBeerXml();">
+                <span class="fas fa-save" aria-hidden="true"></span> Save...
             </button>
 
             <h2 id="name" style="margin-top: 0;">Name</h2>
@@ -285,7 +369,26 @@
             </div>
 
             <h2><i class="fas fa-tachometer-alt"></i> Stats</h2>
-            <table id="moreStats" class="table"></table>
+            <table id="moreStats" class="table">
+                <tr>
+                    <td>Batch size</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="batchSize">
+                            <div class='input-group-append'><span class='input-group-text'>L</span></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Boil time</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="boilTime">
+                            <div class='input-group-append'><span class='input-group-text'>m</span></div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
 
             <table id="printStats" class="table d-none d-print-block"></table>
         </div>

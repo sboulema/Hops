@@ -39,5 +39,12 @@ namespace Hops.Controllers
 
             return View("~/Views/Yeast/List.cshtml", results);
         }
+
+        [HttpGet("{name}/attenuation")]
+        public int GetAttenuation(string name)
+        {
+            var yeast = yeastRepository.Get(name);
+            return (yeast.AttenuationMin + yeast.AttenuationMax) / 2;
+        }
     }
 }

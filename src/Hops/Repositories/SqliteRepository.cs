@@ -34,6 +34,11 @@ namespace Hops.Repositories
             return _hops.First(t => t.Id == id);
         }
 
+        public Hop GetHop(string name)
+        {
+            return _hops.First(h => h.Name.Equals(name));
+        }
+
         private long GetHopId(string slug)
         {
             return _hops.First(h => string.Equals(SlugMapper.Map(h.Name), slug, StringComparison.CurrentCultureIgnoreCase)).Id;
@@ -183,6 +188,11 @@ namespace Hops.Repositories
         public List<string> AutocompleteMalt(string searchTerm)
         {
             return _malts.Where(m => Contains(m.Name, searchTerm, StringComparison.OrdinalIgnoreCase)).Select(m => m.Name).ToList();
+        }
+
+        public List<string> AutocompleteYeast(string searchTerm)
+        {
+            return _yeasts.Where(y => Contains(y.Name, searchTerm, StringComparison.OrdinalIgnoreCase)).Select(y => y.Name).ToList();
         }
 
         public List<Malt> GetMalts()

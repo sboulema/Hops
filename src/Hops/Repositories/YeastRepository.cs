@@ -22,6 +22,11 @@ namespace Hops.Repositories
             return Yeasts.First(t => t.Id == id);
         }
 
+        public Yeast Get(string name)
+        {
+            return Yeasts.First(y => Contains(y.Name, name, StringComparison.OrdinalIgnoreCase));
+        }
+
         public Yeast GetRandom()
         {
             return Get(new Random().Next(1, Yeasts.Count + 1));

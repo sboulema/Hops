@@ -49,6 +49,14 @@
       "files": [
         "lib/brauhaus.min.js"
       ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "typeahead.js-bootstrap4-css@1.0.0",
+      "destination": "wwwroot/lib/typeahead.js-bootstrap4-css/",
+      "files": [
+        "typeaheadjs.css"
+      ]
     }
   ]
 }

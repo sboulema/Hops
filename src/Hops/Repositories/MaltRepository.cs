@@ -22,6 +22,11 @@ namespace Hops.Repositories
             return Malts.First(t => t.Id == id);
         }
 
+        public Malt Get(string name)
+        {
+            return Malts.First(m => m.Name.Equals(name));
+        }
+
         public Malt GetRandom()
         {
             return Get(new Random().Next(1, Malts.Count + 1));

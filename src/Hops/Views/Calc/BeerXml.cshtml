@@ -27,11 +27,13 @@
         </div>
 
         <script>
+            var recipe;
+
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
                     reader.onload = function (e) {
-                        var recipe = Brauhaus.Recipe.fromBeerXml(e.target.result)[0];
+                        recipe = Brauhaus.Recipe.fromBeerXml(e.target.result)[0];
                         recipe.ibuMethod = "rager";
                         recipe.calculate();
 
@@ -50,16 +52,30 @@
                         recipe.calculate();
 
                         $("#stats").append("<tr><td style='width:6%;'>Balance</td><td style='width:6%;'><strong>" + recipe.bv.toFixed(2) + "</strong></td><td width='88%'>" + createBar(recipe.bv, 0, 1, calcBugu(recipe.style.og[0], recipe.style.ibu[0]), calcBugu(recipe.style.og[0], recipe.style.ibu[1])) + "</td></tr>");
-                        $("#stats").append("<tr><td style='width:6%;'></td><td style='width:6%;'></td><td style='width:88%;'><h5><small>" + (isConform(recipe) ? "<span class='fas fa-check' aria-hidden='true'></span> " : "") + "Recipe " + (isConform(recipe) ? "conforms" : "does not conform") + " to the <strong>" + recipe.style.name + "</strong> style.</small><h5> </td></tr>");
+                        $("#stats").append("<tr><td style='width:6%;'></td><td style='width:6%;'></td><td style='width:88%;'><h5><small class='text-muted'>" + (isConform(recipe) ? "<span class='fas fa-check' aria-hidden='true'></span> " : "") + "Recipe " + (isConform(recipe) ? "conforms" : "does not conform") + " to the <strong>" + recipe.style.name + "</strong> style.</small><h5> </td></tr>");
 
                         $("#fermentables").empty();
                         $.each(recipe.fermentables, function (index, fermentable) {
-                            $("#fermentables").append("<tr>" +
-                                "<td>" + (fermentable.weight * 1000) + " g</td>" +
-                                "<td><span style='display: inline-block; width: 12px; height: 12px; background-color: " + fermentable.colorCss() + "'></span> " + fermentable.name + "</td>" +
-                                "<td>" + fermentable.addition().substring(0, 1).toUpperCase() + fermentable.addition().substring(1, fermentable.addition().length) + "</td>" +
+                            $("#fermentables").append("<tr id='malt-" + index + "'>" +
+                                "<td>" +
+                                    "<div class='input-group'>" + 
+                                        "<input type='text' class='form-control' value=" + (fermentable.weight * 1000) + ">" + 
+                                        "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+                                    "</div>" +
+                                "</td>" +
+                                "<td>" +
+                                "<span style='display: inline-block; width: 12px; height: 12px; background-color: " + fermentable.colorCss() + "'></span> " +
+                                "<input type='text' class='form-control malt typeahead' onkeypress='handle(event, search)' value='" + fermentable.name + "'>" +
+                                "</td>" +
+                                "<td>" +
+                                    "<select class='custom-select'>" + 
+                                        "<option value='mash'" + (fermentable.addition().toLowerCase() === "mash" ? " selected": "") + ">Mash</option>" +
+                                        "<option value='steep'" + (fermentable.addition().toLowerCase() === "steep" ? " selected": "") + ">Steep</option>" +
+                                        "<option value='boil'" + (fermentable.addition().toLowerCase() === "boil" ? " selected": "") + ">Boil</option>" +
+                                    "</select>" +
+                                "</td>" +
                                 "<td>" + Math.ceil(fermentable.ppg()) + "</td>" +
-                                "<td>" + fermentable.color + " &deg;L</td></tr>");
+                                "<td id='malt-" + index + "-color'>" + fermentable.color + " &deg;L</td></tr>");
                         });
 
                         $("#hops").empty();
@@ -68,19 +84,57 @@
                         $.each(recipe.spices, function (index, spice) {
                             if (spice.aa !== 0) {
                                 $("#hops").append("<tr>" +
-                                    "<td>" + (spice.weight * 1000) + " g</td>" +
-                                    "<td>" + spice.name + "</td>" +
-                                    "<td>" + Brauhaus.displayDuration(spice.time) + "</td>" +
-                                    "<td>" + spice.use + "</td>" +
-                                    "<td>" + spice.form + "</td>" +
+                                    "<td>" +
+                                        "<div class='input-group'>" + 
+                                            "<input type='text' class='form-control' value=" + (spice.weight * 1000) + ">" + 
+                                            "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+                                        "</div>" +
+                                    "</td>" +
+                                    "<td>" + "<input type='text' class='form-control hop typeahead' onkeypress='handle(event, search)' value='" + spice.name + "'>" + "</td>" +
+                                    "<td>" +
+                                        "<div class='input-group'>" + 
+                                            "<input type='text' class='form-control' value=" + spice.time + ">" + 
+                                            "<div class='input-group-append'><span class='input-group-text'>m</span></div>" +
+                                        "</div>" +
+                                    "</td>" +
+                                    "<td>" +
+                                        "<select class='custom-select'>" + 
+                                            "<option value='boil'" + (spice.use.toLowerCase() === "boil" ? " selected": "") + ">Boil</option>" +
+                                            "<option value='primary'" + (spice.use.toLowerCase() === "primary" ? " selected": "") + ">Primary</option>" +
+                                            "<option value='secondary'" + (spice.use.toLowerCase() === "secondary" ? " selected": "") + ">Secondary</option>" +
+                                        "</select>" +
+                                    "</td>" +
+                                    "<td>" +
+                                        "<select class='custom-select'>" + 
+                                            "<option value='pellets'" + (spice.form.toLowerCase() === "pellets" ? " selected": "") + ">Pellets</option>" +
+                                            "<option value='leafs'" + (spice.form.toLowerCase() === "leafs" ? " selected": "") + ">Leafs</option>" +
+                                            "<option value='plugs'" + (spice.form.toLowerCase() === "plugs" ? " selected": "") + ">Plugs</option>" +
+                                        "</select>" +
+                                    "</td>" +
                                     "<td>" + spice.aa.toFixed(1) + "%</td>" +
                                     "</tr>");
                             } else {
                                 $("#extras").append("<tr>" +
-                                    "<td>" + spice.weight + (spice.amountIsWeight ? " g" : " each") + "</td>" +
-                                    "<td>" + spice.name + "</td>" +
-                                    "<td>" + Brauhaus.displayDuration(spice.time) + "</td>" +
-                                    "<td>" + spice.use + "</td>" +
+                                    "<td>" +
+                                        "<div class='input-group'>" + 
+                                            "<input type='text' class='form-control' value=" + spice.weight + ">" + 
+                                            "<div class='input-group-append'><span class='input-group-text'>" + (spice.amountIsWeight ? " g" : " each") + "</span></div>" +
+                                        "</div>" +
+                                    "</td>" +
+                                    "<td>" + "<input type='text' class='form-control' value='" + spice.name + "'>" + "</td>" +
+                                    "<td>" +
+                                        "<div class='input-group'>" + 
+                                            "<input type='text' class='form-control' value=" + spice.time + ">" + 
+                                            "<div class='input-group-append'><span class='input-group-text'>m</span></div>" +
+                                        "</div>" +
+                                    "</td>" +
+                                    "<td>" +
+                                        "<select class='custom-select'>" + 
+                                            "<option value='boil'" + (spice.use.toLowerCase() === "boil" ? " selected": "") + ">Boil</option>" +
+                                            "<option value='primary'" + (spice.use.toLowerCase() === "primary" ? " selected": "") + ">Primary</option>" +
+                                            "<option value='secondary'" + (spice.use.toLowerCase() === "secondary" ? " selected": "") + ">Secondary</option>" +
+                                        "</select>" +
+                                    "</td>" +
                                     "</tr>");
                                 $("#extrasTable").show();
                             }
@@ -104,6 +158,36 @@
                         $("#printStats").append("<tr><td>Balance</td><td><strong>" + recipe.bv.toFixed(2) + "</strong></td></tr>");
 
                         $('#preview').show();
+
+                        $('.hop.typeahead').typeahead(null, {
+                            name: 'hopSearch',
+                            source: hops,
+                            limit: 30,
+                            highlight: true
+                        });
+
+                        $('.malt.typeahead').on('typeahead:selected', function (e, searchTerm) {
+                            var id = $(this).closest("tr").attr("id");
+                            $.get("/malt/" + searchTerm + "/color", function (data) {                               
+                                $("#" + id + "-color").html(Brauhaus.srmToLovibond(Brauhaus.ebcToSrm(data)).toFixed(0) + "&deg; L");
+                            });
+                        });
+
+                        var malts = new Bloodhound({
+                            datumTokenizer: Bloodhound.tokenizers.whitespace,
+                            queryTokenizer: Bloodhound.tokenizers.whitespace,
+                            remote: {
+                                url: '/search/autocompletemalt/%QUERY',
+                                wildcard: '%QUERY'
+                            }
+                        });
+
+                        $('.malt.typeahead').typeahead(null, {
+                            name: 'maltSearch',
+                            source: malts,
+                            limit: 30,
+                            highlight: true
+                        });
                     };
                     reader.readAsText(input.files[0]);
                 }
@@ -147,15 +231,21 @@
                 result = result && (recipe.abv >= recipe.style.abv[0] && recipe.abv <= recipe.style.abv[1]);
                 return result;
             }
+
+            function addFermentable() {
+                $("#fermentables").append("<tr><td>a</td><td>b</td><td>c</td><td>display</td><td>display</td><tr/>")
+            }
         </script>
     </div>
 </div>
+
+<br />
 
 <div id="preview" style="display: none">
 
     <div class="card">
         <div class="card-body">
-            <button type="button" class="btn btn-default pull-right hidden-print" onclick="window.print();">
+            <button type="button" class="btn btn-primary float-right d-print-none" onclick="window.print();">
                 <span class="fas fa-print" aria-hidden="true"></span> Print...
             </button>
 
@@ -163,38 +253,41 @@
 
             <h6 id="style">Style</h6>
 
-            <table id="stats" class="table hidden-print"></table>
+            <table id="stats" class="table table-sm d-print-none"></table>
 
-            <h2>Fermentables</h2>
+            <h2><i class="fas fa-wheat text-warning"></i> Fermentables</h2>
+            <button type="button" class="btn btn-sm btn-success float-right d-print-none" onclick="addFermentable();">
+                <i class="fas fa-plus"></i>
+            </button>
             <table class="table">
                 <tr><th>Amount</th><th>Fermentable</th><th>Use</th><th>PPG</th><th>Color</th></tr>
                 <tbody id="fermentables"></tbody>
             </table>
 
-            <h2>Hops</h2>
+            <h2><i class="fas fa-spa text-success"></i> Hops</h2>
             <table class="table">
                 <tr><th>Amount</th><th>Hop</th><th>Time</th><th>Use</th><th>Form</th><th>AA</th></tr>
                 <tbody id="hops"></tbody>
             </table>
 
-            <h2>Yeast</h2>
+            <h2><i class="fas fa-flask text-info"></i> Yeast</h2>
             <table class="table">
                 <tr><th>Name</th><th>Lab/Product</th><th>Attenuation</th></tr>
                 <tbody id="yeasts"></tbody>
             </table>
 
             <div id="extrasTable" style="display: none">
-                <h2>Extras</h2>
+                <h2><i class="fas fa-pepper-hot text-danger"></i> Extras</h2>
                 <table class="table">
                     <tr><th>Amount</th><th>Name</th><th>Time</th><th>Use</th></tr>
                     <tbody id="extras"></tbody>
                 </table>
             </div>
 
-            <h2>Stats</h2>
+            <h2><i class="fas fa-tachometer-alt"></i> Stats</h2>
             <table id="moreStats" class="table"></table>
 
-            <table id="printStats" class="table visible-print-block"></table>
+            <table id="printStats" class="table d-none d-print-block"></table>
         </div>
     </div>
 

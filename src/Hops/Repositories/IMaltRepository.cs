@@ -7,6 +7,7 @@ namespace Hops.Repositories
     {
         Malt GetRandom();
         Malt Get(long id);
+        Malt Get(string name);
         ListModel<Malt> Search(string searchTerm, int page);
         ListModel<Malt> Search(List<long> ids, int page);
         List<string> Autocomplete(string searchTerm);

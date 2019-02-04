@@ -15,11 +15,12 @@
     <script src="~/lib/sortable/js/sortable.min.js"></script>
 
     <script src="~/lib/typeahead.js/typeahead.bundle.min.js"></script>
+    <link href="~/lib/typeahead.js-bootstrap4-css/typeaheadjs.css" rel="stylesheet" />
 
     <link href="~/sticky-footer.css" rel="stylesheet" />
 
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css" 
-          integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev" 
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-6jHF7Z3XI3fF4XZixAuSu0gGKrXwoX/w3uFPxC56OtjChio7wtTGJWRW53Nhx6Ev"
           crossorigin="anonymous">
 
     <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
@@ -39,6 +40,8 @@
 
     <script src="~/inventory/inventory.js"></script>
     <script src="~/inventory/firebaseHelper.js"></script>
+
+    <link href="~/style.css" rel="stylesheet" />
 
     @RenderSection("Scripts", false)
 </head>
@@ -95,10 +98,10 @@
                                 </div>
                             </div>
                         </div>
-                        </form>
+                    </form>
                 }
 
-                </div>
+            </div>
         </nav>
 
         <br/>
@@ -143,7 +146,7 @@
             }
         });
 
-        $('.form-group .typeahead').typeahead(null, {
+        $('.input-group .typeahead').typeahead(null, {
             name: 'hopSearch',
             source: hops,
             limit: 30,

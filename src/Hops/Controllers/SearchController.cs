@@ -64,6 +64,12 @@ namespace Hops.Controllers
             return _sqliteRepository.Autocomplete(searchTerm);
         }
 
+        [HttpGet("autocompletemalt/{searchTerm}")]
+        public List<string> AutoCompleteMalt(string searchTerm)
+        {
+            return _sqliteRepository.AutocompleteMalt(searchTerm);
+        }
+
         [HttpGet("freetext/{searchterm}")]
         public IActionResult FreeTextResults(string searchterm) => FreeTextResults(searchterm, 1);
 

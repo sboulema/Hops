@@ -39,5 +39,12 @@ namespace Hops.Controllers
 
             return View("~/Views/Malt/List.cshtml", results);
         }
+
+        [HttpGet("{name}/color")]
+        public double GetColor(string name)
+        {
+            var malt = maltRepository.Get(name);
+            return (malt.EBCMin + malt.EBCMax) / 2;
+        }
     }
 }

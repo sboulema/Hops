@@ -180,6 +180,11 @@ namespace Hops.Repositories
             return autocompleteList;
         }
 
+        public List<string> AutocompleteMalt(string searchTerm)
+        {
+            return _malts.Where(m => Contains(m.Name, searchTerm, StringComparison.OrdinalIgnoreCase)).Select(m => m.Name).ToList();
+        }
+
         public List<Malt> GetMalts()
         {
             return _malts;

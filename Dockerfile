@@ -2,6 +2,7 @@
 FROM microsoft/dotnet:2.2-sdk
 
 RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+ENV PATH="$PATH:/root/.dotnet/tools"
 
 RUN mkdir /build
 WORKDIR /build

@@ -14,7 +14,7 @@ steps:
    
   displayName: 'Insert FirebaseApiKey'
   env:
-firebaseApiKey: $(firebaseApiKey)
+    firebaseApiKey: $(firebaseApiKey)
 
 - task: Docker@1
   displayName: 'Build an image'

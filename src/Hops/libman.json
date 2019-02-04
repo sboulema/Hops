@@ -43,11 +43,11 @@
       ]
     },
     {
-      "provider": "unpkg",
+      "provider": "jsdelivr",
       "library": "brauhaus@1.1.1",
       "destination": "wwwroot/lib/brauhaus/",
       "files": [
-        "dist/brauhaus.min.js"
+        "lib/brauhaus.min.js"
       ]
     }
   ]

@@ -46,5 +46,12 @@ namespace Hops.Controllers
             var malt = maltRepository.Get(name);
             return (malt.EBCMin + malt.EBCMax) / 2;
         }
+
+        [HttpGet("{name}/yield")]
+        public double GetYield(string name)
+        {
+            var malt = maltRepository.Get(name);
+            return malt.Yield.GetValueOrDefault(75);
+        }
     }
 }

@@ -9,6 +9,7 @@
         public double EBCMax { get; set; }
         public int Maltster { get; set; }
         public int? Ratio { get; set; }
+        public double? Yield { get; set; }
 
         public string EBC()
         {

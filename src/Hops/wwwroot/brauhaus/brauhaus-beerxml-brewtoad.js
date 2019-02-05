@@ -180,7 +180,7 @@ https://github.com/homebrewing/brauhausjs-beerxml
                                         spice.name = spiceProperty.textContent;
                                         break;
                                     case "amount":
-                                        spice.weight = recipeProperty.nodeName.toLowerCase() === "hops" ? parseFloat(spiceProperty.textContent) / 1000 : parseFloat(spiceProperty.textContent);
+                                        spice.weight = parseFloat(spiceProperty.textContent);
                                         break;
                                     case "alpha":
                                         spice.aa = parseFloat(spiceProperty.textContent);
@@ -360,7 +360,7 @@ https://github.com/homebrewing/brauhausjs-beerxml
             xml += "<fermentable><version>1</version>";
             xml += "<name>" + fermentable.name + "</name>";
             xml += "<type>" + fermentable.type() + "</type>";
-            xml += "<weight>" + fermentable.weight.toFixed(1) + "</weight>";
+            xml += "<amount>" + fermentable.weight.toFixed(3) + "</amount>";
             xml += "<yield>" + fermentable["yield"].toFixed(1) + "</yield>";
             xml += "<color>" + fermentable.color.toFixed(1) + "</color>";
             xml += "</fermentable>"

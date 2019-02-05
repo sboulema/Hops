@@ -30,12 +30,6 @@ namespace Hops.Controllers
         }
 
         [Route("[action]")]
-        public IActionResult BeerXml()
-        {
-            return View();
-        }
-
-        [Route("[action]")]
         public IActionResult Color()
         {
             return View();

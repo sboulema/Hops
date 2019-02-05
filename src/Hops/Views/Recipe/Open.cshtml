@@ -1,0 +1,46 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "BeerXML Viewer - Hops";
+}
+
+@section Scripts {
+    <script src="~/lib/brauhaus/lib/brauhaus.min.js"></script>
+    <script src="~/brauhaus/brauhaus-styles.min.js"></script>
+    <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
+}
+
+<div class="card">
+    <div class="card-header">BeerXML Viewer</div>
+    <div class="card-body">
+        <p>Please select your recipe:</p>
+
+        <div class="form-group">
+            <label class="btn btn-primary d-print-none" for="my-file-selector">
+                <input id="my-file-selector" accept="text/xml" type="file" style="display: none;" onchange="readURL(this);">
+                <span class="fas file-upload" aria-hidden="true"></span> Browse...
+            </label>
+        </div>
+    </div>
+</div>
+
+<br />
+
+@Html.Partial("Editor")
+
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                calculate(e.target.result);
+            };
+            reader.readAsText(input.files[0]);
+        }
+    }
+</script>

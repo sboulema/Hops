@@ -44,7 +44,134 @@
     }
 
     function addFermentable() {
-        $("#fermentables").append("<tr><td>a</td><td>b</td><td>c</td><td>display</td><td>display</td><tr/>")
+        var index = $("#fermentables").children().length;
+        $("#fermentables").append("<tr id='malt-" + index + "' data-id='" + index + "'>" +
+            "<td>" +
+            "<div class='input-group'>" +
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<span style='display: inline-block; width: 12px; height: 12px;'></span> " +
+            "<input id='malt-" + index + "-name' type='text' class='form-control malt typeahead'>" +
+            "</td>" +
+            "<td>" +
+            "<select class='custom-select'>" +
+            "<option value='mash'>Mash</option>" +
+            "<option value='steep'>Steep</option>" +
+            "<option value='boil'>Boil</option>" +
+            "</select>" +
+            "</td>" +
+            "<td id='malt-" + index + "-yield'></td>" +
+            "<td></td>" +
+            "<td id='malt-" + index + "-color'></td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delFermentable(" + index + ");'>" +
+                    " <i class='fas fa-minus'></i>" +
+                "</button>" +
+            "</td>" +
+            "</tr>");
+    }
+
+    function delFermentable(id) {
+        $("#malt-" + id).remove();
+    }
+
+    function addHop() {
+        var index = $("#hops").children().length + 1;
+        $("#hops").append("<tr id='hop-" + index + "'>" +
+            "<td>" +
+            "<div class='input-group'>" +
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" + "<input id='hop-" + index + "-name' type='text' class='form-control hop typeahead'>" + "</td>" +
+            "<td>" +
+            "<div class='input-group'>" +
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-append'><span class='input-group-text'>m</span></div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<select class='custom-select'>" +
+            "<option value='boil'>Boil</option>" +
+            "<option value='primary'>Primary</option>" +
+            "<option value='secondary'>Secondary</option>" +
+            "</select>" +
+            "</td>" +
+            "<td>" +
+            "<select class='custom-select'>" +
+            "<option value='pellets'>Pellets</option>" +
+            "<option value='leafs'>Leafs</option>" +
+            "<option value='plugs'>Plugs</option>" +
+            "</select>" +
+            "</td>" +
+            "<td id='hop-" + index + "-aa'></td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delHop(" + index + ");'>" +
+                    " <i class='fas fa-minus'></i>" +
+                "</button>" +
+            "</td>" +
+            "</tr>");
+    }
+
+    function delHop(id) {
+        $("#hop-" + id).remove();
+    }
+
+    function addExtra() {
+        var index = $("#extras").children().length + 1;
+        $("#extras").append("<tr id='extra-" + index + "'>" +
+            "<td>" +
+            "<div class='input-group'>" +
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" + "<input type='text' class='form-control'>" + "</td>" +
+            "<td>" +
+            "<div class='input-group'>" +
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-append'><span class='input-group-text'>m</span></div>" +
+            "</div>" +
+            "</td>" +
+            "<td>" +
+            "<select class='custom-select'>" +
+            "<option value='boil'>Boil</option>" +
+            "<option value='primary'>Primary</option>" +
+            "<option value='secondary'>Secondary</option>" +
+            "</select>" +
+            "</td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delExtra(" + index + ");'>" +
+                    " <i class='fas fa-minus'></i>" +
+                "</button>" +
+            "</td>" +
+            "</tr>");
+    }
+
+    function delExtra(id) {
+        $("#extra-" + id).remove();
+    }
+
+    function addYeast() {
+        var index = $("#yeasts").children().length;
+        $("#yeasts").append("<tr id='yeast-" + index + "'>" +
+            "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead'></td>" +
+            "<td></td>" +
+            "<td id='yeast-" + index + "-att'></td>" +
+            "<td>" +
+                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast(" + index + ");'>" +
+                    " <i class='fas fa-minus'></i>" +
+                "</button>" +
+            "</td>" +
+            "</tr>");
+    }
+
+    function delYeast(id) {
+        $("#yeast-" + id).remove();
     }
 
     function toBeerXml() {
@@ -59,6 +186,7 @@
         });
 
         $("#fermentables tr").each(function (index) {
+            var index = $(this).data("id");
             recipe.add('fermentable', {
                 name: document.getElementById("malt-" + index + "-name").value,
                 color: Brauhaus.lovibondToSrm(parseFloat($(this).find("#malt-" + index + "-color").text())),
@@ -68,6 +196,7 @@
         });
 
         $("#hops tr").each(function (index) {
+            var index = $(this).data("id");
             recipe.add('spice', {
                 name: document.getElementById("hop-" + index + "-name").value,
                 weight: parseFloat($(this).find("input")[0].value) / 1000,
@@ -79,6 +208,7 @@
         });
 
         $("#yeasts tr").each(function (index) {
+            var index = $(this).data("id");
             recipe.add('yeast', {
                 name: document.getElementById("yeast-" + index + "-name").value,
                 type: 'ale',
@@ -136,7 +266,7 @@
 
         $("#fermentables").empty();
         $.each(recipe.fermentables, function (index, fermentable) {
-            $("#fermentables").append("<tr id='malt-" + index + "'>" +
+            $("#fermentables").append("<tr id='malt-" + index + "' + data-id='" + index + "'>" +
                 "<td>" +
                 "<div class='input-group'>" +
                 "<input type='text' class='form-control' value=" + (fermentable.weight * 1000) + ">" +
@@ -156,22 +286,30 @@
                 "</td>" +
                 "<td id='malt-" + index + "-yield'>" + fermentable.yield.toFixed(0) + "%</td>" +
                 "<td>" + Math.ceil(fermentable.ppg()) + "</td>" +
-                "<td id='malt-" + index + "-color'>" + fermentable.color + " &deg;L</td></tr>");
+                "<td id='malt-" + index + "-color'>" + fermentable.color + " &deg;L</td>" +
+                "<td>" +
+                    "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delFermentable(" + index + ");'>" +
+                        " <i class='fas fa-minus'></i>" +
+                    "</button>" +
+                "</td>" +
+                "</tr>");
         });
 
         $("#hops").empty();
         $("#extras").empty();
         $("#extrasTable").hide();
-        $.each(recipe.spices, function (index, spice) {
+        var hopIndex = 0;
+        var extraIndex = 0;
+        $.each(recipe.spices, function (index, spice) {          
             if (spice.aa !== 0) {
-                $("#hops").append("<tr id='hop-" + index + "'>" +
+                $("#hops").append("<tr id='hop-" + hopIndex + "' data-id='" + hopIndex + "'>" +
                     "<td>" +
                     "<div class='input-group'>" +
                     "<input type='text' class='form-control' value=" + (spice.weight * 1000) + ">" +
                     "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
                     "</div>" +
                     "</td>" +
-                    "<td>" + "<input id='hop-" + index + "-name' type='text' class='form-control hop typeahead' onkeypress='handle(event, search)' value='" + spice.name + "'>" + "</td>" +
+                    "<td>" + "<input id='hop-" + hopIndex + "-name' type='text' class='form-control hop typeahead' onkeypress='handle(event, search)' value='" + spice.name + "'>" + "</td>" +
                     "<td>" +
                     "<div class='input-group'>" +
                     "<input type='text' class='form-control' value=" + spice.time + ">" +
@@ -192,10 +330,16 @@
                     "<option value='plugs'" + (spice.form.toLowerCase() === "plugs" ? " selected" : "") + ">Plugs</option>" +
                     "</select>" +
                     "</td>" +
-                    "<td id='hop-" + index + "-aa'>" + spice.aa.toFixed(1) + "%</td>" +
+                    "<td id='hop-" + hopIndex + "-aa'>" + spice.aa.toFixed(1) + "%</td>" +
+                    "<td>" +
+                        "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delHop(" + hopIndex + ");'>" +
+                            " <i class='fas fa-minus'></i>" +
+                        "</button>" +
+                    "</td>" +
                     "</tr>");
+                hopIndex++;
             } else {
-                $("#extras").append("<tr>" +
+                $("#extras").append("<tr id='extra-" + extraIndex + "' data-id='" + extraIndex + "'>" +
                     "<td>" +
                     "<div class='input-group'>" +
                     "<input type='text' class='form-control' value=" + spice.weight + ">" +
@@ -216,16 +360,28 @@
                     "<option value='secondary'" + (spice.use.toLowerCase() === "secondary" ? " selected" : "") + ">Secondary</option>" +
                     "</select>" +
                     "</td>" +
+                    "<td>" +
+                        "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delExtra(" + extraIndex + ");'>" +
+                            " <i class='fas fa-minus'></i>" +
+                        "</button>" +
+                    "</td>" +
                     "</tr>");
+                extraIndex++;
                 $("#extrasTable").show();
             }
         });
 
         $("#yeasts").empty();
         $.each(recipe.yeast, function (index, yeast) {
-            $("#yeasts").append("<tr id='yeast-" + index + "'>" +
+            $("#yeasts").append("<tr id='yeast-" + index + "' data-id='" + index + "'>" +
                 "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead' onkeypress='handle(event, search)' value='" + yeast.name + "'></td>" +
-                "<td>" + yeast.laboratory + "</td><td id='yeast-" + index + "-att'>" + yeast.attenuation + "%</td></tr>");
+                "<td>" + yeast.laboratory + "</td><td id='yeast-" + index + "-att'>" + yeast.attenuation + "%</td>" +
+                "<td>" +
+                    "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast();'>" +
+                        " <i class='fas fa-minus'></i>" +
+                    "</button>" +
+                "</td>" +
+                "</tr>");
         });
 
         $("#batchSize").val(recipe.batchSize);
@@ -309,6 +465,11 @@
             limit: 30,
             highlight: true
         });
+
+        Sortable.create(document.getElementById('fermentables'));
+        Sortable.create(document.getElementById('hops'));
+        Sortable.create(document.getElementById('yeasts'));
+        Sortable.create(document.getElementById('extras'));
     }
 </script>
 
@@ -335,30 +496,51 @@
             <table id="stats" class="table table-sm d-print-none"></table>
 
             <h2><i class="fas fa-wheat text-warning"></i> Fermentables</h2>
-            <button type="button" class="btn btn-sm btn-success float-right d-print-none" onclick="addFermentable();">
-                <i class="fas fa-plus"></i>
-            </button>
             <table class="table">
-                <tr><th>Amount</th><th>Fermentable</th><th>Use</th><th>Yield</th><th>PPG</th><th>Color</th></tr>
+                <tr><th>Amount</th><th>Fermentable</th><th>Use</th><th>Yield</th><th>PPG</th><th>Color</th>
+                    <th>
+                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addFermentable();">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </th>
+                </tr>
                 <tbody id="fermentables"></tbody>
             </table>
 
             <h2><i class="fas fa-spa text-success"></i> Hops</h2>
             <table class="table">
-                <tr><th>Amount</th><th>Hop</th><th>Time</th><th>Use</th><th>Form</th><th>AA</th></tr>
+                <tr><th>Amount</th><th>Hop</th><th>Time</th><th>Use</th><th>Form</th><th>AA</th>
+                    <th>
+                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addHop();">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </th>
+                </tr>
                 <tbody id="hops"></tbody>
             </table>
 
             <h2><i class="fas fa-flask text-info"></i> Yeast</h2>
             <table class="table">
-                <tr><th>Name</th><th>Lab/Product</th><th>Attenuation</th></tr>
+                <tr><th>Name</th><th>Lab/Product</th><th>Attenuation</th>
+                    <th>
+                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addYeast();">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </th>
+                </tr>
                 <tbody id="yeasts"></tbody>
             </table>
 
             <div id="extrasTable" style="display: none">
                 <h2><i class="fas fa-pepper-hot text-danger"></i> Extras</h2>
                 <table class="table">
-                    <tr><th>Amount</th><th>Name</th><th>Time</th><th>Use</th></tr>
+                    <tr><th>Amount</th><th>Name</th><th>Time</th><th>Use</th>
+                        <th>
+                            <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addExtra();">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </th>
+                    </tr>
                     <tbody id="extras"></tbody>
                 </table>
             </div>

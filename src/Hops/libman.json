@@ -28,14 +28,6 @@
       ]
     },
     {
-      "library": "sortable@0.8.0",
-      "destination": "wwwroot/lib/sortable/",
-      "files": [
-        "js/sortable.min.js",
-        "css/sortable-theme-bootstrap.min.css"
-      ]
-    },
-    {
       "library": "mark.js@8.11.1",
       "destination": "wwwroot/lib/mark.js/",
       "files": [
@@ -56,6 +48,14 @@
       "destination": "wwwroot/lib/typeahead.js-bootstrap4-css/",
       "files": [
         "typeaheadjs.css"
+      ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "sortablejs@1.8.2",
+      "destination": "wwwroot/lib/sortable/",
+      "files": [
+        "Sortable.min.js"
       ]
     }
   ]

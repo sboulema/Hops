@@ -72,6 +72,7 @@
                 "</button>" +
             "</td>" +
             "</tr>");
+        loadMaltTypeahead();
     }
 
     function delFermentable(id) {
@@ -115,6 +116,7 @@
                 "</button>" +
             "</td>" +
             "</tr>");
+        loadHopTypeahead();
     }
 
     function delHop(id) {
@@ -168,6 +170,7 @@
                 "</button>" +
             "</td>" +
             "</tr>");
+        loadYeastTypeahead();
     }
 
     function delYeast(id) {
@@ -406,37 +409,21 @@
 
         $('#preview').show();
 
-        $('.hop.typeahead').typeahead(null, {
-            name: 'hopSearch',
-            source: hops,
-            limit: 30,
-            highlight: true
-        });
+        loadMaltTypeahead();
+        loadHopTypeahead();
+        loadYeastTypeahead();
 
-        $('.malt.typeahead').on('typeahead:selected', function (e, searchTerm) {
-            var id = $(this).closest("tr").attr("id");
-            $.get("/malt/" + searchTerm + "/color", function (data) {
-                $("#" + id + "-color").html(Brauhaus.srmToLovibond(Brauhaus.ebcToSrm(data)).toFixed(0) + "&deg; L");
-            });
-            $.get("/malt/" + searchTerm + "/yield", function (data) {
-                $("#" + id + "-yield").html(data.toFixed(0) + "%");
-            });
-        });
+        makeIngredientsSortable();
+    }
 
-        $('.yeast.typeahead').on('typeahead:selected', function (e, searchTerm) {
-            var id = $(this).closest("tr").attr("id");
-            $.get("/yeast/" + searchTerm + "/attenuation", function (data) {
-                $("#" + id + "-att").text(data + "%");
-            });
-        });
+    function makeIngredientsSortable() {
+        Sortable.create(document.getElementById('fermentables'));
+        Sortable.create(document.getElementById('hops'));
+        Sortable.create(document.getElementById('yeasts'));
+        Sortable.create(document.getElementById('extras'));
+    }
 
-        $('.hop.typeahead').on('typeahead:selected', function (e, searchTerm) {
-            var id = $(this).closest("tr").attr("id");
-            $.get("/hop/" + searchTerm + "/alphaacid", function (data) {
-                $("#" + id + "-aa").text(data + "%");
-            });
-        });
-
+    function loadMaltTypeahead() {
         var malts = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -453,6 +440,34 @@
             highlight: true
         });
 
+        $('.malt.typeahead').on('typeahead:selected', function (e, searchTerm) {
+            var id = $(this).closest("tr").attr("id");
+            $.get("/malt/" + searchTerm + "/color", function (data) {
+                $("#" + id + "-color").html(Brauhaus.srmToLovibond(Brauhaus.ebcToSrm(data)).toFixed(0) + "&deg; L");
+            });
+            $.get("/malt/" + searchTerm + "/yield", function (data) {
+                $("#" + id + "-yield").html(data.toFixed(0) + "%");
+            });
+        });
+    }
+
+    function loadHopTypeahead() {
+        $('.hop.typeahead').typeahead(null, {
+            name: 'hopSearch',
+            source: hops,
+            limit: 30,
+            highlight: true
+        });
+
+        $('.hop.typeahead').on('typeahead:selected', function (e, searchTerm) {
+            var id = $(this).closest("tr").attr("id");
+            $.get("/hop/" + searchTerm + "/alphaacid", function (data) {
+                $("#" + id + "-aa").text(data + "%");
+            });
+        });
+    }
+
+    function loadYeastTypeahead() {
         var yeast = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -469,10 +484,12 @@
             highlight: true
         });
 
-        Sortable.create(document.getElementById('fermentables'));
-        Sortable.create(document.getElementById('hops'));
-        Sortable.create(document.getElementById('yeasts'));
-        Sortable.create(document.getElementById('extras'));
+        $('.yeast.typeahead').on('typeahead:selected', function (e, searchTerm) {
+            var id = $(this).closest("tr").attr("id");
+            $.get("/yeast/" + searchTerm + "/attenuation", function (data) {
+                $("#" + id + "-att").text(data + "%");
+            });
+        });
     }
 
     function saveRecipeToFirebase() {

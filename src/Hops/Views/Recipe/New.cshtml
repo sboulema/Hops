@@ -1,0 +1,24 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "New Recipe - Hops";
+}
+
+@section Scripts {
+    <script src="~/lib/brauhaus/lib/brauhaus.min.js"></script>
+    <script src="~/brauhaus/brauhaus-styles.min.js"></script>
+    <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
+}
+
+@Html.Partial("Editor")
+
+<script>
+    $(document).ready(function () {
+        $("#preview").show(); 
+    });
+</script>

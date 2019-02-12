@@ -11,14 +11,20 @@ namespace Hops.Controllers
             return View();
         }
 
-        [Route("[action]")]
-        public IActionResult List()
+        [HttpGet]
+        public IActionResult Index()
         {
             return View();
         }
 
+        [HttpGet("recipeId")]
+        public IActionResult Index(int recipeId)
+        {
+            return View("Detail");
+        }
+
         [Route("[action]")]
-        public IActionResult Open()
+        public IActionResult Import()
         {
             return View();
         }

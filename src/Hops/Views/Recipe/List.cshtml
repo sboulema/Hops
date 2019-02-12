@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Recipes";
+}
+
+<div class="card">
+    <div class="card-body p-0">
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="recipesTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        loadRecipesFromInventory();
+    });
+</script>

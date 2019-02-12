@@ -183,7 +183,8 @@
             boilSize: 1.7,
             boilTime: parseFloat($("#boilTime").val()),
             style: Brauhaus.getStyle($("#recipeStyle").val().split("---")[0], $("#recipeStyle").val().split("---")[1]),
-            type: $("#recipeType").val()
+            type: $("#recipeType").val(),
+            date: Date.parse($("#recipeDate").val())
         });
 
         $("#fermentables tr").each(function (index) {
@@ -226,8 +227,6 @@
                 time: parseFloat($(this).find("input")[2].value)
             });
         });
-
-        console.log(recipe.toBeerXml()); //debug
 
         return recipe.toBeerXml();
     }
@@ -298,7 +297,6 @@
 
         $("#hops").empty();
         $("#extras").empty();
-        $("#extrasTable").hide();
         var hopIndex = 0;
         var extraIndex = 0;
         $.each(recipe.spices, function (index, spice) {          
@@ -368,7 +366,6 @@
                     "</td>" +
                     "</tr>");
                 extraIndex++;
-                $("#extrasTable").show();
             }
         });
 
@@ -389,8 +386,12 @@
         $("#boilTime").val(recipe.boilTime);
         $("#recipeName").val(recipe.name);
         $("#recipeAuthor").val(recipe.author);
+        if (typeof recipe.date !== 'undefined') {
+            $("#recipeDate").val(new Date(recipe.date * 1000).toISOString());
+        }   
         $("#recipeDescription").val(recipe.description);
         $("#recipeType").val(recipe.type);
+        $("#recipeId").val(recipeId);
 
         $("#recipeStyle").empty();
         createStyleList(recipe.style.name);
@@ -473,23 +474,37 @@
         Sortable.create(document.getElementById('yeasts'));
         Sortable.create(document.getElementById('extras'));
     }
+
+    function saveRecipeToFirebase() {
+        var id = $('#recipeId').val() === '' ? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) : $('#recipeId').val();
+        var name = $('<div />').html($('#recipeName').val()).html();
+        var beerxml = toBeerXml();
+        var date = Date.parse($("#recipeDate").val());
+        saveRecipe(id, name, date, beerxml);
+    }
 </script>
 
 <div id="preview" style="display: none">
 
     <div class="card">
         <div class="card-body">
-            <button type="button" class="btn btn-primary float-right d-print-none" onclick="window.print();">
-                <span class="fas fa-print" aria-hidden="true"></span> Print...
-            </button>
-
-            <button type="button" class="btn btn-success float-right d-print-none" onclick="toBeerXml();">
-                <span class="fas fa-save" aria-hidden="true"></span> Save...
-            </button>
-
-            <button type="button" class="btn btn-success float-right d-print-none" onclick="calculate(toBeerXml());">
-                <span class="fas fa-sync" aria-hidden="true"></span> Calculate...
-            </button>
+            <div class="btn-toolbar float-right d-print-none" role="toolbar">
+                <div class="btn-group mr-2" role="group">
+                    <button type="button" class="btn btn-success" onclick="calculate(toBeerXml());">
+                        <span class="fas fa-sync" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="btn-group mr-2" role="group">
+                    <button type="button" class="btn btn-success" onclick="saveRecipeToFirebase();">
+                        <span class="fas fa-save" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary" onclick="window.print();">
+                        <span class="fas fa-print" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
 
             <h2 id="name" style="margin-top: 0;">Name</h2>
 
@@ -499,7 +514,13 @@
 
             <h2><i class="fas fa-wheat text-warning"></i> Fermentables</h2>
             <table class="table">
-                <tr><th>Amount</th><th>Fermentable</th><th>Use</th><th>Yield</th><th>PPG</th><th>Color</th>
+                <tr>
+                    <th>Amount</th>
+                    <th>Fermentable</th>
+                    <th>Use</th>
+                    <th>Yield</th>
+                    <th>PPG</th>
+                    <th>Color</th>
                     <th>
                         <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addFermentable();">
                             <i class="fas fa-plus"></i>
@@ -511,7 +532,13 @@
 
             <h2><i class="fas fa-spa text-success"></i> Hops</h2>
             <table class="table">
-                <tr><th>Amount</th><th>Hop</th><th>Time</th><th>Use</th><th>Form</th><th>AA</th>
+                <tr>
+                    <th>Amount</th>
+                    <th>Hop</th>
+                    <th>Time</th>
+                    <th>Use</th>
+                    <th>Form</th>
+                    <th>AA</th>
                     <th>
                         <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addHop();">
                             <i class="fas fa-plus"></i>
@@ -523,7 +550,10 @@
 
             <h2><i class="fas fa-flask text-info"></i> Yeast</h2>
             <table class="table">
-                <tr><th>Name</th><th>Lab/Product</th><th>Attenuation</th>
+                <tr>
+                    <th>Name</th>
+                    <th>Lab/Product</th>
+                    <th>Attenuation</th>
                     <th>
                         <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addYeast();">
                             <i class="fas fa-plus"></i>
@@ -533,10 +563,14 @@
                 <tbody id="yeasts"></tbody>
             </table>
 
-            <div id="extrasTable" style="display: none">
+            <div id="extrasTable">
                 <h2><i class="fas fa-pepper-hot text-danger"></i> Extras</h2>
                 <table class="table">
-                    <tr><th>Amount</th><th>Name</th><th>Time</th><th>Use</th>
+                    <tr>
+                        <th>Amount</th>
+                        <th>Name</th>
+                        <th>Time</th>
+                        <th>Use</th>
                         <th>
                             <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addExtra();">
                                 <i class="fas fa-plus"></i>
@@ -596,6 +630,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Date</td>
+                    <td>
+                        <input type="text" class="form-control" id="recipeDate">
+                    </td>
+                </tr>
+                <tr>
                     <td>Notes</td>
                     <td>
                         <textarea class="form-control" id="recipeDescription"></textarea>
@@ -604,6 +644,8 @@
             </table>
 
             <table id="printStats" class="table d-none d-print-block"></table>
+
+            <input type="hidden" id="recipeId">
         </div>
     </div>
 

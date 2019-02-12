@@ -42,6 +42,9 @@ https://github.com/homebrewing/brauhausjs-beerxml
                     case "type":
                         recipe.type = recipeProperty.textContent;
                         break;
+                    case "date":
+                        recipe.date = recipeProperty.textContent;
+                        break;
                     case "efficiency":
                         recipe.mashEfficiency = parseFloat(recipeProperty.textContent);
                         break;
@@ -309,6 +312,7 @@ https://github.com/homebrewing/brauhausjs-beerxml
         xml += "<boil_time>" + this.boilTime + "</boil_time>";
         xml += "<efficiency>" + this.mashEfficiency + "</efficiency>";
         xml += "<type>" + this.type + "</type>";
+        xml += "<date>" + this.date + "</date>";
         if (this.primaryDays) {
             xml += "<primary_age>" + this.primaryDays + "</primary_age>"
         }

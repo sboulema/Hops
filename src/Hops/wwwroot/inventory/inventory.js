@@ -1,7 +1,8 @@
 ﻿var Inventory = {
     Hops: [],
     Malts: [],
-    Yeasts: []
+    Yeasts: [],
+    Recipes: []
 };
 
 function save(element) {
@@ -53,6 +54,37 @@ function save(element) {
     }
 
     $(element).toggleClass("fas fal");
+}
+
+function saveRecipe(id, name, date, beerxml) {
+    loadFromFirebase(function (inventory) {
+        if (typeof inventory.Recipes === 'undefined') {
+            inventory.Recipes = [];
+        }
+
+        var foundAtIndex = isFoundAtIndex(id, inventory.Recipes);
+        if (foundAtIndex > -1) {
+            inventory.Recipes.splice(foundAtIndex, 1);
+        }
+
+        inventory.Recipes.push({ id: id, name: name, date: date, beerxml: beerxml });
+        saveToFirebase(inventory);
+    });
+}
+
+function loadRecipesFromInventory() {
+    loadFromFirebase(function (inventory) {
+        $.each(inventory.Recipes, function (index, recipe) {
+            $("#recipesTable").append("<tr><td><a href='" + recipe.id + "'>" + recipe.name + "</a><td><td>" + new Date(recipe.date * 1000).toISOString() + "<td></tr>")
+        });
+    });
+}
+
+function getRecipe(id) {
+    loadFromFirebase(function (inventory) {
+        var foundAtIndex = isFoundAtIndex(id, inventory.Recipes);
+        return inventory.Recipes[foundAtIndex];
+    }); 
 }
 
 function loadFromInventory() {

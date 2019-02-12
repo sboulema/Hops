@@ -1,0 +1,28 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Recipe Viewer - Hops";
+}
+
+@section Scripts {
+    <script src="~/lib/brauhaus/lib/brauhaus.min.js"></script>
+    <script src="~/brauhaus/brauhaus-styles.min.js"></script>
+    <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
+}
+
+@Html.Partial("Editor")
+
+<script>
+    $.ready(function () {
+        var urlParts = window.location.href.split('/')
+        var recipeId = urlParts[urlParts.length - 1];
+        var recipe = getRecipe(recipeId);
+        calculate(recipe.beerxml);
+        document.title = recipe.name + " - Hops"; 
+    });
+</script>

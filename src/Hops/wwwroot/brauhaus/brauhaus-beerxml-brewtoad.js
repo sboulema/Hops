@@ -308,6 +308,7 @@ https://github.com/homebrewing/brauhausjs-beerxml
         xml += "<boil_size>" + this.boilSize + "</boil_size>";
         xml += "<boil_time>" + this.boilTime + "</boil_time>";
         xml += "<efficiency>" + this.mashEfficiency + "</efficiency>";
+        xml += "<type>" + this.type + "</type>";
         if (this.primaryDays) {
             xml += "<primary_age>" + this.primaryDays + "</primary_age>"
         }

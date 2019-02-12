@@ -182,7 +182,8 @@
             batchSize: parseFloat($("#batchSize").val()),
             boilSize: 1.7,
             boilTime: parseFloat($("#boilTime").val()),
-            style: Brauhaus.getStyle($("#recipeStyle").val().split("---")[0], $("#recipeStyle").val().split("---")[1])
+            style: Brauhaus.getStyle($("#recipeStyle").val().split("---")[0], $("#recipeStyle").val().split("---")[1]),
+            type: $("#recipeType").val()
         });
 
         $("#fermentables tr").each(function (index) {
@@ -389,6 +390,7 @@
         $("#recipeName").val(recipe.name);
         $("#recipeAuthor").val(recipe.author);
         $("#recipeDescription").val(recipe.description);
+        $("#recipeType").val(recipe.type);
 
         $("#recipeStyle").empty();
         createStyleList(recipe.style.name);
@@ -569,6 +571,16 @@
                     <td>Style</td>
                     <td>
                         <select id="recipeStyle" class="custom-select"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Type</td>
+                    <td>
+                        <select id="recipeType" class="custom-select">
+                            <option value="All Grain">All Grain</option>
+                            <option value="Extract">Extract</option>
+                            <option value="Partial Mash">Partial Mash</option>
+                        </select>
                     </td>
                 </tr>
                 <tr>

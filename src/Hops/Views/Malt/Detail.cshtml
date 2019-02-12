@@ -41,14 +41,28 @@
                 </td>
                 <td>@Model.EBC() EBC</td>
             </tr>
-            <tr>
-                <td style="padding-left:15px;">
-                    Ratio <span class="fas fa-info-circle"
-                                data-toggle="tooltip"
-                                title="The max percentage this malt can be used up to of the grain bill" />
-                </td>
-                <td>@Model.Ratio%</td>
-            </tr>
+            @if (Model.Ratio != null)
+            {
+                <tr>
+                    <td style="padding-left:15px;">
+                        Ratio <span class="fas fa-info-circle"
+                                    data-toggle="tooltip"
+                                    title="The max percentage this malt can be used up to of the grain bill" />
+                    </td>
+                    <td>@Model.Ratio%</td>
+                </tr>
+            }
+            @if (Model.Yield != null)
+            {
+                <tr>
+                    <td style="padding-left:15px;">
+                        Yield <span class="fas fa-info-circle"
+                                    data-toggle="tooltip"
+                                    title="Each grain will yield a typical amount of fermentable and non-fermentable sugars that is referred to as its percent extraction or maximum yield" />
+                    </td>
+                    <td>@((int)Model.Yield)%</td>
+                </tr>
+            }
         </table>
     </div>
 </div>

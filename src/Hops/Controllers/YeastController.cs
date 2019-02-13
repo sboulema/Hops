@@ -1,4 +1,5 @@
-﻿using Hops.Repositories;
+﻿using Hops.Models;
+using Hops.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
@@ -45,6 +46,13 @@ namespace Hops.Controllers
         {
             var yeast = yeastRepository.Get(name);
             return (yeast.AttenuationMin + yeast.AttenuationMax) / 2;
+        }
+
+        [HttpGet("{name}/lab")]
+        public string GetLab(string name)
+        {
+            var yeast = yeastRepository.Get(name);
+            return ((YeastLabEnum)yeast.Lab).Wordify();
         }
     }
 }

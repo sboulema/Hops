@@ -17,7 +17,7 @@ namespace Hops.Controllers
             return View();
         }
 
-        [HttpGet("recipeId")]
+        [HttpGet("{recipeId}")]
         public IActionResult Index(int recipeId)
         {
             return View("Detail");

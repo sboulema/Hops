@@ -23,21 +23,18 @@ function saveToFirebase(element) {
     }
 }
 
-function loadFromFirebase(callback) {
+async function loadFromFirebase() {
     var firebaseCode = localStorage.getItem("firebaseCode");
     if (firebaseCode === null || firebaseCode === "") return;
 
-    var docRef = db.collection("inventory").doc(firebaseCode);
-    
-    docRef.get().then(function(doc) {
-        if (doc.exists) {
-            callback(doc.data());
-        } else {
-            console.log("No such document!");
-        }
-    }).catch(function(error) {
-        console.log("Error getting document:", error);
-    });
+    var docRef = db.collection("inventory").doc(firebaseCode); 
+    var doc = await docRef.get();
+
+    if (doc.exists) {
+        return doc.data();
+    } else {
+        console.log("No such document!");
+    }
 }
 
 function deleteAllData() {

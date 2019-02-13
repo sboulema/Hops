@@ -18,11 +18,17 @@
 @Html.Partial("Editor")
 
 <script>
-    $.ready(function () {
+    $(document).ready(function () {
+        loadRecipe();
+    });
+
+    async function loadRecipe() {
         var urlParts = window.location.href.split('/')
         var recipeId = urlParts[urlParts.length - 1];
-        var recipe = getRecipe(recipeId);
-        calculate(recipe.beerxml);
+
+        var recipe = await getRecipe(parseInt(recipeId));
+
+        calculate(recipeId, recipe.beerxml);
         document.title = recipe.name + " - Hops"; 
-    });
+    }
 </script>

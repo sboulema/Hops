@@ -231,6 +231,13 @@ https://github.com/homebrewing/brauhausjs-beerxml
                                         break;
                                     case "laboratory":
                                         yeast.laboratory = yeastProperty.textContent;
+                                        break;
+                                    case "amount":
+                                        yeast.weight = parseFloat(yeastProperty.textContent);
+                                        break;
+                                    case "amount_is_weight":
+                                        yeast.amountIsWeight = (yeastProperty.textContent == 'true');
+                                        break;
                                 }
                             }
                             recipe.yeast.push(yeast)
@@ -397,6 +404,8 @@ https://github.com/homebrewing/brauhausjs-beerxml
             xml += "<type>" + yeast.type + "</type>";
             xml += "<form>" + yeast.form + "</form>";
             xml += "<attenuation>" + yeast.attenuation + "</attenuation>";
+            xml += "<amount>" + yeast.weight + "</amount>";
+            xml += "<laboratory>" + yeast.laboratory + "</laboratory>";
             xml += "</yeast>"
         }
         xml += "</yeasts>";

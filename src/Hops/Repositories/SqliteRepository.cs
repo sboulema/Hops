@@ -36,7 +36,14 @@ namespace Hops.Repositories
 
         public Hop GetHop(string name)
         {
-            return _hops.First(h => h.Name.Equals(name));
+            var result = _hops.GroupJoin(_aliases,
+                hop => hop.Id,
+                alias => alias.HopId,
+                (hop, aliases) => new { hop, aliases }
+            )
+            .FirstOrDefault(r => r.hop.Name.Equals(name) || r.aliases.Any(a => a.Name.Equals(name)));
+
+            return result.hop;
         }
 
         private long GetHopId(string slug)

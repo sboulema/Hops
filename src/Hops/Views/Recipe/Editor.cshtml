@@ -52,8 +52,7 @@
             "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
             "</div>" +
             "</td>" +
-            "<td>" +
-            "<span style='display: inline-block; width: 12px; height: 12px;'></span> " +
+            "<td width='70%'>" +
             "<input id='malt-" + index + "-name' type='text' class='form-control malt typeahead'>" +
             "</td>" +
             "<td>" +
@@ -81,7 +80,7 @@
 
     function addHop() {
         var index = $("#hops").children().length + 1;
-        $("#hops").append("<tr id='hop-" + index + "'>" +
+        $("#hops").append("<tr id='hop-" + index + "' data-id='" + index + "'>" +
             "<td>" +
             "<div class='input-group'>" +
             "<input type='text' class='form-control'>" +
@@ -160,9 +159,15 @@
 
     function addYeast() {
         var index = $("#yeasts").children().length;
-        $("#yeasts").append("<tr id='yeast-" + index + "'>" +
+        $("#yeasts").append("<tr id='yeast-" + index + "' data-id='" + index + "'>" +
+            "<td>" +
+                "<div class='input-group'>" +
+                    "<input type='text' class='form-control'>" +
+                    "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+                "</div>" +
+            "</td>" +
             "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead'></td>" +
-            "<td></td>" +
+            "<td id='yeast-" + index + "-lab'></td>" +
             "<td id='yeast-" + index + "-att'></td>" +
             "<td>" +
                 "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast(" + index + ");'>" +
@@ -218,7 +223,9 @@
                 name: document.getElementById("yeast-" + index + "-name").value,
                 type: 'ale',
                 form: 'dry',
-                attenuation: parseFloat($(this).find("#yeast-" + index + "-att").text())
+                attenuation: parseFloat($(this).find("#yeast-" + index + "-att").text()),
+                weight: parseFloat($(this).find("input")[0].value) / 1000,
+                laboratory: $(this).find("#yeast-" + index + "-lab").text()
             });
         });
 
@@ -245,7 +252,7 @@
         });
     }
 
-    function calculate(beerXml) {
+    function calculate(recipeId, beerXml) {
         recipe = Brauhaus.Recipe.fromBeerXml(beerXml)[0];
         recipe.ibuMethod = "rager";
         recipe.calculate();
@@ -277,7 +284,6 @@
                 "</div>" +
                 "</td>" +
                 "<td>" +
-                "<span style='display: inline-block; width: 12px; height: 12px; background-color: " + fermentable.colorCss() + "'></span> " +
                 "<input id='malt-" + index + "-name' type='text' class='form-control malt typeahead' onkeypress='handle(event, search)' value='" + fermentable.name + "'>" +
                 "</td>" +
                 "<td>" +
@@ -344,8 +350,8 @@
                 $("#extras").append("<tr id='extra-" + extraIndex + "' data-id='" + extraIndex + "'>" +
                     "<td>" +
                     "<div class='input-group'>" +
-                    "<input type='text' class='form-control' value=" + spice.weight + ">" +
-                    "<div class='input-group-append'><span class='input-group-text'>" + (spice.amountIsWeight ? " g" : " each") + "</span></div>" +
+                    "<input type='text' class='form-control' value=" + (spice.weight * 1000) + ">" +
+                    "<div class='input-group-append'><span class='input-group-text'>" + (spice.amountIsWeight === false ? " L" : " g") + "</span></div>" +
                     "</div>" +
                     "</td>" +
                     "<td>" + "<input type='text' class='form-control' value='" + spice.name + "'>" + "</td>" +
@@ -375,8 +381,15 @@
         $("#yeasts").empty();
         $.each(recipe.yeast, function (index, yeast) {
             $("#yeasts").append("<tr id='yeast-" + index + "' data-id='" + index + "'>" +
+                "<td>" +
+                    "<div class='input-group'>" +
+                        "<input type='text' class='form-control' value=" + (yeast.weight * 1000) + ">" +
+                        "<div class='input-group-append'><span class='input-group-text'>" + (yeast.amountIsWeight === false ? " L" : " g") + "</span></div>" +
+                    "</div>" +
+                "</td>" +
                 "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead' onkeypress='handle(event, search)' value='" + yeast.name + "'></td>" +
-                "<td>" + yeast.laboratory + "</td><td id='yeast-" + index + "-att'>" + yeast.attenuation + "%</td>" +
+                "<td id='yeast-" + index + "-lab'>" + yeast.laboratory + "</td>" +
+                "<td id='yeast-" + index + "-att'>" + yeast.attenuation + "%</td>" +
                 "<td>" +
                     "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast();'>" +
                         " <i class='fas fa-minus'></i>" +
@@ -390,7 +403,7 @@
         $("#recipeName").val(recipe.name);
         $("#recipeAuthor").val(recipe.author);
         if (typeof recipe.date !== 'undefined') {
-            $("#recipeDate").val(new Date(recipe.date * 1000).toISOString());
+            $("#recipeDate").val(new Date(parseInt(recipe.date)).toISOString().substring(0, 10));         
         }   
         $("#recipeDescription").val(recipe.description);
         $("#recipeType").val(recipe.type);
@@ -433,7 +446,7 @@
             }
         });
 
-        $('.malt.typeahead').typeahead(null, {
+        $('.malt.typeahead:not(.tt-input):not(.tt-hint)').typeahead(null, {
             name: 'maltSearch',
             source: malts,
             limit: 30,
@@ -452,7 +465,7 @@
     }
 
     function loadHopTypeahead() {
-        $('.hop.typeahead').typeahead(null, {
+        $('.hop.typeahead:not(.tt-input):not(.tt-hint)').typeahead(null, {
             name: 'hopSearch',
             source: hops,
             limit: 30,
@@ -477,7 +490,7 @@
             }
         });
 
-        $('.yeast.typeahead').typeahead(null, {
+        $('.yeast.typeahead:not(.tt-input):not(.tt-hint)').typeahead(null, {
             name: 'yeastSearch',
             source: yeast,
             limit: 30,
@@ -489,11 +502,14 @@
             $.get("/yeast/" + searchTerm + "/attenuation", function (data) {
                 $("#" + id + "-att").text(data + "%");
             });
+            $.get("/yeast/" + searchTerm + "/lab", function (data) {
+                $("#" + id + "-lab").text(data);
+            });
         });
     }
 
     function saveRecipeToFirebase() {
-        var id = $('#recipeId').val() === '' ? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) : $('#recipeId').val();
+        var id = $('#recipeId').val() === '' ? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) : parseInt($('#recipeId').val());
         var name = $('<div />').html($('#recipeName').val()).html();
         var beerxml = toBeerXml();
         var date = Date.parse($("#recipeDate").val());
@@ -532,9 +548,9 @@
             <h2><i class="fas fa-wheat text-warning"></i> Fermentables</h2>
             <table class="table">
                 <tr>
-                    <th>Amount</th>
-                    <th>Fermentable</th>
-                    <th>Use</th>
+                    <th width="15%">Amount</th>
+                    <th width="70%">Fermentable</th>
+                    <th width="15%">Use</th>
                     <th>Yield</th>
                     <th>PPG</th>
                     <th>Color</th>
@@ -550,11 +566,11 @@
             <h2><i class="fas fa-spa text-success"></i> Hops</h2>
             <table class="table">
                 <tr>
-                    <th>Amount</th>
-                    <th>Hop</th>
-                    <th>Time</th>
-                    <th>Use</th>
-                    <th>Form</th>
+                    <th width="15%">Amount</th>
+                    <th width="40%">Hop</th>
+                    <th width="15%">Time</th>
+                    <th width="15%">Use</th>
+                    <th width="15%">Form</th>
                     <th>AA</th>
                     <th>
                         <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addHop();">
@@ -568,8 +584,9 @@
             <h2><i class="fas fa-flask text-info"></i> Yeast</h2>
             <table class="table">
                 <tr>
-                    <th>Name</th>
-                    <th>Lab/Product</th>
+                    <th width="15%">Amount</th>
+                    <th width="55%">Name</th>
+                    <th width="30%">Lab/Product</th>
                     <th>Attenuation</th>
                     <th>
                         <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addYeast();">
@@ -584,10 +601,10 @@
                 <h2><i class="fas fa-pepper-hot text-danger"></i> Extras</h2>
                 <table class="table">
                     <tr>
-                        <th>Amount</th>
-                        <th>Name</th>
-                        <th>Time</th>
-                        <th>Use</th>
+                        <th width="15%">Amount</th>
+                        <th width="55%">Name</th>
+                        <th width="15%">Time</th>
+                        <th width="15%">Use</th>
                         <th>
                             <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addExtra();">
                                 <i class="fas fa-plus"></i>

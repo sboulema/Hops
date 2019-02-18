@@ -45,6 +45,18 @@ https://github.com/homebrewing/brauhausjs-beerxml
                     case "date":
                         recipe.date = recipeProperty.textContent;
                         break;
+                    case "og":
+                        recipe.og = recipeProperty.textContent;
+                        break;
+                    case "fg":
+                        recipe.fg = recipeProperty.textContent;
+                        break;
+                    case "taste_notes":
+                        recipe.tasteNotes = recipeProperty.textContent;
+                        break;
+                    case "taste_rating":
+                        recipe.tasteRating = parseFloat(recipeProperty.textContent);
+                        break;
                     case "efficiency":
                         recipe.mashEfficiency = parseFloat(recipeProperty.textContent);
                         break;
@@ -349,6 +361,18 @@ https://github.com/homebrewing/brauhausjs-beerxml
         }
         if (this.bottlingPressure) {
             xml += "<carbonation>" + this.bottlingPressure + "</carbonation>"
+        }
+        if (this.og) {
+            xml += "<og>" + this.og + "</og>"
+        }
+        if (this.fg) {
+            xml += "<fg>" + this.fg + "</fg>"
+        }
+        if (this.tasteNotes) {
+            xml += "<taste_notes>" + this.tasteNotes + "</taste_notes>"
+        }
+        if (this.tasteRating) {
+            xml += "<taste_rating>" + this.tasteRating + "</taste_rating>"
         }
         if (this.style) {
             xml += "<style><version>1</version>";

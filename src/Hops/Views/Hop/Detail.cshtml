@@ -56,9 +56,11 @@
         Brewing values
     </div>
     <div class="card-body p-0">
-        Brewing Usage: @Model.Hop.BrewingUsageString()
-
         <table class="table table-striped">
+            <tr>
+                <td style="padding-left:15px;">Brewing Usage</td>
+                <td>@Model.Hop.BrewingUsageString()</td>
+            </tr>
             <tr>
                 <td style="padding-left:15px;">
                     Alpha Acid <span class="fas fa-info-circle"

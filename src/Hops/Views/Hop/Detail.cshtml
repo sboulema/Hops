@@ -14,7 +14,7 @@
 }
 
 <div class="jumbotron bg-success text-white">
-    <span style="cursor: pointer;" class="hop-inv fal fa-star float-right btn btn-default hidden-print text-warning" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
+    <span style="cursor: pointer;" class="hop-inv fal fa-star float-right btn btn-default d-print-none text-warning" aria-hidden="true" aria-label="star" data-hop-id="@Model.Hop.Id" onclick="save(this);"></span>
 
     <h1>@Model.Hop.Name</h1>
     <p>@Model.Hop.Trade</p>
@@ -111,7 +111,7 @@
 
                     <a href="@Url.Action("DetailBySlug", new { Slug = substitute.Slug() })" class="list-group-item">
                         @substitute.Name
-                        <span class="hop-inv pull-right fal fa-star hidden-print" aria-hidden="true" aria-label="star" data-hop-id="@substitute.Id"></span>
+                        <span class="hop-inv pull-right fal fa-star d-print-none" aria-hidden="true" aria-label="star" data-hop-id="@substitute.Id"></span>
                     </a>
             }
         </ul>

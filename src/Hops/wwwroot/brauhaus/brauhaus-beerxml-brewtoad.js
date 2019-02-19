@@ -84,6 +84,12 @@ https://github.com/homebrewing/brauhausjs-beerxml
                     case "carbonation_temp":
                         recipe.bottlingTemp = parseFloat(recipeProperty.textContent);
                         break;
+                    case "forced_carbonation":
+                        recipe.forcedCarbonation = recipeProperty.textContent;
+                        break;
+                    case "priming_sugar_name":
+                        recipe.primingSugarName = recipeProperty.textContent;
+                        break;
                     case "age":
                         recipe.agingDays = parseFloat(recipeProperty.textContent);
                         break;
@@ -361,6 +367,12 @@ https://github.com/homebrewing/brauhausjs-beerxml
         }
         if (this.bottlingPressure) {
             xml += "<carbonation>" + this.bottlingPressure + "</carbonation>"
+        }
+        if (this.forcedCarbonation) {
+            xml += "<forced_carbonation>" + this.forcedCarbonation + "</forced_carbonation>"
+        }
+        if (this.primingSugar) {
+            xml += "<priming_sugar_name>" + this.primingSugarName + "</priming_sugar_name>"
         }
         if (this.og) {
             xml += "<og>" + this.og + "</og>"

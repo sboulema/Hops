@@ -197,6 +197,9 @@
             fg: $("#recipeFG").val(),
             tasteNotes: $("#recipeTastingNotes").val(),
             tasteRating: parseFloat($("#recipeRating").val()) * 10,
+            bottlingPressure: parseFloat($("#carbonationLevel").val()),
+            forcedCarbonation: $("#forcedCarbonation").prop('checked'),
+            primingSugarName: $("#primingSugarName").val()
         });
 
         $("#fermentables tr").each(function (index) {
@@ -452,6 +455,15 @@
 
         $("#recipeTastingNotes").val(recipe.tasteNotes);
         $("#recipeRating").val(parseFloat(recipe.tasteRating) / 10);
+
+        $("#carbonationLevel").val(recipe.bottlingPressure);
+        $("#forcedCarbonation").prop('checked', recipe.forcedCarbonation);
+        $("#primingSugarName").val(recipe.primingSugarName);
+        $("#neededPrimingSugar").text(calculatePrimingSugar(parseFloat(recipe.batchSize), parseFloat($("#carbonationLevel").val())) + "g sugar needed");
+
+        $("#carbonationLevel").change(function() {
+            $("#neededPrimingSugar").text(calculatePrimingSugar(parseFloat(recipe.batchSize), parseFloat($("#carbonationLevel").val())) + "g sugar needed");
+        });
     }
 
     function makeIngredientsSortable() {
@@ -540,6 +552,20 @@
         var date = Date.parse($("#recipeDate").val());
         saveRecipe(id, name, date, beerxml);
     }
+
+    function calculatePrimingSugar(v, vco2) {
+        var t = 70;
+        var gco2;
+
+        var rco2 = 3.0378 - 5.0062e-2 * t + 2.6555e-4 * t * t;
+
+        if ((gco2 = vco2 - rco2) <= 0) {
+            return 0;
+        }
+
+        return Math.round(3.82 * v * gco2 * 100) / 100;
+    }
+
 </script>
 
 <div id="preview" style="display: none">
@@ -756,6 +782,34 @@
                             </td>
                             <td>
                                 <span id="measuredABV"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Carbonation level
+                                <br/><small id="neededPrimingSugar" class="text-muted"></small>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="carbonationLevel">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Forced carbonation
+                            </td>
+                            <td>
+                                <div class="custom-control custom-switch">
+                                    <input type="checkbox" class="custom-control-input" id="forcedCarbonation">
+                                    <label class="custom-control-label" for="forcedCarbonation">Force carbonated</label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Priming sugar
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" id="primingSugarName">
                             </td>
                         </tr>
                         <tr>

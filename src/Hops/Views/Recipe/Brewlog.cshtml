@@ -1,0 +1,84 @@
+﻿<div class="btn-toolbar float-right d-print-none" role="toolbar">
+    <div class="btn-group mr-2" role="group">
+        <button type="button" class="btn btn-success" onclick="saveRecipeToFirebase();">
+            <span class="fas fa-save" aria-hidden="true"></span>
+        </button>
+    </div>
+</div>
+
+<h2 style="margin-top: 0;">Brewlog</h2>
+
+<table id="brewlog" class="table">
+    <tr>
+        <td>Date</td>
+        <td>
+            <input type="text" class="form-control" id="recipeDate">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Starting gravity
+            <br /><small id="predictedOG" class="text-muted"></small>
+        </td>
+        <td>
+            <input type="text" class="form-control" id="recipeOG" placeholder="1.060">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Final gravity
+            <br /><small id="predictedFG" class="text-muted"></small>
+        </td>
+        <td>
+            <input type="text" class="form-control" id="recipeFG" placeholder="1.010">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ABV
+        </td>
+        <td>
+            <span id="measuredABV"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Carbonation level
+            <br /><small id="neededPrimingSugar" class="text-muted"></small>
+        </td>
+        <td>
+            <input type="text" class="form-control" id="carbonationLevel">
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Forced carbonation
+        </td>
+        <td>
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="forcedCarbonation">
+                <label class="custom-control-label" for="forcedCarbonation">Force carbonated</label>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Priming sugar
+        </td>
+        <td>
+            <input type="text" class="form-control" id="primingSugarName">
+        </td>
+    </tr>
+    <tr>
+        <td>Rating</td>
+        <td>
+            <input type="range" class="custom-range" min="0" max="5" step="0.5" id="recipeRating">
+        </td>
+    </tr>
+    <tr>
+        <td>Tasting notes</td>
+        <td>
+            <textarea class="form-control" id="recipeTastingNotes"></textarea>
+        </td>
+    </tr>
+</table>

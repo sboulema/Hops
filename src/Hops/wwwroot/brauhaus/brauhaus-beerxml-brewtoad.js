@@ -371,7 +371,7 @@ https://github.com/homebrewing/brauhausjs-beerxml
         if (this.forcedCarbonation) {
             xml += "<forced_carbonation>" + this.forcedCarbonation + "</forced_carbonation>"
         }
-        if (this.primingSugar) {
+        if (this.primingSugarName) {
             xml += "<priming_sugar_name>" + this.primingSugarName + "</priming_sugar_name>"
         }
         if (this.og) {

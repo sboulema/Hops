@@ -66,9 +66,9 @@
             "<td></td>" +
             "<td id='malt-" + index + "-color'></td>" +
             "<td>" +
-                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delFermentable(" + index + ");'>" +
-                    " <i class='fas fa-minus'></i>" +
-                "</button>" +
+            "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delFermentable(" + index + ");'>" +
+            " <i class='fas fa-minus'></i>" +
+            "</button>" +
             "</td>" +
             "</tr>");
         loadMaltTypeahead();
@@ -110,9 +110,9 @@
             "</td>" +
             "<td id='hop-" + index + "-aa'></td>" +
             "<td>" +
-                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delHop(" + index + ");'>" +
-                    " <i class='fas fa-minus'></i>" +
-                "</button>" +
+            "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delHop(" + index + ");'>" +
+            " <i class='fas fa-minus'></i>" +
+            "</button>" +
             "</td>" +
             "</tr>");
         loadHopTypeahead();
@@ -146,9 +146,9 @@
             "</select>" +
             "</td>" +
             "<td>" +
-                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delExtra(" + index + ");'>" +
-                    " <i class='fas fa-minus'></i>" +
-                "</button>" +
+            "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delExtra(" + index + ");'>" +
+            " <i class='fas fa-minus'></i>" +
+            "</button>" +
             "</td>" +
             "</tr>");
     }
@@ -161,18 +161,18 @@
         var index = $("#yeasts").children().length;
         $("#yeasts").append("<tr id='yeast-" + index + "' data-id='" + index + "'>" +
             "<td>" +
-                "<div class='input-group'>" +
-                    "<input type='text' class='form-control'>" +
-                    "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
-                "</div>" +
+            "<div class='input-group'>" +
+            "<input type='text' class='form-control'>" +
+            "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+            "</div>" +
             "</td>" +
             "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead'></td>" +
             "<td id='yeast-" + index + "-lab'></td>" +
             "<td id='yeast-" + index + "-att'></td>" +
             "<td>" +
-                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast(" + index + ");'>" +
-                    " <i class='fas fa-minus'></i>" +
-                "</button>" +
+            "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast(" + index + ");'>" +
+            " <i class='fas fa-minus'></i>" +
+            "</button>" +
             "</td>" +
             "</tr>");
         loadYeastTypeahead();
@@ -308,9 +308,9 @@
                 "<td>" + Math.ceil(fermentable.ppg()) + "</td>" +
                 "<td id='malt-" + index + "-color'>" + fermentable.color + " &deg;L</td>" +
                 "<td>" +
-                    "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delFermentable(" + index + ");'>" +
-                        " <i class='fas fa-minus'></i>" +
-                    "</button>" +
+                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delFermentable(" + index + ");'>" +
+                " <i class='fas fa-minus'></i>" +
+                "</button>" +
                 "</td>" +
                 "</tr>");
         });
@@ -319,7 +319,7 @@
         $("#extras").empty();
         var hopIndex = 0;
         var extraIndex = 0;
-        $.each(recipe.spices, function (index, spice) {          
+        $.each(recipe.spices, function (index, spice) {
             if (spice.aa !== 0) {
                 $("#hops").append("<tr id='hop-" + hopIndex + "' data-id='" + hopIndex + "'>" +
                     "<td>" +
@@ -351,9 +351,9 @@
                     "</td>" +
                     "<td id='hop-" + hopIndex + "-aa'>" + spice.aa.toFixed(1) + "%</td>" +
                     "<td>" +
-                        "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delHop(" + hopIndex + ");'>" +
-                            " <i class='fas fa-minus'></i>" +
-                        "</button>" +
+                    "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delHop(" + hopIndex + ");'>" +
+                    " <i class='fas fa-minus'></i>" +
+                    "</button>" +
                     "</td>" +
                     "</tr>");
                 hopIndex++;
@@ -380,9 +380,9 @@
                     "</select>" +
                     "</td>" +
                     "<td>" +
-                        "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delExtra(" + extraIndex + ");'>" +
-                            " <i class='fas fa-minus'></i>" +
-                        "</button>" +
+                    "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delExtra(" + extraIndex + ");'>" +
+                    " <i class='fas fa-minus'></i>" +
+                    "</button>" +
                     "</td>" +
                     "</tr>");
                 extraIndex++;
@@ -393,18 +393,18 @@
         $.each(recipe.yeast, function (index, yeast) {
             $("#yeasts").append("<tr id='yeast-" + index + "' data-id='" + index + "'>" +
                 "<td>" +
-                    "<div class='input-group'>" +
-                        "<input type='text' class='form-control' value=" + (yeast.weight * 1000) + ">" +
-                        "<div class='input-group-append'><span class='input-group-text'>" + (yeast.amountIsWeight === false ? " L" : " g") + "</span></div>" +
-                    "</div>" +
+                "<div class='input-group'>" +
+                "<input type='text' class='form-control' value=" + (yeast.weight * 1000) + ">" +
+                "<div class='input-group-append'><span class='input-group-text'>" + (yeast.amountIsWeight === false ? " L" : " g") + "</span></div>" +
+                "</div>" +
                 "</td>" +
                 "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead' onkeypress='handle(event, search)' value='" + yeast.name + "'></td>" +
                 "<td id='yeast-" + index + "-lab'>" + yeast.laboratory + "</td>" +
                 "<td id='yeast-" + index + "-att'>" + yeast.attenuation + "%</td>" +
                 "<td>" +
-                    "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast();'>" +
-                        " <i class='fas fa-minus'></i>" +
-                    "</button>" +
+                "<button type='button' class='btn btn-sm btn-outline-danger d-print-none' onclick='delYeast();'>" +
+                " <i class='fas fa-minus'></i>" +
+                "</button>" +
                 "</td>" +
                 "</tr>");
         });
@@ -437,33 +437,6 @@
         makeIngredientsSortable();
 
         fillBrewlog(recipe, measuredOG, measuredFG);
-    }
-
-    function fillBrewlog(recipe, measuredOG, measuredFG) {
-        if (typeof recipe.date !== 'undefined') {
-            $("#recipeDate").val(new Date(parseInt(recipe.date)).toISOString().substring(0, 10));         
-        }   
-
-        $("#recipeOG").val(parseFloat(measuredOG).toFixed(3));
-        $("#predictedOG").text(parseFloat(recipe.og).toFixed(3) + " predicted");
-
-        $("#recipeFG").val(parseFloat(measuredFG).toFixed(3));
-        $("#predictedFG").text(parseFloat(recipe.fg).toFixed(3) + " predicted");
-
-        var measuredABV = (measuredOG - measuredFG) * 131;
-        $("#measuredABV").text(measuredABV.toFixed(1) + '%');
-
-        $("#recipeTastingNotes").val(recipe.tasteNotes);
-        $("#recipeRating").val(parseFloat(recipe.tasteRating) / 10);
-
-        $("#carbonationLevel").val(recipe.bottlingPressure);
-        $("#forcedCarbonation").prop('checked', recipe.forcedCarbonation);
-        $("#primingSugarName").val(recipe.primingSugarName);
-        $("#neededPrimingSugar").text(calculatePrimingSugar(parseFloat(recipe.batchSize), parseFloat($("#carbonationLevel").val())) + "g sugar needed");
-
-        $("#carbonationLevel").change(function() {
-            $("#neededPrimingSugar").text(calculatePrimingSugar(parseFloat(recipe.batchSize), parseFloat($("#carbonationLevel").val())) + "g sugar needed");
-        });
     }
 
     function makeIngredientsSortable() {
@@ -741,92 +714,9 @@
                 </div>
 
                 <div class="tab-pane fade" id="brewlog" role="tabpanel">
-                    <div class="btn-toolbar float-right d-print-none" role="toolbar">
-                        <div class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-success" onclick="saveRecipeToFirebase();">
-                                <span class="fas fa-save" aria-hidden="true"></span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <h2 style="margin-top: 0;">Brewlog</h2>
-
-                    <table id="brewlog" class="table">
-                        <tr>
-                            <td>Date</td>
-                            <td>
-                                <input type="text" class="form-control" id="recipeDate">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Starting gravity
-                                <br /><small id="predictedOG" class="text-muted"></small>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="recipeOG">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Final gravity
-                                <br /><small id="predictedFG" class="text-muted"></small>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="recipeFG">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                ABV
-                            </td>
-                            <td>
-                                <span id="measuredABV"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Carbonation level
-                                <br/><small id="neededPrimingSugar" class="text-muted"></small>
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="carbonationLevel">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Forced carbonation
-                            </td>
-                            <td>
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="forcedCarbonation">
-                                    <label class="custom-control-label" for="forcedCarbonation">Force carbonated</label>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Priming sugar
-                            </td>
-                            <td>
-                                <input type="text" class="form-control" id="primingSugarName">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Rating</td>
-                            <td>
-                                <input type="range" class="custom-range" min="0" max="5" step="0.5" id="recipeRating">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Tasting notes</td>
-                            <td>
-                                <textarea class="form-control" id="recipeTastingNotes"></textarea>
-                            </td>
-                        </tr>
-                    </table>
+                    @await Html.PartialAsync("Brewlog.cshtml")
                 </div>
-            </div>              
+            </div>
         </div>
     </div>
 

@@ -23,17 +23,21 @@
     $("#neededPrimingSugar").text(calculatePrimingSugar(parseFloat(recipe.batchSize), parseFloat($("#carbonationLevel").val())) + "g sugar needed");
 }
 
+function calcABV() {
+    var og = parseFloat($("#recipeOG").val());
+    var fg = parseFloat($("#recipeFG").val());
+    return (og - fg) * 131;
+}
+
 $(document).ready(function () {
     $("#recipeDate").val(new Date(parseInt(Date.now())).toISOString().substring(0, 10));
 
     $("#recipeOG").change(function () {
-        var measuredABV = (measuredOG - measuredFG) * 131;
-        $("#measuredABV").text(measuredABV.toFixed(1) + '%');
+        $("#measuredABV").text(calcABV().toFixed(1) + '%');
     });
 
     $("#recipeFG").change(function () {
-        var measuredABV = (measuredOG - measuredFG) * 131;
-        $("#measuredABV").text(measuredABV.toFixed(1) + '%');
+        $("#measuredABV").text(calcABV().toFixed(1) + '%');
     });
 
     $("#carbonationLevel").change(function () {

@@ -1,3 +1,25 @@
 ﻿nav span.twitter-typeahead {
     width: auto !important;
 }
+
+@media print {
+    .card {
+        border: none;
+        display: inline;
+    }
+
+    .no-page-break {
+        page-break-inside: avoid;
+    }
+
+    .form-control, .input-group-text {
+        border: 0;
+        padding: 0;
+        overflow: visible;
+    }
+
+    select {
+        border: 0 !important;
+        outline: 0 !important;
+    }
+}

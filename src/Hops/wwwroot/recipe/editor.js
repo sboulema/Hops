@@ -514,6 +514,12 @@ function loadYeastTypeahead() {
     });
 }
 
+function copyRecipe() {
+    $('#recipeId').val('');
+    $('#recipeName').val($('#recipeName').val() + ' Copy');
+    saveRecipeToFirebase();
+}
+
 function saveRecipeToFirebase() {
     var id = $('#recipeId').val() === '' ? Math.floor(Math.random() * Number.MAX_SAFE_INTEGER) : parseInt($('#recipeId').val());
     var name = $('<div />').html($('#recipeName').val()).html();

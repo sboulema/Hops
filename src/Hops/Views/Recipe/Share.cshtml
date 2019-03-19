@@ -1,0 +1,39 @@
+﻿@using Hops.Models;
+@model HopModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Recipe Viewer - Hops";
+}
+
+@section Scripts {
+    <script src="~/lib/brauhaus/lib/brauhaus.min.js"></script>
+    <script src="~/brauhaus/brauhaus-styles.min.js"></script>
+    <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
+    <script src="~/recipe/editor.js"></script>
+    <script src="~/recipe/brewlog.js"></script>
+}
+
+@await Html.PartialAsync("Editor")
+
+<script>
+    $(document).ready(function () {
+        readRecipeParameter();
+
+        $("#calculateButton, #saveButton, #copyButton, #shareButton").hide();
+    });
+
+    function readRecipeParameter() {
+        var recipe = Base64DecodeUrl(new URL(window.location.href).searchParams.get("recipe"));
+        var beerXml = atob(recipe);
+        calculate(1, beerXml);
+    }
+
+    function Base64DecodeUrl(str) {
+        str = (str + '===').slice(0, str.length + (str.length % 4));
+        return str.replace(/-/g, '+').replace(/_/g, '/');
+    }
+</script>

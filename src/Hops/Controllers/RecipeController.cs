@@ -28,5 +28,11 @@ namespace Hops.Controllers
         {
             return View();
         }
+
+        [Route("[action]")]
+        public IActionResult Share(string recipe)
+        {
+            return View();
+        }
     }
 }

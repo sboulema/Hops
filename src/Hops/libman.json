@@ -58,6 +58,14 @@
       "files": [
         "Sortable.min.js"
       ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "clipboard@2.0.4",
+      "destination": "wwwroot/lib/clipboard/",
+      "files": [
+        "dist/clipboard.min.js"
+      ]
     }
   ]
 }

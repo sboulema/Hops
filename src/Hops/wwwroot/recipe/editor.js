@@ -433,6 +433,8 @@ function calculate(recipeId, beerXml) {
     makeIngredientsSortable();
 
     fillBrewlog(recipe, measuredOG, measuredFG);
+
+    initShareRecipe();
 }
 
 function makeIngredientsSortable() {
@@ -518,6 +520,20 @@ function copyRecipe() {
     $('#recipeId').val('');
     $('#recipeName').val($('#recipeName').val() + ' Copy');
     saveRecipeToFirebase();
+}
+
+function initShareRecipe() {
+    new ClipboardJS('#shareButton button');
+
+    const url = new URL(window.location.href);
+    var recipeBase64 = Base64EncodeUrl(btoa(toBeerXml()));
+    var shareUrl = url.protocol + "//" + url.hostname + (url.port === "" ? "" : ":" + url.port) + "/recipe/share?recipe=" + recipeBase64;
+
+    $('#shareButton button').attr("data-clipboard-text", shareUrl); 
+}
+
+function Base64EncodeUrl(str) {
+    return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
 }
 
 function saveRecipeToFirebase() {

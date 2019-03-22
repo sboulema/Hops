@@ -72,6 +72,17 @@ async function saveRecipe(id, name, date, beerxml) {
     saveToFirebase(inventory);
 }
 
+async function deleteRecipe(id) {
+    var inventory = await loadFromFirebase();
+
+    var foundAtIndex = isFoundAtIndex(parseInt(id), inventory.Recipes);
+    if (foundAtIndex > -1) {
+        inventory.Recipes.splice(foundAtIndex, 1);
+    }
+
+    saveToFirebase(inventory);
+}
+
 async function loadRecipesFromInventory() {
     var inventory = await loadFromFirebase();
     $.each(inventory.Recipes, function (index, recipe) {

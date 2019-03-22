@@ -13,6 +13,8 @@
     <script src="~/lib/brauhaus/lib/brauhaus.min.js"></script>
     <script src="~/brauhaus/brauhaus-styles.min.js"></script>
     <script src="~/brauhaus/brauhaus-beerxml-brewtoad.js"></script>
+    <script src="~/recipe/editor.js"></script>
+    <script src="~/recipe/brewlog.js"></script>
 }
 
 <div class="card">
@@ -31,14 +33,14 @@
 
 <br />
 
-@Html.Partial("Editor")
+@await Html.PartialAsync("Editor")
 
 <script>
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-                calculate(e.target.result);
+                calculate('', e.target.result);
             };
             reader.readAsText(input.files[0]);
         }

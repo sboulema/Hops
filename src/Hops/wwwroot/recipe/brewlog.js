@@ -1,5 +1,5 @@
 ﻿function fillBrewlog(recipe, measuredOG, measuredFG) {
-    if (typeof recipe.date !== 'undefined') {
+    if (typeof recipe.date !== 'undefined' && !isNaN(recipe.date)) {
         $("#recipeDate").val(new Date(parseInt(recipe.date)).toISOString().substring(0, 10));
     } else {
         $("#recipeDate").val(new Date(parseInt(Date.now())).toISOString().substring(0, 10))

@@ -75,12 +75,21 @@ async function saveRecipe(id, name, date, beerxml) {
 async function loadRecipesFromInventory() {
     var inventory = await loadFromFirebase();
     $.each(inventory.Recipes, function (index, recipe) {
-        $("#recipesTable").append(
-            "<tr>" +
+        if (typeof recipe.date === 'undefined' || isNaN(recipe.date)) {
+            $("#recipesTable").append(
+                "<tr>" +
+                "<td><a href='" + recipe.id + "'>" + recipe.name + "</a></td>" +
+                "<td>Unknown</td>" +
+                "</tr>"
+            );
+        } else {
+            $("#recipesTable").append(
+                "<tr>" +
                 "<td><a href='" + recipe.id + "'>" + recipe.name + "</a></td>" +
                 "<td>" + new Date(recipe.date).toISOString().substring(0, 10) + "</td>" +
-            "</tr>"
-        );
+                "</tr>"
+            );
+        }
     });
 }
 

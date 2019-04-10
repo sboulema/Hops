@@ -529,7 +529,9 @@ function initShareRecipe() {
     var recipeBase64 = Base64EncodeUrl(btoa(toBeerXml()));
     var shareUrl = url.protocol + "//" + url.hostname + (url.port === "" ? "" : ":" + url.port) + "/recipe/share?recipe=" + recipeBase64;
 
-    $('#shareButton button').attr("data-clipboard-text", shareUrl); 
+    $.get("/shorturl?longurl=" + shareUrl, function (shortUrl) {
+        $('#shareButton button').attr("data-clipboard-text", shortUrl); 
+    });  
 }
 
 function Base64EncodeUrl(str) {

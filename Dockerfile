@@ -22,5 +22,5 @@ COPY --from=0 /build/wwwroot/lib lib
 
 ENV ASPNETCORE_URLS http://+:5000 
 EXPOSE 5000/tcp
-
+ENV YourlsApiKey=token
 ENTRYPOINT dotnet Hops.dll

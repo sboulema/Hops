@@ -12,7 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "Hosting:Environment": "Development"
+        "Hosting:Environment": "Development",
+        "YourlsApiKey": "83bcddb095"
       }
     },
     "web": {

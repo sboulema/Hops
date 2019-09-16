@@ -54,6 +54,9 @@ https://github.com/homebrewing/brauhausjs-beerxml
                     case "taste_notes":
                         recipe.tasteNotes = recipeProperty.textContent;
                         break;
+                    case "notes":
+                        recipe.description = recipeProperty.textContent;
+                        break;
                     case "taste_rating":
                         recipe.tasteRating = parseFloat(recipeProperty.textContent);
                         break;
@@ -338,6 +341,7 @@ https://github.com/homebrewing/brauhausjs-beerxml
         xml += "<efficiency>" + this.mashEfficiency + "</efficiency>";
         xml += "<type>" + this.type + "</type>";
         xml += "<date>" + this.date + "</date>";
+        xml += "<notes>" + this.description + "</notes>";
         if (this.primaryDays) {
             xml += "<primary_age>" + this.primaryDays + "</primary_age>"
         }

@@ -1,204 +1,206 @@
 ﻿@using Hops.Models;
 @model HopModel
 
-<div id="preview" style="display: none">
+    <div id="preview" style="display: none">
 
-    <div class="card">
-        <div class="card-header d-print-none">
-            <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="recipe-tab" data-toggle="tab" href="#recipe" role="tab">Recipe</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="brewlog-tab" data-toggle="tab" href="#brewlog" role="tab">Brewlog</a>
-                </li>
-            </ul>
-        </div>
+        <div class="card">
+            <div class="card-header d-print-none">
+                <ul class="nav nav-tabs card-header-tabs pull-right" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="recipe-tab" data-toggle="tab" href="#recipe" role="tab">Recipe</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="brewlog-tab" data-toggle="tab" href="#brewlog" role="tab">Brewlog</a>
+                    </li>
+                </ul>
+            </div>
 
-        <div class="card-body">
-            <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="recipe" role="tabpanel">
-                    <div class="btn-toolbar float-right d-print-none" role="toolbar">
-                        <div id="calculateButton" class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-success" onclick="calculate(1, toBeerXml());">
-                                <span class="fas fa-sync" aria-hidden="true"></span>
-                            </button>
+            <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="recipe" role="tabpanel">
+                        <div class="btn-toolbar float-right d-print-none" role="toolbar">
+                            <div id="calculateButton" class="btn-group mr-2" role="group">
+                                <button type="button" class="btn btn-success" onclick="calculate(1, toBeerXml());">
+                                    <span class="fas fa-sync" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div id="saveButton" class="btn-group mr-2" role="group">
+                                <button type="button" class="btn btn-success" onclick="saveRecipeToFirebase();">
+                                    <span class="fas fa-save" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div id="copyButton" class="btn-group mr-2" role="group">
+                                <button type="button" class="btn btn-success" onclick="copyRecipe();">
+                                    <span class="fas fa-copy" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div id="shareButton" class="btn-group mr-2" role="group">
+                                <button type="button" class="btn btn-primary">
+                                    <span class="fas fa-share" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div id="deleteButton" class="btn-group mr-2" role="group">
+                                <button type="button" class="btn btn-danger" onclick="deleteRecipe($('#recipeId').val());">
+                                    <span class="fas fa-trash" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-primary" onclick="window.print();">
+                                    <span class="fas fa-print" aria-hidden="true"></span>
+                                </button>
+                            </div>
                         </div>
-                        <div id="saveButton" class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-success" onclick="saveRecipeToFirebase();">
-                                <span class="fas fa-save" aria-hidden="true"></span>
-                            </button>
+
+                        <h2 id="name" style="margin-top: 0;">Name</h2>
+
+                        <h6 id="style">Style</h6>
+
+                        <table id="stats" class="table table-sm"></table>
+
+                        <div id="fermentablesTable" class="no-page-break">
+                            <h2><i class="fas fa-wheat text-warning"></i> Fermentables</h2>
+                            <table class="table">
+                                <tr>
+                                    <th width="15%">Amount</th>
+                                    <th width="70%">Fermentable</th>
+                                    <th width="15%">Use</th>
+                                    <th>Yield</th>
+                                    <th>PPG</th>
+                                    <th>Color</th>
+                                    <th>
+                                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addFermentable();">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </th>
+                                </tr>
+                                <tbody id="fermentables"></tbody>
+                            </table>
                         </div>
-                        <div id="copyButton" class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-success" onclick="copyRecipe();">
-                                <span class="fas fa-copy" aria-hidden="true"></span>
-                            </button>
+
+                        <div id="hopsTable" class="no-page-break">
+                            <h2><i class="fas fa-spa text-success"></i> Hops</h2>
+                            <table class="table">
+                                <tr>
+                                    <th width="15%">Amount</th>
+                                    <th width="40%">Hop</th>
+                                    <th width="15%">Time</th>
+                                    <th width="15%">Use</th>
+                                    <th width="15%">Form</th>
+                                    <th>AA</th>
+                                    <th>
+                                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addHop();">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </th>
+                                </tr>
+                                <tbody id="hops"></tbody>
+                            </table>
                         </div>
-                        <div id="shareButton" class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-primary">
-                                <span class="fas fa-share" aria-hidden="true"></span>
-                            </button>
+
+                        <div id="yeastsTable" class="no-page-break">
+                            <h2><i class="fas fa-flask text-info"></i> Yeast</h2>
+                            <table class="table">
+                                <tr>
+                                    <th width="15%">Amount</th>
+                                    <th width="55%">Name</th>
+                                    <th width="30%">Lab/Product</th>
+                                    <th>Attenuation</th>
+                                    <th>
+                                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addYeast();">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </th>
+                                </tr>
+                                <tbody id="yeasts"></tbody>
+                            </table>
                         </div>
-                        <div id="deleteButton" class="btn-group mr-2" role="group">
-                            <button type="button" class="btn btn-danger" onclick="deleteRecipe($('#recipeId').val());">
-                                <span class="fas fa-trash" aria-hidden="true"></span>
-                            </button>
+
+                        <div id="extrasTable" class="no-page-break">
+                            <h2><i class="fas fa-pepper-hot text-danger"></i> Extras</h2>
+                            <table class="table">
+                                <tr>
+                                    <th width="15%">Amount</th>
+                                    <th width="55%">Name</th>
+                                    <th width="15%">Time</th>
+                                    <th width="15%">Use</th>
+                                    <th>
+                                        <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addExtra();">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    </th>
+                                </tr>
+                                <tbody id="extras"></tbody>
+                            </table>
                         </div>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-primary" onclick="window.print();">
-                                <span class="fas fa-print" aria-hidden="true"></span>
-                            </button>
+
+                        <div id="statsTable" class="no-page-break">
+                            <h2><i class="fas fa-tachometer-alt"></i> Stats</h2>
+                            <table id="moreStats" class="table">
+                                <tr>
+                                    <td>Batch size</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="batchSize">
+                                            <div class='input-group-append'><span class='input-group-text'>L</span></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Boil time</td>
+                                    <td>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="boilTime">
+                                            <div class='input-group-append'><span class='input-group-text'>m</span></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Style</td>
+                                    <td>
+                                        <select id="recipeStyle" class="custom-select"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Type</td>
+                                    <td>
+                                        <select id="recipeType" class="custom-select">
+                                            <option value="All Grain">All Grain</option>
+                                            <option value="Extract">Extract</option>
+                                            <option value="Partial Mash">Partial Mash</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>
+                                        <input type="text" class="form-control" id="recipeName">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Brewer</td>
+                                    <td>
+                                        <input type="text" class="form-control" id="recipeAuthor">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Notes</td>
+                                    <td>
+                                        <textarea class="form-control" id="recipeDescription"></textarea>
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <input type="hidden" id="recipeId">
                         </div>
                     </div>
 
-                    <h2 id="name" style="margin-top: 0;">Name</h2>
-
-                    <h6 id="style">Style</h6>
-
-                    <table id="stats" class="table table-sm"></table>
-
-                    <div id="fermentablesTable" class="no-page-break">
-                        <h2><i class="fas fa-wheat text-warning"></i> Fermentables</h2>
-                        <table class="table">
-                            <tr>
-                                <th width="15%">Amount</th>
-                                <th width="70%">Fermentable</th>
-                                <th width="15%">Use</th>
-                                <th>Yield</th>
-                                <th>PPG</th>
-                                <th>Color</th>
-                                <th>
-                                    <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addFermentable();">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tbody id="fermentables"></tbody>
-                        </table>
+                    <div class="tab-pane fade" id="brewlog" role="tabpanel">
+                        @await Html.PartialAsync("Brewlog.cshtml")
                     </div>
-
-                    <div id="hopsTable" class="no-page-break">
-                        <h2><i class="fas fa-spa text-success"></i> Hops</h2>
-                        <table class="table">
-                            <tr>
-                                <th width="15%">Amount</th>
-                                <th width="40%">Hop</th>
-                                <th width="15%">Time</th>
-                                <th width="15%">Use</th>
-                                <th width="15%">Form</th>
-                                <th>AA</th>
-                                <th>
-                                    <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addHop();">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tbody id="hops"></tbody>
-                        </table>
-                    </div>
-
-                    <div id="yeastsTable" class="no-page-break">
-                        <h2><i class="fas fa-flask text-info"></i> Yeast</h2>
-                        <table class="table">
-                            <tr>
-                                <th width="15%">Amount</th>
-                                <th width="55%">Name</th>
-                                <th width="30%">Lab/Product</th>
-                                <th>Attenuation</th>
-                                <th>
-                                    <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addYeast();">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tbody id="yeasts"></tbody>
-                        </table>
-                    </div>
-
-                    <div id="extrasTable" class="no-page-break">
-                        <h2><i class="fas fa-pepper-hot text-danger"></i> Extras</h2>
-                        <table class="table">
-                            <tr>
-                                <th width="15%">Amount</th>
-                                <th width="55%">Name</th>
-                                <th width="15%">Time</th>
-                                <th width="15%">Use</th>
-                                <th>
-                                    <button type="button" class="btn btn-sm btn-success d-print-none" onclick="addExtra();">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                </th>
-                            </tr>
-                            <tbody id="extras"></tbody>
-                        </table>
-                    </div>
-
-                    <div id="statsTable" class="no-page-break">
-                        <h2><i class="fas fa-tachometer-alt"></i> Stats</h2>
-                        <table id="moreStats" class="table">
-                            <tr>
-                                <td>Batch size</td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="batchSize">
-                                        <div class='input-group-append'><span class='input-group-text'>L</span></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Boil time</td>
-                                <td>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" id="boilTime">
-                                        <div class='input-group-append'><span class='input-group-text'>m</span></div>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Style</td>
-                                <td>
-                                    <select id="recipeStyle" class="custom-select"></select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Type</td>
-                                <td>
-                                    <select id="recipeType" class="custom-select">
-                                        <option value="All Grain">All Grain</option>
-                                        <option value="Extract">Extract</option>
-                                        <option value="Partial Mash">Partial Mash</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Name</td>
-                                <td>
-                                    <input type="text" class="form-control" id="recipeName">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Brewer</td>
-                                <td>
-                                    <input type="text" class="form-control" id="recipeAuthor">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Notes</td>
-                                <td>
-                                    <textarea class="form-control" id="recipeDescription"></textarea>
-                                </td>
-                            </tr>
-                        </table>
-
-                        <input type="hidden" id="recipeId">
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="brewlog" role="tabpanel">
-                    @await Html.PartialAsync("Brewlog.cshtml")
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
+        @await Html.PartialAsync("Toasts")
+
+    </div>

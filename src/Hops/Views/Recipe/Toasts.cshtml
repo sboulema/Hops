@@ -1,0 +1,44 @@
+﻿<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="recipeSavedToast" style="position: absolute; top: 80px; right: 40px;">
+    <div class="toast-header">
+        <span><i class="fas fa-save mr-2"></i></span>
+        <strong class="mr-auto">Recipe editor</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Recipe saved.
+    </div>
+</div>
+
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="recipeDuplicatedToast" style="position: absolute; top: 80px; right: 40px;">
+    <div class="toast-header">
+        <span><i class="fas fa-copy mr-2"></i></span>
+        <strong class="mr-auto">Recipe editor</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Recipe duplicated.
+    </div>
+</div>
+
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="recipeSharedToast" style="position: absolute; top: 80px; right: 40px;">
+    <div class="toast-header">
+        <span><i class="fas fa-share mr-2"></i></span>
+        <strong class="mr-auto">Recipe editor</strong>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Recipe share url copied to clipboard.
+    </div>
+</div>
+
+<script>
+    $('.toast').toast({
+        delay: 2000
+    });
+</script>

@@ -520,6 +520,7 @@ function copyRecipe() {
     $('#recipeId').val('');
     $('#recipeName').val($('#recipeName').val() + ' Copy');
     saveRecipeToFirebase();
+    $('#recipeDuplicatedToast').toast('show');
 }
 
 function initShareRecipe() {
@@ -544,6 +545,7 @@ function saveRecipeToFirebase() {
     var beerxml = toBeerXml();
     var date = Date.parse($("#recipeDate").val());
     saveRecipe(id, name, date, beerxml);
+    $('#recipeSavedToast').toast('show');
 }
 
 function calculatePrimingSugar(v, vco2) {

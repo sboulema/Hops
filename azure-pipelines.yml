@@ -4,11 +4,13 @@ resources:
 variables:
 - group: Hops
 
-
 queue:
   name: Hosted Ubuntu 1604
 
 steps:
+- checkout: self
+  submodules: true
+
 - powershell: |  
    ((Get-Content -path src\Hops\Views\Shared\_Layout.cshtml -Raw) -replace '{firebaseApiKey}',$env:firebaseApiKey) | Set-Content -Path src\Hops\Views\Shared\_Layout.cshtml
    

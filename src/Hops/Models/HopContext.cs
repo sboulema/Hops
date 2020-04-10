@@ -33,7 +33,7 @@ namespace Hops.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite($"Filename={Path.Combine(env.ContentRootPath, "hops.sqlite")}");
+            optionsBuilder.UseSqlite($"Filename={Path.Combine(env.ContentRootPath, "BrewDB/brewDB.sqlite")}");
         }
     }
 }

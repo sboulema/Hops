@@ -1,0 +1,3 @@
+[submodule "src/Hops/BrewDB"]
+	path = src/Hops/BrewDB
+	url = https://github.com/sboulema/BrewDB.git

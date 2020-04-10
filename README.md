@@ -18,3 +18,6 @@ Hops also has a few tools to make live easier for the homebrewer
 
 # Running Hops
 Running Hops is easy and fast, just start the docker image and Hops will be served on port 5000
+
+# BrewDB
+Ingredient database is used from [BrewDB](https://github.com/sboulema/BrewDB)

@@ -14,7 +14,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="hops.sqlite">
+    <None Update="BrewDB\brewDB.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

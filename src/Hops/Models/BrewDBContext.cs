@@ -44,6 +44,6 @@ public class BrewDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite($"Filename={Path.Combine(_env.ContentRootPath, "BrewDB", "brewDB.sqlite")}");
+        optionsBuilder.UseSqlite("Filename=BrewDB/brewDB.sqlite");
     }
 }

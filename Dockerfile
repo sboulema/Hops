@@ -16,6 +16,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 WORKDIR /app
 
 COPY --from=build /app/src/Hops/out ./
-COPY --from=build /app/src/Hops/BrewDB/brewDB.sqlite ./
+COPY --from=build /app/src/Hops/BrewDB/brewDB.sqlite ./BrewDB/
 
 ENTRYPOINT ["dotnet", "Hops.dll"]

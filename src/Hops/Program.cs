@@ -1,17 +1,22 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Hops.Models;
+using Hops.Repositories;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Hops
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateWebHostBuilder(args).Build().Run();
-        }
+var builder = WebApplication.CreateBuilder(args);
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
-    }
-}
+builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<BrewDBContext>();
+
+builder.Services.AddScoped<IHopRepository, HopRepository>();
+builder.Services.AddScoped<IMaltRepository, MaltRepository>();
+builder.Services.AddScoped<IYeastRepository, YeastRepository>();
+
+var app = builder.Build();
+
+app.UseStaticFiles();
+
+app.MapControllers();
+
+app.Run();

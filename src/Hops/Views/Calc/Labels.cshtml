@@ -1,7 +1,4 @@
-﻿@using Hops.Models;
-@model HopModel
-
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -78,12 +75,12 @@
     </button>
     <h2 class="d-print-none">Preview:</h2>
     @for (int i = 0; i < 4; i++)
-    {
-        <p>
+{
+    <p>
             @for (int j = 0; j < 3; j++)
-            {
-                <img style="border: 1px solid black;" class="labelPrint" alt="label" />
-            }
+{
+    <img style="border: 1px solid black;" class="labelPrint" alt="label" />
+}
         </p>
-    }
+}
 </div>

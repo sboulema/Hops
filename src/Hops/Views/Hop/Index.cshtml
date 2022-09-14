@@ -1,5 +1,4 @@
-﻿@using Hops.Models;
-@model ListModel<HopModel>
+﻿@model Hops.Models.ViewModels.ListModel<Hops.Models.Hops.Hop>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,4 +13,4 @@
 <h4>Welcome to Curleez &amp; ME! <small class="text-muted">...and he made it out of hops</small></h4>
 <br/>
 
-@Html.Partial("~/Views/Hop/List.cshtml", Model)
+@await Html.PartialAsync("~/Views/Hop/List.cshtml", Model)

@@ -3,88 +3,85 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using Hops.Mappers;
+using System.Threading.Tasks;
 
-namespace Hops.Controllers
+namespace Hops.Controllers;
+
+[Route("[controller]")]
+public class SearchController : Controller
 {
-    [Route("[controller]")]
-    public class SearchController : Controller
+    private readonly IHopRepository _hopRepository;
+    private readonly IMaltRepository _maltRepository;
+    private readonly IYeastRepository _yeastRepository;
+
+    public SearchController(IHopRepository hopRepository,
+        IMaltRepository maltRepository,
+        IYeastRepository yeastRepository)
     {
-        private readonly ISqliteRepository _sqliteRepository;
+        _hopRepository = hopRepository;
+        _maltRepository = maltRepository;
+        _yeastRepository = yeastRepository;
+    }
 
-        public SearchController(ISqliteRepository sqliteRepository)
+    [HttpGet]
+    public IActionResult Index()
+        => View();
+
+    [HttpGet("{searchTerm}")]
+    public async Task<IActionResult> Results(string searchTerm)
+        => await Results(searchTerm, 1);
+
+    [HttpGet("{searchTerm}/page/{page:int}")]
+    public async Task<IActionResult> Results(string searchTerm, int page)
+    {
+        var results = await _hopRepository.Search(SlugMapper.SlugToString(searchTerm), page);
+
+        return results.List.Count() switch
         {
-            _sqliteRepository = sqliteRepository;
-        }
+            0 => View("NoResults", await _hopRepository.GetRandomHop()),
+            1 => Redirect($"/hop/{results.List.First().Slug()}"),
+            _ => View(results),
+        };
+    }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View();
-        }
+    [HttpGet("inventory/{page:int?}")]
+    public IActionResult Inventory(int page = 1)
+        => View(page);
 
-        [HttpGet("{searchTerm}")]
-        public IActionResult Results(string searchTerm) => Results(searchTerm, 1);
+    [HttpGet("aroma/{profile:int}")]
+    public async Task<IActionResult> Results(int profile)
+        => await Results(profile, 1);
 
-        [HttpGet("{searchTerm}/page/{page:int}")]
-        public IActionResult Results(string searchTerm, int page)
-        {
-            var results = _sqliteRepository.Search(SlugMapper.SlugToString(searchTerm), page);
+    [HttpGet("aroma/{profile:int}/page/{page:int}")]
+    public async Task<IActionResult> Results(int profile, int page)
+    {
+        var results = await _hopRepository.Search(profile, page);
 
-            switch (results.List.Count)
-            {
-                case 0:
-                    return View("NoResults", _sqliteRepository.GetRandomHop());
-                case 1:
-                    return Redirect($"/hop/{results.List.First().Hop.Slug()}");
-                default:
-                    return View(results);
-            }   
-        }
+        return View(results);
+    }
 
-        [HttpGet("inventory/{page:int?}")]
-        public IActionResult Inventory(string searchTerm, int page = 1)
-        {
-            return View(page);
-        }
+    [HttpGet("autocomplete/{searchTerm}")]
+    public async Task<List<string>> AutoComplete(string searchTerm)
+        => await _hopRepository.Autocomplete(searchTerm);
 
-        [HttpGet("aroma/{profile:int}")]
-        public IActionResult Results(int profile) => Results(profile, 1);
+    [HttpGet("autocompletemalt/{searchTerm}")]
+    public async Task<List<string>> AutoCompleteMalt(string searchTerm)
+        => await _maltRepository.Autocomplete(searchTerm);
 
-        [HttpGet("aroma/{profile:int}/page/{page:int}")]
-        public IActionResult Results(int profile, int page)
-        {
-            var results = _sqliteRepository.Search(profile, page);
+    [HttpGet("autocompleteyeast/{searchTerm}")]
+    public async Task<List<string>> AutoCompleteYeast(string searchTerm)
+        => await _yeastRepository.Autocomplete(searchTerm);
 
-            return View(results);
-        }
+    [HttpGet("freetext/{searchterm}")]
+    public async Task<IActionResult> FreeTextResults(string searchterm)
+        => await FreeTextResults(searchterm, 1);
 
-        [HttpGet("autocomplete/{searchTerm}")]
-        public List<string> AutoComplete(string searchTerm)
-        {
-            return _sqliteRepository.Autocomplete(searchTerm);
-        }
 
-        [HttpGet("autocompletemalt/{searchTerm}")]
-        public List<string> AutoCompleteMalt(string searchTerm)
-        {
-            return _sqliteRepository.AutocompleteMalt(searchTerm);
-        }
+    [HttpGet("freetext/{searchterm}/page/{page:int}")]
+    public async Task<IActionResult> FreeTextResults(string searchterm, int page)
+    {
+        var results = await _hopRepository.FreeTextSearch(searchterm, page);
 
-        [HttpGet("autocompleteyeast/{searchTerm}")]
-        public List<string> AutoCompleteYeast(string searchTerm)
-        {
-            return _sqliteRepository.AutocompleteYeast(searchTerm);
-        }
-
-        [HttpGet("freetext/{searchterm}")]
-        public IActionResult FreeTextResults(string searchterm) => FreeTextResults(searchterm, 1);
-
-        [HttpGet("freetext/{searchterm}/page/{page:int}")]
-        public IActionResult FreeTextResults(string searchterm, int page)
-        {
-            var results = _sqliteRepository.FreeTextSearch(searchterm, page);
-
-            return View("Results", results);
-        }
+        return View("Results", results);
     }
 }

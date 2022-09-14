@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.Extensions.Configuration.IConfiguration _configuration
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,7 +30,7 @@
     <script>
         // Initialize Firebase
         var config = {
-            apiKey: "{firebaseApiKey}",
+            apiKey: "@_configuration["firebaseApiKey"]",
             authDomain: "hops-ab2d7.firebaseapp.com",
             databaseURL: "https://hops-ab2d7.firebaseio.com",
             projectId: "hops-ab2d7",
@@ -94,8 +96,8 @@
                 </ul>
 
                 @if (!ViewBag.Title.Equals("Search"))
-                {
-                    <form class="form-inline d-none d-sm-block">
+{
+    <form class="form-inline d-none d-sm-block">
                         <div class="input-group">
                             <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
                             <div class="input-group-append">
@@ -109,7 +111,7 @@
                             </div>
                         </div>
                     </form>
-                }
+}
 
             </div>
         </nav>

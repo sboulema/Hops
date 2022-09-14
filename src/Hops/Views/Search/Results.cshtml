@@ -1,5 +1,4 @@
-﻿@using Hops.Models;
-@model ListModel<HopModel>
+﻿@model Hops.Models.ViewModels.ListModel<Hops.Models.Hops.Hop>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,9 +10,9 @@
 
 <base href="/search/" />
 
-@if (!string.IsNullOrEmpty(Model.Pagination.SearchTerm))
+@if (!string.IsNullOrEmpty(Model.Pagination?.SearchTerm))
 {
     <h3>Search results for "@Model.Pagination.SearchTerm":</h3>
 }
 
-@Html.Partial("~/Views/Hop/List.cshtml", Model)
+@await Html.PartialAsync("~/Views/Hop/List.cshtml", Model)

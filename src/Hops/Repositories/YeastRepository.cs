@@ -1,70 +1,59 @@
 ﻿using Hops.Mappers;
 using Hops.Models;
+using Hops.Models.ViewModels;
+using Hops.Models.Yeasts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Hops.Repositories
+namespace Hops.Repositories;
+
+public class YeastRepository : IYeastRepository
 {
-    public class YeastRepository : IYeastRepository
+    private readonly BrewDBContext _context;
+
+    public YeastRepository(BrewDBContext context)
     {
-        private List<Yeast> Yeasts;
-        private IResultMapper resultMapper;
+        _context = context;
+    }
 
-        public YeastRepository(ISqliteRepository sqliteRepository, IResultMapper resultMapper)
-        {
-            Yeasts = sqliteRepository.GetYeasts();
-            this.resultMapper = resultMapper;
-        }
+    public async Task<Yeast?> Get(long id)
+        => await _context.Yeast!.FirstOrDefaultAsync(yeast => yeast.Id == id);
 
-        public Yeast Get(long id)
-        {
-            return Yeasts.First(t => t.Id == id);
-        }
+    public async Task<Yeast?> Get(string name)
+        => await _context.Yeast!.FirstOrDefaultAsync(yeast => EF.Functions.Like(yeast.Name, $"%{name}%"));
 
-        public Yeast Get(string name)
-        {
-            return Yeasts.First(y => Contains(y.Name, name, StringComparison.OrdinalIgnoreCase));
-        }
+    public async Task<Yeast?> GetRandom()
+    {
+        var count = await _context.Yeast!.CountAsync();
+        return await Get(new Random().Next(1, count + 1));
+    }
 
-        public Yeast GetRandom()
-        {
-            return Get(new Random().Next(1, Yeasts.Count + 1));
-        }
-
-        public ListModel<Yeast> Search(string searchTerm, int page)
-        {
-            var totalResultList = Yeasts
-            .Where(r => Contains(r.Name, searchTerm, StringComparison.OrdinalIgnoreCase))
+    public async Task<ListModel<Yeast>> Search(string searchTerm, int page)
+    {
+        var results = await _context.Yeast!
+            .Where(yeast => EF.Functions.Like(yeast.Name, $"%{searchTerm}%"))
             .OrderBy(m => m.Name)
-            .ToList();
+            .ToListAsync();
 
-            return resultMapper.Map(totalResultList, searchTerm, page);
-        }
+        return ResultMapper.Map(results, searchTerm, page);
+    }
 
-        public ListModel<Yeast> Search(List<long> ids, int page)
-        {
-            var totalResultList = Yeasts
+    public async Task<ListModel<Yeast>> Search(List<long> ids, int page)
+    {
+        var results = await _context.Yeast!
             .Where(r => ids.IndexOf(r.Id) != -1)
             .OrderBy(m => m.Name)
-            .ToList();
+            .ToListAsync();
 
-            return resultMapper.Map(totalResultList, "Inventory", page);
-        }
-
-        public List<string> Autocomplete(string searchTerm)
-        {
-            var results = Yeasts
-            .Where(r => Contains(r.Name, searchTerm, StringComparison.OrdinalIgnoreCase))
-            .Select(m => m.Name)
-            .ToList();
-
-            return results;
-        }
-
-        private bool Contains(string source, string toCheck, StringComparison comp)
-        {
-            return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
-        }
+        return ResultMapper.Map(results, "Inventory", page);
     }
+
+    public async Task<List<string>> Autocomplete(string searchTerm)
+        => await _context.Yeast!
+            .Where(yeast => EF.Functions.Like(yeast.Name, $"%{searchTerm}%"))
+            .Select(m => m.Name)
+            .ToListAsync();
 }

@@ -1,5 +1,4 @@
-﻿@using Hops.Models;
-@model ListModel<Yeast>
+﻿@model Hops.Models.ViewModels.ListModel<Hops.Models.Yeasts.Yeast>
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -14,4 +13,4 @@
 <h3>Yeasts:</h3>
 <br/>
 
-@Html.Partial("~/Views/Yeast/List.cshtml", Model)
+@await Html.PartialAsync("~/Views/Yeast/List.cshtml", Model)

@@ -1,22 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
  
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-  
-  <PropertyGroup>
-    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
-  </PropertyGroup>
-  
+ 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="BrewDB\brewDB.sqlite">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.9" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
   
 </Project>

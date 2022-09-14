@@ -1,58 +1,76 @@
-﻿using Hops.Models;
+﻿using Hops.Models.Yeasts;
 using Hops.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Hops.Controllers
+namespace Hops.Controllers;
+
+[Route("[controller]")]
+public class YeastController : Controller
 {
-    [Route("[controller]")]
-    public class YeastController : Controller
+    private readonly IYeastRepository _yeastRepository;
+
+    public YeastController(IYeastRepository yeastRepository)
     {
-        private readonly IYeastRepository yeastRepository;
+        _yeastRepository = yeastRepository;
+    }
 
-        public YeastController(IYeastRepository yeastRepository)
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var results = await _yeastRepository.Search(string.Empty, 1);
+
+        return View(results);
+    }
+
+    [HttpGet("page/{page}")]
+    public async Task<IActionResult> Index(int page)
+    {
+        var results = await _yeastRepository.Search(string.Empty, page);
+
+        return View("~/Views/Yeast/Index.cshtml", results);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Detail(long id)
+    {
+        var yeast = await _yeastRepository.Get(id);
+
+        return View(yeast);
+    }
+
+    [HttpGet("inventory/{searchTerm}/{page:int?}")]
+    public async Task<IActionResult> Inventory(string searchTerm, int page = 1)
+    {
+        var results = await _yeastRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
+
+        return View("~/Views/Yeast/List.cshtml", results);
+    }
+
+    [HttpGet("{name}/attenuation")]
+    public async Task<int> GetAttenuation(string name)
+    {
+        var yeast = await _yeastRepository.Get(name);
+
+        if (yeast == null)
         {
-            this.yeastRepository = yeastRepository;
+            return 0;
         }
 
-        [HttpGet]
-        public IActionResult Index()
+        return (yeast.AttenuationMin + yeast.AttenuationMax) / 2;
+    }
+
+    [HttpGet("{name}/lab")]
+    public async Task<string> GetLab(string name)
+    {
+        var yeast = await _yeastRepository.Get(name);
+
+        if (yeast == null)
         {
-            return View(yeastRepository.Search(string.Empty, 1));
+            return string.Empty;
         }
 
-        [HttpGet("page/{page}")]
-        public IActionResult Index(int page)
-        {
-            return View("~/Views/Yeast/Index.cshtml", yeastRepository.Search(string.Empty, page));
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Detail(long id)
-        {
-            return View(yeastRepository.Get(id));
-        }
-
-        [HttpGet("inventory/{searchTerm}/{page:int?}")]
-        public IActionResult Inventory(string searchTerm, int page = 1)
-        {
-            var results = yeastRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
-
-            return View("~/Views/Yeast/List.cshtml", results);
-        }
-
-        [HttpGet("{name}/attenuation")]
-        public int GetAttenuation(string name)
-        {
-            var yeast = yeastRepository.Get(name);
-            return (yeast.AttenuationMin + yeast.AttenuationMax) / 2;
-        }
-
-        [HttpGet("{name}/lab")]
-        public string GetLab(string name)
-        {
-            var yeast = yeastRepository.Get(name);
-            return ((YeastLabEnum)yeast.Lab).Wordify();
-        }
+        return ((YeastLabEnum)yeast.Lab).Wordify();
     }
 }

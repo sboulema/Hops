@@ -1,26 +1,20 @@
-# First Stage
-FROM microsoft/dotnet:2.2-sdk
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /app
 
-RUN dotnet tool install -g Microsoft.Web.LibraryManager.Cli
-ENV PATH="$PATH:/root/.dotnet/tools"
-
-RUN mkdir /build
-WORKDIR /build
-
-COPY src/Hops/ .
-RUN libman restore
+# copy csproj and restore as distinct layers
+COPY *.sln .
+COPY src/Hops/*.csproj ./Hops/
 RUN dotnet restore
 
+# copy everything else and build app
+COPY Hops/. ./Hops/
+WORKDIR /app/Hops
 RUN dotnet publish -c Release -o out
 
-# Second Stage
-FROM microsoft/dotnet:2.2-aspnetcore-runtime
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
 
 WORKDIR /app
-COPY --from=0 /build/out .
-COPY --from=0 /build/wwwroot/lib lib
 
-ENV ASPNETCORE_URLS http://+:5000 
-EXPOSE 5000/tcp
-ENV YourlsApiKey=token
-ENTRYPOINT dotnet Hops.dll
+COPY --from=build /app/Hops/out ./
+
+ENTRYPOINT ["dotnet", "Hops.dll"]

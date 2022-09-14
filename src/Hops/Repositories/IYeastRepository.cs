@@ -1,15 +1,21 @@
-﻿using Hops.Models;
+﻿using Hops.Models.ViewModels;
+using Hops.Models.Yeasts;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Hops.Repositories
+namespace Hops.Repositories;
+
+public interface IYeastRepository
 {
-    public interface IYeastRepository
-    {
-        Yeast GetRandom();
-        Yeast Get(long id);
-        Yeast Get(string name);
-        ListModel<Yeast> Search(string searchTerm, int page);
-        ListModel<Yeast> Search(List<long> ids, int page);
-        List<string> Autocomplete(string searchTerm);
-    }
+    Task<Yeast?> GetRandom();
+
+    Task<Yeast?> Get(long id);
+
+    Task<Yeast?> Get(string name);
+
+    Task<ListModel<Yeast>> Search(string searchTerm, int page);
+
+    Task<ListModel<Yeast>> Search(List<long> ids, int page);
+
+    Task<List<string>> Autocomplete(string searchTerm);
 }

@@ -1,5 +1,7 @@
-﻿@using Hops.Models;
-@model ListModel<HopModel>
+﻿@using Hops.Extensions
+@using Hops.Models.Hops
+
+@model Hops.Models.ViewModels.ListModel<Hops.Models.Hops.Hop>
 
 @{
     ViewBag.Title = "Hops";
@@ -13,7 +15,7 @@
                     <th>Name</th>
                     <th>Usage</th>
                     <th class="d-print-none">Possible substitutions</th>
-                    @if (Model.Pagination.SearchTerm.Equals("Inventory"))
+                    @if (Model.Pagination?.SearchTerm.Equals("Inventory") == true)
                     {
                         <th class="col-xs-2">Amount</th>
                     }
@@ -22,40 +24,44 @@
             </thead>
             <tbody>
                 @foreach (var hopModel in Model.List)
-                {
-                    <tr>
+    {
+        <tr>
                         <td>
-                            <a href="/hop/@hopModel.Hop.Slug()@(string.IsNullOrEmpty(Model.Pagination.HighLight) ? string.Empty : "#" + Model.Pagination.HighLight)">@hopModel.Hop.Name</a>
+                            <a href="/hop/@hopModel.Slug()@(string.IsNullOrEmpty(Model.Pagination?.HighLight) ? string.Empty : "#" + Model.Pagination.HighLight)">
+                                @hopModel.Name
+                            </a>
                             <p class="d-none d-print-inline">
-                                <br />@hopModel.Hop.Trade<br /><br />
-                                <strong>Aroma:</strong> @hopModel.Hop.Aroma<br />
+                                <br />@hopModel.Trade<br /><br />
+                                <strong>Aroma:</strong> @hopModel.Aroma<br />
                                 @if (hopModel.Aromas.Any())
                                 {
-                                    <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", hopModel.Aromas.Select(a => $"<a href=\"/Search/Aroma/{(int)a}\">{a.Wordify()}</a>")))<br />
+                                    <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", hopModel.Aromas.Select(a => $"<a href=\"/Search/Aroma/{a.Profile}\">{((AromaProfileEnum)a.Profile).Wordify()}</a>")))<br />
                                 }
-                                <strong>Typical beer styles:</strong> @hopModel.Hop.Styles
+                                <strong>Typical beer styles:</strong> @hopModel.Styles
                             </p>
                         </td>
-                        <td>@hopModel.Hop.BrewingUsageString()</td>
-                        <td class="d-print-none">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/hop/{s.Slug()}\">{s.Name}</a>")))</td>
-                        @if (Model.Pagination.SearchTerm.Equals("Inventory"))
-                        {
-                            <td>
+                        <td>@hopModel.BrewingUsageString()</td>
+                        <td class="d-print-none">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/hop/{s.Hop.Slug()}\">{s.Hop.Name}</a>")))</td>
+                        @if (Model.Pagination?.SearchTerm.Equals("Inventory") == true)
+            {
+                <td>
                                 <div class="input-group input-group-sm">
-                                    <input type="number" step="1" min="0" class="form-control hop-inv-amount" data-hop-id="@hopModel.Hop.Id" onchange="saveAmountInventory(this);">
+                                    <input type="number" step="1" min="0" class="form-control hop-inv-amount" data-hop-id="@hopModel.Id" onchange="saveAmountInventory(this);">
                                     <span class="input-group-addon">g</span>
                                 </div>
                             </td>
-                        }
-                        <td class="d-print-none"><span style="cursor: pointer;" class="hop-inv float-right fal fa-star text-warning" aria-hidden="true" aria-label="star" data-hop-id="@hopModel.Hop.Id" onclick="save(this);"></span></td>
+            }
+                        <td class="d-print-none">
+                            <span style="cursor: pointer;" class="hop-inv float-right fal fa-star text-warning" aria-hidden="true" aria-label="star" data-hop-id="@hopModel.Id" onclick="save(this);"></span>
+                        </td>
                     </tr>
-                }
+    }
             </tbody>
         </table>
     </div>
 </div>
 
-@Html.Partial("Pagination", Model.Pagination)
+@await Html.PartialAsync("Pagination", Model.Pagination)
 
 <script>
     $(function () {

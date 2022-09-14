@@ -21,3 +21,10 @@ Running Hops is easy and fast, just start the docker image and Hops will be serv
 
 # BrewDB
 Ingredient database is used from [BrewDB](https://github.com/sboulema/BrewDB)
+
+## Environment variables
+
+| Variable		 | Description								|
+|----------------|------------------------------------------|
+| firebaseApiKey | API key used to store inventory and recipes |
+| YourlsApiKey	 | API key used to create short share urls for recipes |

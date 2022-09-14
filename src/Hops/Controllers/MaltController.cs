@@ -1,57 +1,69 @@
 ﻿using Hops.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Hops.Controllers
+namespace Hops.Controllers;
+
+[Route("[controller]")]
+public class MaltController : Controller
 {
-    [Route("[controller]")]
-    public class MaltController : Controller
+    private readonly IMaltRepository _maltRepository;
+
+    public MaltController(IMaltRepository maltRepository)
     {
-        private readonly IMaltRepository maltRepository;
+        _maltRepository = maltRepository;
+    }
 
-        public MaltController(IMaltRepository maltRepository)
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        var malt = await _maltRepository.Search(string.Empty, 1);
+
+        return View(malt);
+    }
+
+    [HttpGet("page/{page}")]
+    public async Task<IActionResult> Index(int page)
+    {
+        var results = await _maltRepository.Search(string.Empty, page);
+
+        return View("~/Views/Malt/Index.cshtml", results);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Detail(long id)
+    {
+        var malt = await _maltRepository.Get(id);
+
+        return View(malt);
+    }
+
+    [HttpGet("inventory/{searchTerm}/{page:int?}")]
+    public async Task<IActionResult> Inventory(string searchTerm, int page = 1)
+    {
+        var results = await _maltRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
+
+        return View("~/Views/Malt/List.cshtml", results);
+    }
+
+    [HttpGet("{name}/color")]
+    public async Task<double> GetColor(string name)
+    {
+        var malt = await _maltRepository.Get(name);
+
+        if (malt == null)
         {
-            this.maltRepository = maltRepository;
+            return 0;
         }
 
-        [HttpGet]
-        public IActionResult Index()
-        {
-            return View(maltRepository.Search(string.Empty, 1));
-        }
+        return (malt.EBCMin + malt.EBCMax) / 2;
+    }
 
-        [HttpGet("page/{page}")]
-        public IActionResult Index(int page)
-        {
-            return View("~/Views/Malt/Index.cshtml", maltRepository.Search(string.Empty, page));
-        }
-
-        [HttpGet("{id}")]
-        public IActionResult Detail(long id)
-        {
-            return View(maltRepository.Get(id));
-        }
-
-        [HttpGet("inventory/{searchTerm}/{page:int?}")]
-        public IActionResult Inventory(string searchTerm, int page = 1)
-        {
-            var results = maltRepository.Search(searchTerm.Split(',').Select(s => long.Parse(s)).ToList(), page);
-
-            return View("~/Views/Malt/List.cshtml", results);
-        }
-
-        [HttpGet("{name}/color")]
-        public double GetColor(string name)
-        {
-            var malt = maltRepository.Get(name);
-            return (malt.EBCMin + malt.EBCMax) / 2;
-        }
-
-        [HttpGet("{name}/yield")]
-        public double GetYield(string name)
-        {
-            var malt = maltRepository.Get(name);
-            return malt.Yield.GetValueOrDefault(75);
-        }
+    [HttpGet("{name}/yield")]
+    public async Task<double> GetYield(string name)
+    {
+        var malt = await _maltRepository.Get(name);
+        return malt?.Yield ?? 75;
     }
 }

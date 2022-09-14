@@ -1,70 +1,59 @@
 ﻿using Hops.Mappers;
 using Hops.Models;
+using Hops.Models.Malts;
+using Hops.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace Hops.Repositories
+namespace Hops.Repositories;
+
+public class MaltRepository : IMaltRepository
 {
-    public class MaltRepository : IMaltRepository
+    private readonly BrewDBContext _context;
+
+    public MaltRepository(BrewDBContext context)
     {
-        private List<Malt> Malts;
-        private IResultMapper resultMapper;
+        _context = context;
+    }
 
-        public MaltRepository(ISqliteRepository sqliteRepository, IResultMapper resultMapper)
-        {
-            Malts = sqliteRepository.GetMalts();
-            this.resultMapper = resultMapper;
-        }
+    public async Task<Malt?> Get(long id)
+        => await _context.Malt!.FirstOrDefaultAsync(malt => malt.Id == id);
 
-        public Malt Get(long id)
-        {
-            return Malts.First(t => t.Id == id);
-        }
+    public async Task<Malt?> Get(string name)
+        => await _context.Malt!.FirstOrDefaultAsync(malt => EF.Functions.Like(malt.Name, $"%{name}%"));
 
-        public Malt Get(string name)
-        {
-            return Malts.First(m => m.Name.Equals(name));
-        }
+    public async Task<Malt?> GetRandom()
+    {
+        var count = await _context.Malt!.CountAsync();
+        return await Get(new Random().Next(1, count + 1));
+    }
 
-        public Malt GetRandom()
-        {
-            return Get(new Random().Next(1, Malts.Count + 1));
-        }
+    public async Task<ListModel<Malt>> Search(string searchTerm, int page)
+    {
+        var results = await _context.Malt!
+            .Where(malt => EF.Functions.Like(malt.Name, $"%{searchTerm}%"))
+            .OrderBy(malt => malt.Name)
+            .ToListAsync();
 
-        public ListModel<Malt> Search(string searchTerm, int page)
-        {
-            var totalResultList = Malts
-            .Where(r => Contains(r.Name, searchTerm, StringComparison.OrdinalIgnoreCase))
-            .OrderBy(m => m.Name)
-            .ToList();
+        return ResultMapper.Map(results, searchTerm, page);
+    }
 
-            return resultMapper.Map(totalResultList, searchTerm, page);
-        }
-
-        public ListModel<Malt> Search(List<long> ids, int page)
-        {
-            var totalResultList = Malts
+    public async Task<ListModel<Malt>> Search(List<long> ids, int page)
+    {
+        var results = await _context.Malt!
             .Where(r => ids.IndexOf(r.Id) != -1)
             .OrderBy(m => m.Name)
-            .ToList();
+            .ToListAsync();
 
-            return resultMapper.Map(totalResultList, "Inventory", page);
-        }
-
-        public List<string> Autocomplete(string searchTerm)
-        {
-            var results = Malts
-            .Where(r => Contains(r.Name, searchTerm, StringComparison.OrdinalIgnoreCase))
-            .Select(m => m.Name)
-            .ToList();
-
-            return results;
-        }
-
-        private bool Contains(string source, string toCheck, StringComparison comp)
-        {
-            return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
-        }
+        return ResultMapper.Map(results, "Inventory", page);
     }
+
+    public async Task<List<string>> Autocomplete(string searchTerm)
+        => await _context.Malt!
+            .Where(malt => EF.Functions.Like(malt.Name, $"%{searchTerm}%"))
+            .Select(malt => malt.Name)
+            .ToListAsync();
 }

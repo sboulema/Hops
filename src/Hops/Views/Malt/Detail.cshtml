@@ -1,4 +1,5 @@
-﻿@using Hops.Models;
+﻿@using Hops.Models.Malts
+
 @model Malt
 
 @{
@@ -42,8 +43,8 @@
                 <td>@Model.EBC() EBC</td>
             </tr>
             @if (Model.Ratio != null)
-            {
-                <tr>
+{
+    <tr>
                     <td style="padding-left:15px;">
                         Ratio <span class="fas fa-info-circle"
                                     data-toggle="tooltip"
@@ -51,10 +52,10 @@
                     </td>
                     <td>@Model.Ratio%</td>
                 </tr>
-            }
+}
             @if (Model.Yield != null)
-            {
-                <tr>
+{
+    <tr>
                     <td style="padding-left:15px;">
                         Yield <span class="fas fa-info-circle"
                                     data-toggle="tooltip"
@@ -62,7 +63,7 @@
                     </td>
                     <td>@((int)Model.Yield)%</td>
                 </tr>
-            }
+}
         </table>
     </div>
 </div>

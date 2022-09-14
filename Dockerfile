@@ -7,7 +7,7 @@ COPY src/Hops/*.csproj ./Hops/
 RUN dotnet restore
 
 # copy everything else and build app
-COPY Hops/. ./Hops/
+COPY src/Hops/. ./Hops/
 WORKDIR /app/Hops
 RUN dotnet publish -c Release -o out
 

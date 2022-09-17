@@ -3,19 +3,11 @@ using Hops.Models.Malts;
 using Hops.Models.Yeasts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using System.IO;
 
 namespace Hops.Models;
 
 public class BrewDBContext : DbContext
 {
-    private readonly IWebHostEnvironment _env;
-
-    public BrewDBContext(IWebHostEnvironment env)
-    {
-        _env = env;
-    }
-
     public DbSet<Hop>? Hop { get; set; }
 
     public DbSet<Substitution>? Substitution { get; set; }
@@ -43,7 +35,5 @@ public class BrewDBContext : DbContext
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Filename=BrewDB/brewDB.sqlite");
-    }
+        => optionsBuilder.UseSqlite("Filename=BrewDB/brewDB.sqlite");
 }

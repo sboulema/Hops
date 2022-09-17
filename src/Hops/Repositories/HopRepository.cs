@@ -65,6 +65,7 @@ public class HopRepository : IHopRepository
         var hops = await _context.Hop!
             .Where(hop => EF.Functions.Like(hop.Name, $"%{searchTerm}%") ||
                           hop.Aliases!.Any(alias => EF.Functions.Like(alias.Name, $"%{searchTerm}%")))
+            .OrderBy(hop => hop.Name)
             .ToListAsync();
 
         hops.ForEach(hop => hop.Substitutions?.ForEach(async sub => sub.Hop = await GetHopById(sub.SubId, false)));
@@ -152,6 +153,7 @@ public class HopRepository : IHopRepository
         var results = await _context.Hop!
             .Where(hop => EF.Functions.Like(hop.Name, $"%{searchTerm}%") ||
                   hop.Aliases.Any(alias => EF.Functions.Like(alias.Name, $"%{searchTerm}%")) == true)
+            .OrderBy(hop => hop.Name)
             .ToListAsync();
 
         var autocompleteList = new List<string>();

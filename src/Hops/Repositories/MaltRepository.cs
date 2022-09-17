@@ -44,8 +44,8 @@ public class MaltRepository : IMaltRepository
     public async Task<ListModel<Malt>> Search(List<long> ids, int page)
     {
         var results = await _context.Malt!
-            .Where(r => ids.IndexOf(r.Id) != -1)
-            .OrderBy(m => m.Name)
+            .Where(malt => ids.IndexOf(malt.Id) != -1)
+            .OrderBy(malt => malt.Name)
             .ToListAsync();
 
         return ResultMapper.Map(results, "Inventory", page);
@@ -54,6 +54,7 @@ public class MaltRepository : IMaltRepository
     public async Task<List<string>> Autocomplete(string searchTerm)
         => await _context.Malt!
             .Where(malt => EF.Functions.Like(malt.Name, $"%{searchTerm}%"))
+            .OrderBy(malt => malt.Name)
             .Select(malt => malt.Name)
             .ToListAsync();
 }

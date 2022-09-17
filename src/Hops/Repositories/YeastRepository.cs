@@ -35,7 +35,7 @@ public class YeastRepository : IYeastRepository
     {
         var results = await _context.Yeast!
             .Where(yeast => EF.Functions.Like(yeast.Name, $"%{searchTerm}%"))
-            .OrderBy(m => m.Name)
+            .OrderBy(yeast => yeast.Name)
             .ToListAsync();
 
         return ResultMapper.Map(results, searchTerm, page);
@@ -44,8 +44,8 @@ public class YeastRepository : IYeastRepository
     public async Task<ListModel<Yeast>> Search(List<long> ids, int page)
     {
         var results = await _context.Yeast!
-            .Where(r => ids.IndexOf(r.Id) != -1)
-            .OrderBy(m => m.Name)
+            .Where(yeast => ids.IndexOf(yeast.Id) != -1)
+            .OrderBy(yeast => yeast.Name)
             .ToListAsync();
 
         return ResultMapper.Map(results, "Inventory", page);
@@ -54,6 +54,7 @@ public class YeastRepository : IYeastRepository
     public async Task<List<string>> Autocomplete(string searchTerm)
         => await _context.Yeast!
             .Where(yeast => EF.Functions.Like(yeast.Name, $"%{searchTerm}%"))
-            .Select(m => m.Name)
+            .OrderBy(yeast => yeast.Name)
+            .Select(yeast => yeast.Name)
             .ToListAsync();
 }

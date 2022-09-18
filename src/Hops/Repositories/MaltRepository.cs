@@ -41,10 +41,10 @@ public class MaltRepository : IMaltRepository
         return ResultMapper.Map(results, searchTerm, page);
     }
 
-    public async Task<ListModel<Malt>> Search(List<long> ids, int page)
+    public async Task<ListModel<Malt>> Search(List<long> maltIds, int page)
     {
         var results = await _context.Malt!
-            .Where(malt => ids.IndexOf(malt.Id) != -1)
+            .Where(malt => maltIds.Contains(malt.Id))
             .OrderBy(malt => malt.Name)
             .ToListAsync();
 

@@ -1,5 +1,6 @@
 ﻿using Hops.Mappers;
 using Hops.Models;
+using Hops.Models.Malts;
 using Hops.Models.ViewModels;
 using Hops.Models.Yeasts;
 using Microsoft.EntityFrameworkCore;
@@ -41,10 +42,10 @@ public class YeastRepository : IYeastRepository
         return ResultMapper.Map(results, searchTerm, page);
     }
 
-    public async Task<ListModel<Yeast>> Search(List<long> ids, int page)
+    public async Task<ListModel<Yeast>> Search(List<long> yeastIds, int page)
     {
         var results = await _context.Yeast!
-            .Where(yeast => ids.IndexOf(yeast.Id) != -1)
+            .Where(yeast => yeastIds.Contains(yeast.Id))
             .OrderBy(yeast => yeast.Name)
             .ToListAsync();
 

@@ -1,8 +1,4 @@
 ﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@{
     ViewBag.Title = "Recipe Viewer - Hops";
 }
 
@@ -22,10 +18,7 @@
     });
 
     async function loadRecipe() {
-        var urlParts = window.location.href.split('/')
-        var recipeId = urlParts[urlParts.length - 1];
-
-        var recipe = await getRecipe(parseInt(recipeId));
+        var recipe = await getRecipe(@ViewData["RecipeId"]);
 
         calculate(recipeId, recipe.beerxml);
         document.title = recipe.name + " - Hops"; 

@@ -5,31 +5,23 @@ namespace Hops.Controllers;
 [Route("[controller]")]
 public class RecipeController : Controller
 {
-    [Route("[action]")]
-    public IActionResult New()
-    {
-        return View();
-    }
-
     [HttpGet]
-    public IActionResult Index()
-    {
-        return View();
-    }
+    public IActionResult Index() => View();
 
-    [HttpGet("{recipeId}")]
-    public IActionResult Index(int recipeId)
+    [HttpGet("[action]")]
+    public IActionResult New() => View();
+
+    [HttpGet("{recipeId:long}")]
+    public IActionResult Index(long recipeId)
     {
+        ViewData["RecipeId"] = recipeId;
         return View("Detail");
     }
 
-    [Route("[action]")]
-    public IActionResult Import()
-    {
-        return View();
-    }
+    [HttpGet("[action]")]
+    public IActionResult Import() => View();
 
-    [Route("[action]")]
+    [HttpGet("[action]")]
     public IActionResult Share(string recipe)
     {
         return View();

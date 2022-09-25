@@ -1,7 +1,4 @@
-﻿@using Hops.Extensions
-@using Hops.Models.Hops
-
-@model Hops.Models.ViewModels.ListModel<Hops.Models.Hops.Hop>
+﻿@model ListModel<Hop>
 
 @{
     ViewBag.Title = "Hops";
@@ -24,8 +21,8 @@
             </thead>
             <tbody>
                 @foreach (var hopModel in Model.List)
-    {
-        <tr>
+                {
+                    <tr>
                         <td>
                             <a href="/hop/@hopModel.Slug()@(string.IsNullOrEmpty(Model.Pagination?.HighLight) ? string.Empty : "#" + Model.Pagination.HighLight)">
                                 @hopModel.Name
@@ -35,7 +32,9 @@
                                 <strong>Aroma:</strong> @hopModel.Aroma<br />
                                 @if (hopModel.Aromas.Any())
                                 {
-                                    <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", hopModel.Aromas.Select(a => $"<a href=\"/Search/Aroma/{a.Profile}\">{((AromaProfileEnum)a.Profile).Wordify()}</a>")))<br />
+                                    <strong>Aroma profile:</strong> @Html.Raw(string.Join(", ", hopModel.Aromas.Select(a => $"<a href=\"/Search/Aroma/{a.Profile}\">{((AromaProfileEnum)a.Profile).Wordify()}</a>")))
+
+                                    <br />
                                 }
                                 <strong>Typical beer styles:</strong> @hopModel.Styles
                             </p>
@@ -43,19 +42,19 @@
                         <td>@hopModel.BrewingUsageString()</td>
                         <td class="d-print-none">@Html.Raw(string.Join(", ", hopModel.Substitutions.Select(s => $"<a href=\"/hop/{s.Hop.Slug()}\">{s.Hop.Name}</a>")))</td>
                         @if (Model.Pagination?.SearchTerm.Equals("Inventory") == true)
-            {
-                <td>
+                        {
+                            <td>
                                 <div class="input-group input-group-sm">
                                     <input type="number" step="1" min="0" class="form-control hop-inv-amount" data-hop-id="@hopModel.Id" onchange="saveAmountInventory(this);">
                                     <span class="input-group-addon">g</span>
                                 </div>
                             </td>
-            }
+                        }
                         <td class="d-print-none">
                             <span style="cursor: pointer;" class="hop-inv float-right fal fa-star text-warning" aria-hidden="true" aria-label="star" data-hop-id="@hopModel.Id" onclick="save(this);"></span>
                         </td>
                     </tr>
-    }
+                }
             </tbody>
         </table>
     </div>

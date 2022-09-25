@@ -1,11 +1,4 @@
-﻿@using Hops.Extensions
-@using Hops.Models.Hops
-
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@{
+﻿@{
     ViewBag.Title = "Search";
 }
 
@@ -41,7 +34,7 @@
 
 <ul class="list-unstyled row" style="padding: 15px;">
     @foreach (var aromaProfile in Enum.GetValues(typeof(AromaProfileEnum)).OfType<AromaProfileEnum>().ToList().Skip(1).OrderBy(a => a.ToString()))
-{
-    <li class="list-group-item col-sm-6"><a href="~/search/aroma/@((int)aromaProfile)">@aromaProfile.Wordify()</a></li>
-}
+    {
+        <li class="list-group-item col-sm-6"><a href="~/search/aroma/@((int)aromaProfile)">@aromaProfile.Wordify()</a></li>
+    }
 </ul>

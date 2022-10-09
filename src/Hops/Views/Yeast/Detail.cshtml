@@ -4,10 +4,12 @@
     ViewBag.Title = $"{Model.Name} - Yeasts";
 }
 
-<div class="jumbotron bg-info text-white">
-    <span style="cursor: pointer;" class="yeast-inv fal fa-star float-right btn btn-default d-print-none text-warning" aria-hidden="true" aria-label="star" data-yeast-id="@Model.Id" onclick="save(this);"></span>
+<div class="p-5 mb-4 bg-info rounded-3 text-white">
+    <div class="container-fluid py-1">
+        <span style="cursor: pointer;" class="yeast-inv fal fa-star float-end btn btn-default d-print-none text-warning" aria-hidden="true" aria-label="star" data-yeast-id="@Model.Id" onclick="save(this);"></span>
 
-    <h1>@Model.Name</h1>
+        <h1 class="display-5 fw-bold">@Model.Name</h1>
+    </div>
 </div>
 
 <div class="card">

@@ -2,10 +2,9 @@
     width: auto !important;
 }
 
-#stickyHeader {
-    position: sticky;
-    top: 100px;
-    z-index: 9999;
+.typeahead {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
 }
 
 @media print {

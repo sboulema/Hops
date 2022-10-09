@@ -1,7 +1,7 @@
 ﻿@model ListModel<Malt>
 
 @{
-    ViewBag.Title = "Malts";
+    Layout = null;
 }
 
 <div class="card">
@@ -30,8 +30,8 @@
                         {
                             <td>
                                 <div class="input-group input-group-sm">
-                                    <input type="number" step="1" min="0" class="form-control malt-inv-amount" data-malt-id="@malt.Id" onchange="saveAmountInventory(this);">
-                                    <span class="input-group-addon">g</span>
+                                    <input type="number" step="1" min="0" class="form-control malt-inv-amount" data-hop-id="@malt.Id" onchange="saveAmountInventory(this);">
+                                    <span class="input-group-text">g</span>
                                 </div>
                             </td>
                         }

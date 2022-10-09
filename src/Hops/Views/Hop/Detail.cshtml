@@ -8,11 +8,13 @@
     <script src="~/lib/mark.js/jquery.mark.min.js"></script>
 }
 
-<div class="jumbotron bg-success text-white">
-    <span style="cursor: pointer;" class="hop-inv fal fa-star float-right btn btn-default d-print-none text-warning" aria-hidden="true" aria-label="star" data-hop-id="@Model.Id" onclick="save(this);"></span>
+<div class="p-5 mb-4 bg-success rounded-3 text-white">
+    <div class="container-fluid py-1">
+        <span style="cursor: pointer;" class="hop-inv fal fa-star float-end btn btn-default d-print-none text-warning" aria-hidden="true" aria-label="star" data-hop-id="@Model.Id" onclick="save(this);"></span>
 
-    <h1>@Model.Name</h1>
-    <p>@Model.Trade</p>
+        <h1 class="display-5 fw-bold">@Model.Name</h1>
+        <p class="col-md-8 fs-4">@Model.Trade</p>
+    </div>
 </div>
 
 <div class="card">

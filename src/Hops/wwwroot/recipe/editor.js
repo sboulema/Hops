@@ -5,11 +5,10 @@ function createBar(value, scaleStart, scaleEnd, lowerBound, upperBound) {
     var barEnd = ((upperBound - scaleStart) / (scaleEnd - scaleStart)) * 100;
     var valueMarker = ((value - scaleStart) / (scaleEnd - scaleStart)) * 100;
 
-    var bar = "";
-    bar += "<div class='progress' style='margin: 0px 0px 5px 0px;'>";
-    bar += "<div class='progress-bar' role='progressbar' style='background-color: #f5f5f5; background-image: linear-gradient(to bottom,#ebebeb 0,#f5f5f5 100%); box-shadow: inset 0 1px 2px rgba(0,0,0,.1); width: " + barStart + "%'><span class='sr-only'>bla</span></div>";
-    bar += "<div class='progress-bar' role='progressbar' style='background-image: linear-gradient(to bottom,#b55002 0,#b55002 100%); opacity: 0.2; width: " + (barEnd - barStart) + "%'><span class='sr-only'>bla</span></div>";
-    bar += "<div style='width: 3px; height: 20px; position: relative; background: #ce5b02; left: " + valueMarker + "%;'></div>";
+    var bar = "<div class='progress' style='background-color: #e9ecef;'>";
+    bar += "<div class='progress-bar' style='background-color: #e9ecef; width: " + barStart + "%'></div>";
+    bar += "<div class='progress-bar' style='background-color: #b55002; opacity: 0.2; width: " + (barEnd - barStart) + "%'></div>";
+    bar += "<div style='width: 3px; height: 20px; position: relative; background: #ce5b02; left: " + valueMarker + "%; top: -4px;'></div>";
     bar += "</div>";
     return bar;
 }
@@ -45,14 +44,14 @@ function addFermentable() {
         "<td>" +
         "<div class='input-group'>" +
         "<input type='text' class='form-control'>" +
-        "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+        "<span class='input-group-text'>g</span>" +
         "</div>" +
         "</td>" +
         "<td width='70%'>" +
         "<input id='malt-" + index + "-name' type='text' class='form-control malt typeahead'>" +
         "</td>" +
         "<td>" +
-        "<select class='custom-select'>" +
+        "<select class='form-select'>" +
         "<option value='mash'>Mash</option>" +
         "<option value='steep'>Steep</option>" +
         "<option value='boil'>Boil</option>" +
@@ -80,7 +79,7 @@ function addHop() {
         "<td>" +
         "<div class='input-group'>" +
         "<input type='text' class='form-control'>" +
-        "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+        "<span class='input-group-text'>g</span>" +
         "</div>" +
         "</td>" +
         "<td>" + "<input id='hop-" + index + "-name' type='text' class='form-control hop typeahead'>" + "</td>" +
@@ -91,14 +90,14 @@ function addHop() {
         "</div>" +
         "</td>" +
         "<td>" +
-        "<select class='custom-select'>" +
+        "<select class='form-select'>" +
         "<option value='boil'>Boil</option>" +
         "<option value='primary'>Primary</option>" +
         "<option value='secondary'>Secondary</option>" +
         "</select>" +
         "</td>" +
         "<td>" +
-        "<select class='custom-select'>" +
+        "<select class='form-select'>" +
         "<option value='pellets'>Pellets</option>" +
         "<option value='leafs'>Leafs</option>" +
         "<option value='plugs'>Plugs</option>" +
@@ -124,18 +123,18 @@ function addExtra() {
         "<td>" +
         "<div class='input-group'>" +
         "<input type='text' class='form-control'>" +
-        "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+        "<span class='input-group-text'>g</span>" +
         "</div>" +
         "</td>" +
         "<td>" + "<input type='text' class='form-control'>" + "</td>" +
         "<td>" +
         "<div class='input-group'>" +
         "<input type='text' class='form-control'>" +
-        "<div class='input-group-append'><span class='input-group-text'>m</span></div>" +
+        "<span class='input-group-text'>m</span>" +
         "</div>" +
         "</td>" +
         "<td>" +
-        "<select class='custom-select'>" +
+        "<select class='form-select'>" +
         "<option value='boil'>Boil</option>" +
         "<option value='primary'>Primary</option>" +
         "<option value='secondary'>Secondary</option>" +
@@ -159,7 +158,7 @@ function addYeast() {
         "<td>" +
         "<div class='input-group'>" +
         "<input type='text' class='form-control'>" +
-        "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+        "<span class='input-group-text'>g</span>" +
         "</div>" +
         "</td>" +
         "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead'></td>" +
@@ -287,14 +286,14 @@ function calculate(recipeId, beerXml) {
             "<td>" +
             "<div class='input-group'>" +
             "<input type='text' class='form-control' value=" + (fermentable.weight * 1000) + ">" +
-            "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+            "<span class='input-group-text'>g</span>" +
             "</div>" +
             "</td>" +
             "<td>" +
             "<input id='malt-" + index + "-name' type='text' class='form-control malt typeahead' onkeypress='handle(event, search)' value='" + fermentable.name + "'>" +
             "</td>" +
             "<td>" +
-            "<select class='custom-select'>" +
+            "<select class='form-select'>" +
             "<option value='mash'" + (fermentable.addition().toLowerCase() === "mash" ? " selected" : "") + ">Mash</option>" +
             "<option value='steep'" + (fermentable.addition().toLowerCase() === "steep" ? " selected" : "") + ">Steep</option>" +
             "<option value='boil'" + (fermentable.addition().toLowerCase() === "boil" ? " selected" : "") + ">Boil</option>" +
@@ -321,25 +320,25 @@ function calculate(recipeId, beerXml) {
                 "<td>" +
                 "<div class='input-group'>" +
                 "<input type='text' class='form-control' value=" + (spice.weight * 1000) + ">" +
-                "<div class='input-group-append'><span class='input-group-text'>g</span></div>" +
+                "<span class='input-group-text'>g</span>" +
                 "</div>" +
                 "</td>" +
                 "<td>" + "<input id='hop-" + hopIndex + "-name' type='text' class='form-control hop typeahead' onkeypress='handle(event, search)' value='" + spice.name + "'>" + "</td>" +
                 "<td>" +
                 "<div class='input-group'>" +
                 "<input type='text' class='form-control' value=" + spice.time + ">" +
-                "<div class='input-group-append'><span class='input-group-text'>m</span></div>" +
+                "<span class='input-group-text'>m</span>" +
                 "</div>" +
                 "</td>" +
                 "<td>" +
-                "<select class='custom-select'>" +
+                "<select class='form-select'>" +
                 "<option value='boil'" + (spice.use.toLowerCase() === "boil" ? " selected" : "") + ">Boil</option>" +
                 "<option value='primary'" + (spice.use.toLowerCase() === "primary" ? " selected" : "") + ">Primary</option>" +
                 "<option value='secondary'" + (spice.use.toLowerCase() === "secondary" ? " selected" : "") + ">Secondary</option>" +
                 "</select>" +
                 "</td>" +
                 "<td>" +
-                "<select class='custom-select'>" +
+                "<select class='form-select'>" +
                 "<option value='pellets'" + (spice.form.toLowerCase() === "pellets" ? " selected" : "") + ">Pellets</option>" +
                 "<option value='leafs'" + (spice.form.toLowerCase() === "leafs" ? " selected" : "") + ">Leafs</option>" +
                 "<option value='plugs'" + (spice.form.toLowerCase() === "plugs" ? " selected" : "") + ">Plugs</option>" +
@@ -358,7 +357,7 @@ function calculate(recipeId, beerXml) {
                 "<td>" +
                 "<div class='input-group'>" +
                 "<input type='text' class='form-control' value=" + (spice.weight * 1000) + ">" +
-                "<div class='input-group-append'><span class='input-group-text'>" + (spice.amountIsWeight === false ? " L" : " g") + "</span></div>" +
+                "<span class='input-group-text'>" + (spice.amountIsWeight === false ? " L" : " g") + "</span>" +
                 "</div>" +
                 "</td>" +
                 "<td>" + "<input type='text' class='form-control' value='" + spice.name + "'>" + "</td>" +
@@ -369,7 +368,7 @@ function calculate(recipeId, beerXml) {
                 "</div>" +
                 "</td>" +
                 "<td>" +
-                "<select class='custom-select'>" +
+                "<select class='form-select'>" +
                 "<option value='boil'" + (spice.use.toLowerCase() === "boil" ? " selected" : "") + ">Boil</option>" +
                 "<option value='primary'" + (spice.use.toLowerCase() === "primary" ? " selected" : "") + ">Primary</option>" +
                 "<option value='secondary'" + (spice.use.toLowerCase() === "secondary" ? " selected" : "") + ">Secondary</option>" +
@@ -391,7 +390,7 @@ function calculate(recipeId, beerXml) {
             "<td>" +
             "<div class='input-group'>" +
             "<input type='text' class='form-control' value=" + (yeast.weight * 1000) + ">" +
-            "<div class='input-group-append'><span class='input-group-text'>" + (yeast.amountIsWeight === false ? " L" : " g") + "</span></div>" +
+            "<span class='input-group-text'>" + (yeast.amountIsWeight === false ? " L" : " g") + "</span>" +
             "</div>" +
             "</td>" +
             "<td><input id='yeast-" + index + "-name' type='text' class='form-control yeast typeahead' onkeypress='handle(event, search)' value='" + yeast.name + "'></td>" +

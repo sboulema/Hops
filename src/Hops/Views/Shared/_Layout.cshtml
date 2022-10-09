@@ -19,8 +19,6 @@
     <script src="~/lib/sortable/Sortable.min.js"></script>
     <script src="~/lib/clipboard/dist/clipboard.min.js"></script>
 
-    <link href="~/sticky-footer.css" rel="stylesheet" />
-
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.2/css/all.css" 
           integrity="sha384-XxNLWSzCxOe/CFcHcAiJAZ7LarLmw3f4975gOO6QkxvULbGGNDoSOTzItGUG++Q+" 
           crossorigin="anonymous">
@@ -47,25 +45,24 @@
 
     @RenderSection("Scripts", false)
 </head>
-<body>
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
-            <a class="navbar-brand" href="/">Curleez &amp; ME</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<body class="d-flex flex-column min-vh-100">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">Curleez &amp; ME</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="/hop"><i class="fas fa-spa text-success"></i> Hops</a></li>
                     <li class="nav-item"><a class="nav-link" href="/malt"><i class="fas fa-wheat text-warning"></i> Malts</a></li>
                     <li class="nav-item"><a class="nav-link" href="/yeast"><i class="fas fa-flask text-info"></i> Yeasts</a></li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-calculator"></i> Tools
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu">
                             <a class="dropdown-item" href="~/calc/priming">Bottle Priming Calculator</a>
                             <a class="dropdown-item" href="~/calc/ibu">IBU Calculator</a>
                             <a class="dropdown-item" href="~/calc/pitchrate">Pitch Rate Calculator</a>
@@ -81,10 +78,10 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-cauldron"></i> Recipes
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu">
                             <a class="dropdown-item" href="~/recipe/new">New Recipe</a>
                             <a class="dropdown-item" href="~/recipe">All Recipes</a>
                             <a class="dropdown-item" href="~/recipe/import">Import Recipe</a>
@@ -92,38 +89,42 @@
                     </li>
 
                     <li class="nav-item"><a class="nav-link" id="inventory" href="/search/inventory"><i class="fas fa-inventory"></i> Inventory</a></li>
+
                     <li class="nav-item d-block d-sm-none"><a class="nav-link" href="/search/">Search</a></li>
                 </ul>
-
                 @if (!ViewBag.Title.Equals("Search"))
-{
-    <form class="form-inline d-none d-sm-block">
+                {
+                    <form class="form-inline d-none d-sm-block">
                         <div class="input-group">
-                            <input type="text" class="form-control typeahead" id="search" onkeypress="handle(event, search)" placeholder="Search Hops...">
-                            <div class="input-group-append">
-                                <button type="button" class="btn btn-outline-secondary"><span class="fas fa-search"></span></button>
-                                <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                </button>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/search/">Advanced search</a>
-                                </div>
+                            <input type="text"
+                               class="form-control typeahead"
+                               id="search"
+                               onkeypress="handle(event, search)"
+                               placeholder="Search Hops...">
+                            <button type="button" class="btn btn-outline-secondary"><span class="fas fa-search"></span></button>
+                            <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/search/">Advanced search</a>
                             </div>
                         </div>
                     </form>
-}
-
+                }
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <br/>
+
+    <div class="container">
+        <br />
 
         @RenderBody()  
 
         <br/>
     </div>
 
-    <footer class="footer d-print-none">
+    <footer class="d-print-none border-top pt-1 mt-auto">
         <div class="container">
             <p class="text-muted">
                 Made by <a href="http://www.curleezme.nl">Curleez &amp; ME</a> - 

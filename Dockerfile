@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
-COPY *.sln .
+COPY *.slnx .
 COPY src/Hops/*.csproj ./src/Hops/
 RUN dotnet restore
 
@@ -11,7 +11,7 @@ COPY src/Hops/. ./src/Hops/
 WORKDIR /app/src/Hops
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 
 WORKDIR /app
 
